@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <math.h>
+#include <stdlib.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -65,19 +66,27 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
+	p2List_item<TileSet*>* item_tilesets;
+	item_tilesets = data.tilesets.start;
 
-	while(item != NULL)
+	while(item_tilesets != NULL)
 	{
-		RELEASE(item->data);
-		item = item->next;
+		RELEASE(item_tilesets->data);
+		item_tilesets = item_tilesets->next;
 	}
 	data.tilesets.clear();
 
 	// TODO 2: clean up all layer data
 	// Remove all layers
+	p2List_item<MapLayer*>* item_layers;
+	item_layers = data.layers.start;
 
+	while (item_layers != NULL)
+	{
+		RELEASE(item_layers->data);
+		item_layers = item_layers->next;
+	}
+	data.layers.clear();
 
 	// Clean up the pugui tree
 	map_file.reset();
@@ -294,5 +303,13 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 // TODO 3: Create the definition for a function that loads a single layer
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
+	pugi::xml_node data = node.first_child();
+	layer->width = node.attribute("width").as_uint(0);
+	layer->height = node.attribute("height").as_uint(0);
 
+	layer->tiles = (uint*)malloc(sizeof(uint) * (layer->size = layer->height * layer->width));
+	
+	for (pugi::xml_node tile : data.children()) {
+		layer->tiles[i] = tile.first_attribute();
+	}
 }
