@@ -18,7 +18,9 @@ struct MapLayer {
 // ----------------------------------------------------
 
 	// TODO 6: Short function to get the value of x,y
-
+p2Point<int> getWorldPositionFromMap(int x, int y, MapData* info) {
+	return{ x * info->tile_width, y * info->tile_height };
+}
 
 
 // ----------------------------------------------------
