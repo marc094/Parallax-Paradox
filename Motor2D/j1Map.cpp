@@ -36,12 +36,14 @@ void j1Map::Draw()
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
 	while (item_layer != NULL)
 	{
+		uint tile = 0;
 		for (uint y = 0; y < item_layer->data->height; y++) {
 			for (uint x = 0; x < item_layer->data->width; x++) {
-				// TODO 9: Complete the draw function XD
-				/*SDL_Rect tile = { data.tilesets[0]->margin + data.tilesets[0]->spacing * item_layer->data->tiles[x + (data.tilesets[0]->num_tiles_width % y)],
-					data.tilesets[0]->margin + data.tilesets[0]->spacing * item_layer->data->tiles[x - (data.tilesets[0]->num_tiles_width * y)] };
-				App->render->Blit(data.tilesets[0]->texture, x * data.tilesets[0]->tile_width, y * data.tilesets[0]->tile_height, )*/
+				// TODO 9: Complete the draw function
+				p2Point<int> tile_pos = MapToWorld(x, y);
+				SDL_Rect tile_rect = data.tilesets[0]->GetTileRect(item_layer->data->tiles[tile]);
+				App->render->Blit(data.tilesets[0]->texture, tile_pos.x, tile_pos.y, &tile_rect, item_layer->data->parallax_speed);
+				tile++;
 			}
 		}
 		item_layer = item_layer->next;
@@ -49,6 +51,9 @@ void j1Map::Draw()
 
 }
 
+//iPoint getWorldPositionFromMap(int x, int y, uint tile_width) {
+//	return{ x * (int)tile_width, y * (int)tile_width };
+//}
 
 iPoint j1Map::MapToWorld(int x, int y) const
 {
