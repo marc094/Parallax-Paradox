@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="80" tilewidth="16" tileheight="16" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="80" tilewidth="16" tileheight="16" nextobjectid="3">
  <tileset firstgid="1" name="environment-tiles" tilewidth="16" tileheight="16" tilecount="672" columns="42">
-  <image source="environment-tiles.png" width="672" height="256"/>
+  <image source="../../../../../Desktop/environment-tiles.png" width="672" height="256"/>
   <terraintypes>
    <terrain name="Blue block" tile="-1"/>
   </terraintypes>
@@ -8031,7 +8031,7 @@
   </data>
  </layer>
  <imagelayer name="Capa de Imagen 1">
-  <image source="map 1 concept.png" width="1600" height="1131"/>
+  <image source="../../../../../Desktop/map 1 concept.png" width="1600" height="1131"/>
  </imagelayer>
  <layer name="Capa de patrones 2" width="100" height="80">
   <data>
@@ -16037,4 +16037,7 @@
    <tile gid="0"/>
   </data>
  </layer>
+ <objectgroup name="Capa de Objetos 1">
+  <object id="1" name="Player" x="927.879" y="1005.61" width="14.6667" height="14.6667"/>
+ </objectgroup>
 </map>
