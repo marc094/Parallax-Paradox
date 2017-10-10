@@ -164,6 +164,17 @@ bool j1Map::Load(const char* file_name)
 		data.layers.add(layer);
 	}
 
+	pugi::xml_node node_layer_objects;
+	for (node_layer_objects = map_file.child("map").child("objectgroup"); node_layer_objects && ret; node_layer_objects = node_layer_objects.next_sibling("objectgroup"))
+	{
+		for (pugi::xml_node object : node_layer_objects.children()) {
+			if (object.attribute("name").as_string() == "Player") {
+				initial_player_pos.x = object.attribute("x").as_int();
+				initial_player_pos.y = object.attribute("y").as_int();
+			}
+		}
+	}
+
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);

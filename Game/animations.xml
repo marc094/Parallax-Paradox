@@ -1,0 +1,49 @@
+<!-- Config file for the game -->
+
+<animations>
+  <jumping frames="0" duration="0">
+    <frame number="0" x="0" y ="0" w="0" h ="0"/>
+    <frame number="1" x="0" y ="0" w="0" h ="0"/>
+    <frame number="2" x="0" y ="0" w="0" h ="0"/>
+    <frame number="3" x="0" y ="0" w="0" h ="0"/>
+    <frame number="4" x="0" y ="0" w="0" h ="0"/>
+    <frame number="5" x="0" y ="0" w="0" h ="0"/>
+    <frame number="6" x="0" y ="0" w="0" h ="0"/>
+  </jumping>
+  <falling frames="0" duration="0">
+    <frame number="0" x="0" y ="0" w="0" h ="0"/>
+    <frame number="1" x="0" y ="0" w="0" h ="0"/>
+    <frame number="2" x="0" y ="0" w="0" h ="0"/>
+    <frame number="3" x="0" y ="0" w="0" h ="0"/>
+    <frame number="4" x="0" y ="0" w="0" h ="0"/>
+    <frame number="5" x="0" y ="0" w="0" h ="0"/>
+    <frame number="6" x="0" y ="0" w="0" h ="0"/>
+  </falling>
+  <landing frames="0" duration="0">
+    <frame number="0" x="0" y ="0" w="0" h ="0"/>
+    <frame number="1" x="0" y ="0" w="0" h ="0"/>
+    <frame number="2" x="0" y ="0" w="0" h ="0"/>
+    <frame number="3" x="0" y ="0" w="0" h ="0"/>
+    <frame number="4" x="0" y ="0" w="0" h ="0"/>
+    <frame number="5" x="0" y ="0" w="0" h ="0"/>
+    <frame number="6" x="0" y ="0" w="0" h ="0"/>
+  </landing>
+  <walking frames="0" duration="0">
+    <frame number="0" x="0" y ="0" w="0" h ="0"/>
+    <frame number="1" x="0" y ="0" w="0" h ="0"/>
+    <frame number="2" x="0" y ="0" w="0" h ="0"/>
+    <frame number="3" x="0" y ="0" w="0" h ="0"/>
+    <frame number="4" x="0" y ="0" w="0" h ="0"/>
+    <frame number="5" x="0" y ="0" w="0" h ="0"/>
+    <frame number="6" x="0" y ="0" w="0" h ="0"/>
+  </walking>
+  <changing frames="0" duration="0">
+    <frame number="0" x="0" y ="0" w="0" h ="0"/>
+    <frame number="1" x="0" y ="0" w="0" h ="0"/>
+    <frame number="2" x="0" y ="0" w="0" h ="0"/>
+    <frame number="3" x="0" y ="0" w="0" h ="0"/>
+    <frame number="4" x="0" y ="0" w="0" h ="0"/>
+    <frame number="5" x="0" y ="0" w="0" h ="0"/>
+    <frame number="6" x="0" y ="0" w="0" h ="0"/>
+  </changing>
+</animations>

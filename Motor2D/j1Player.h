@@ -3,6 +3,8 @@
 
 #include "j1Entities.h"
 #include "p2Point.h"
+#include "SDL\include\SDL.h"
+#include "Animation.h"
 class j1Player :
 	public j1Entities
 {
@@ -50,6 +52,14 @@ private:
 	float		scale = 1.0f;
 	iPoint		position;
 	fPoint		speed_vector;
+	bool		flipped;
+
+	Animation* current_animation = nullptr;
+	Animation jumping;
+	Animation falling;
+	Animation landing;
+	Animation walking;
+	Animation changing_layers;
 };
 
 #endif

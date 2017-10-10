@@ -1,7 +1,8 @@
 #include "j1Player.h"
 #include "p2Defs.h"
 #include "p2Log.h"
-
+#include "j1App.h"
+#include "j1Map.h"
 
 j1Player::j1Player()
 {
@@ -20,13 +21,23 @@ void j1Player::Init()
 // Called before render is available
 bool j1Player::Awake(pugi::xml_node&)
 {
+	bool ret = true;
 	LOG("Loading Player Module");
+	position = App->map->initial_player_pos;
+	pugi::xml_document player_anims;
+	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
+	
+	if (result == NULL) {
+		LOG("Could not load map xml file %s. pugi error: %s", "animations.xml", result.description());
+		ret = false;
+	}
 	return true;
 }
 
 // Called before the first frame
 bool j1Player::Start()
 {
+
 	return true;
 }
 
