@@ -31,7 +31,7 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
-
+	App->render->Blit(background, 0, 0,0,0.5f);
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
 	while (item_layer != NULL)
@@ -48,6 +48,7 @@ void j1Map::Draw()
 		}
 		item_layer = item_layer->next;
 	}
+
 
 }
 
@@ -115,6 +116,8 @@ bool j1Map::Load(const char* file_name)
 {
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
+
+	background = App->tex->Load("background.png");
 
 	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
 
