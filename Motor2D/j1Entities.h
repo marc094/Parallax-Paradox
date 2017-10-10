@@ -1,14 +1,12 @@
-#ifndef __j1PLAYER_H__
-#define __j1PLAYER_H__
+#ifndef __j1ENTITIES_H__
+#define __j1ENTITIES_H__
 
 #include "j1Module.h"
 class j1Entities :
 	public j1Module
 {
 public:
-	j1Entities()
-	{}
-
+	j1Entities();
 	~j1Entities();
 
 	void Init()

@@ -35,7 +35,7 @@ public:
 private:
 	uint level;
 
-	p2SString xml_file_name;
+	p2SString xml_file_name = "map1.tmx";
 };
 
 #endif // __j1SCENE_H__
