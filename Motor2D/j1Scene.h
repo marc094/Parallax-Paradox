@@ -33,6 +33,9 @@ public:
 	bool CleanUp();
 
 private:
+	uint level;
+
+	p2SString xml_file_name;
 };
 
 #endif // __j1SCENE_H__
