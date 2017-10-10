@@ -6,7 +6,7 @@
 #include "SDL\include\SDL.h"
 #include "Animation.h"
 class j1Player :
-	public j1Entities
+	public j1Module
 {
 public:
 	enum PlayerState {

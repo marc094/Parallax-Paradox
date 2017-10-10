@@ -23,7 +23,7 @@ bool j1Player::Awake(pugi::xml_node&)
 {
 	bool ret = true;
 	LOG("Loading Player Module");
-	position = App->map->initial_player_pos;
+	position = App->map->GetInitialPlayerPos();
 	pugi::xml_document player_anims;
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
 	

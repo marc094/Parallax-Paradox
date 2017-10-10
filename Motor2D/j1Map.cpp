@@ -369,3 +369,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	return true;
 }
+
+iPoint j1Map::GetInitialPlayerPos() const {
+	return initial_player_pos;
+}
