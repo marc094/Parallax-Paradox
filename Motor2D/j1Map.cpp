@@ -31,7 +31,7 @@ void j1Map::Draw()
 {
 	if(map_loaded == false)
 		return;
-	App->render->Blit(background, 0, 0,0,0.5f);
+	App->render->Blit(background, 0, 0,0,0.7f);
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
 	while (item_layer != NULL)
