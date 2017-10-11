@@ -358,34 +358,41 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	if (layer->width == 0 || layer->height == 0) {
 		return false;
 	}
-
-	layer->tiles = (uint*)malloc(sizeof(uint) * (layer->size = layer->height * layer->width));
+	layer->size = layer->height * layer->width;
+	layer->tiles = (uint*)malloc(layer->size * sizeof(uint));
 	
 	memset(layer->tiles, 0, layer->size);
 	
 	p2SString encoding(data.attribute("encoding").as_string());
 
-	if (encoding == "csv") {
-		p2SString data_buffer = data.child_value();
-		uint i = 0;
+	uint tile_index = 0;
+	if (encoding == "csv")
+	{
+		//p2SString data_buffer(data.child_value());
 		uint buffer_index = 0;
 		uint figures = 0;
-		while (data_buffer.GetString()[buffer_index] != '/0') {
-			if (data_buffer.GetString()[buffer_index] != ',' && data_buffer.GetString()[buffer_index] != '/n')
+		const char* aux_buf = data.child_value();//data_buffer.GetString();
+		while (aux_buf[buffer_index] != '\0') {
+			if (aux_buf[buffer_index] != ',' && aux_buf[buffer_index] != '\n')
 				figures++;
 			else {
-				p2SString buffer;
-				data_buffer.SubString(buffer_index, buffer_index + figures, buffer);
-				layer->tiles[i++] = (uint)buffer.ParseInt();
+				char* buf = (char*)malloc((figures + 1) * sizeof(char));
+
+				//p2SString buffer = "";
+				//data_buffer.SubString(buffer_index - figures, buffer_index, buffer);
+				strncpy_s(buf, figures + 1 , &aux_buf[buffer_index - figures], _TRUNCATE);
+
+				p2SString buffer(buf);
+				layer->tiles[tile_index++] = (uint)buffer.ParseInt();
 				figures = 0;
+				free(buf);
 			}
 			buffer_index++;
 		}
 	}
 	else {
-		uint i = 0;
 		for (pugi::xml_node tile : data.children()) {
-			layer->tiles[i++] = tile.first_attribute().as_uint(0);
+			layer->tiles[tile_index++] = tile.first_attribute().as_uint(0);
 		}
 	}
 

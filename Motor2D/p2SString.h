@@ -7,7 +7,7 @@
 #include <assert.h>
 #include "p2Defs.h"
 
-#define TMP_STRING_SIZE	4096
+#define TMP_STRING_SIZE	4096*10
 
 class p2SString
 {
@@ -339,7 +339,7 @@ public:
 		{
 			start = MIN(start, size);
 			end = (end == 0) ? size : MIN(end, size);
-			uint s = end - start;
+			uint s = end - start + 1;
 
 			if(s > buffer.size)
 			{
@@ -347,7 +347,7 @@ public:
 				buffer.Alloc(s);
 				delete[] tmp;
 			}
-			strncpy_s(buffer.str, s, &str[start], s);
+			strncpy_s(buffer.str, s, &str[start], _TRUNCATE);
 			buffer.str[s] = '\0';
 			return(end - start);
 		}
@@ -360,11 +360,9 @@ public:
 	*/
 	int ParseInt() {
 		uint i = 0;
-		uint figures = 0;
 		int result = 0;
 		bool err = false;
-		while (str[i] != '/0' && err == false) {
-			figures++;
+		while (str[i] != '\0' && err == false) {
 			switch (str[i]) {
 			case '0':
 			case '1':
@@ -376,7 +374,8 @@ public:
 			case '7':
 			case '8':
 			case '9':
-				result += ((str[i] - 48) * 10 * figures);
+				result *= 10;
+				result += (str[i] - 48);
 				break;
 			default:
 				result = 0;
@@ -384,6 +383,7 @@ public:
 				//LOG("Cannot parse int. String contains non-numerical characters");
 				break;
 			}
+			i++;
 		}
 		return result;
 	}
