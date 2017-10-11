@@ -56,6 +56,7 @@ private:
 	fPoint		speed_vector;
 	bool		flipped;
 
+	SDL_Texture* Player_texture;
 	Animation* current_animation = nullptr;
 	p2List<Animation*> animation_list;
 	Animation jumping;
@@ -66,6 +67,7 @@ private:
 
 public:
 	void Move(int x = 0, int y = 0);
+	void SelectAnim(fPoint speed_vector);
 };
 
 #endif

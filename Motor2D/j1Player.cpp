@@ -5,6 +5,9 @@
 #include "j1Map.h"
 #include "p2List.h"
 #include "j1Render.h"
+#include <cstring>
+#include "j1Textures.h"
+
 
 j1Player::j1Player()
 {
@@ -29,6 +32,8 @@ bool j1Player::Awake(pugi::xml_node&)
 	pugi::xml_document player_anims;
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
 	pugi::xml_node doc_node = player_anims.first_child();
+
+	Player_texture = App->tex->Load("Character sprites.png");
 
 	for (pugi::xml_node animation : doc_node.children()) {
 		
@@ -67,6 +72,11 @@ bool j1Player::PreUpdate()
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
+	SelectAnim(speed_vector);
+
+	AnimationFrame frame = current_animation->GetCurrentFrame();
+
+	App->render->Blit(Player_texture, position.x, position.y, &frame.rect);
 	return true;
 }
 
@@ -102,4 +112,32 @@ bool j1Player::Save(pugi::xml_node& data) const
 void j1Player::Move(int x, int y) {
 	position.x += x;
 	position.y += y;
+}
+
+void j1Player::SelectAnim(fPoint speed_vect)
+{
+	if (speed_vect.x < 0)
+	{ 
+		uint i = 0;
+		while (animation_list[i] != NULL)
+		{
+			if (animation_list[i]->name == "walking")
+			{
+				current_animation = animation_list[i++];
+			}
+		}
+	}
+	else
+	{
+		uint i = 0;
+		
+		while (animation_list[i] != NULL)
+		{
+			if (animation_list[i]->name == "idle")
+			{
+				current_animation = animation_list[i];
+			}
+			i++;
+		}
+	}
 }
