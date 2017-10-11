@@ -3,6 +3,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Map.h"
+#include "p2List.h"
 
 j1Player::j1Player()
 {
@@ -37,7 +38,7 @@ bool j1Player::Awake(pugi::xml_node&)
 		{
 			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
 			aux.PushBack(aux_rect);
-			animation_list.add(aux);
+			animation_list.add(&aux);
 		}
 	}
 	if (result == NULL) {

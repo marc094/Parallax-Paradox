@@ -16,6 +16,7 @@ public:
 	bool loop = true;
 	float speed = 1.0f;
 	p2DynArray<AnimationFrame> frames;
+	const char* name;
 
 private:
 	float current_frame = 0.0f;

@@ -5,6 +5,8 @@
 #include "p2Point.h"
 #include "SDL\include\SDL.h"
 #include "Animation.h"
+#include "p2List.h"
+
 class j1Player :
 	public j1Module
 {
@@ -55,6 +57,7 @@ private:
 	bool		flipped;
 
 	Animation* current_animation = nullptr;
+	p2List<Animation*> animation_list;
 	Animation jumping;
 	Animation falling;
 	Animation landing;
