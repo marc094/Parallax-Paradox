@@ -4,7 +4,18 @@
 #include "SDL/include/SDL.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "p2DynArray.h"
 
+struct RenderPos {
+
+	SDL_Texture* texture;
+	int x, y;
+	const SDL_Rect* rect = NULL;
+	float speed = 1.0f;
+	double angle = 0;
+	int pivot_x = INT_MAX, pivot_y = INT_MAX;
+
+};
 class j1Render : public j1Module
 {
 public:
@@ -49,6 +60,8 @@ public:
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+	p2DynArray<RenderPos> Renderorder;
+
 };
 
 #endif // __j1RENDER_H__
