@@ -54,13 +54,14 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	bool SetToRenderList(SDL_Texture* texture, int x, int y, const SDL_Rect* section = NULL, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
 public:
 
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
-	p2DynArray<RenderPos> Renderorder;
+	p2DynArray<p2DynArray<RenderPos>> Renderorder;
 
 };
 
