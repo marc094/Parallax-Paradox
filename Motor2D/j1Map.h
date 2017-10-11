@@ -109,6 +109,7 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 	iPoint				initial_player_pos;
+	SDL_Texture* background;
 };
 
 #endif // __j1MAP_H__
