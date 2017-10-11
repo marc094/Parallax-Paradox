@@ -355,6 +355,38 @@ public:
 			return 0;
 	}
 
+	/**
+	* Parse string to integers if possible
+	*/
+	int ParseInt() {
+		uint i = 0;
+		uint figures = 0;
+		int result = 0;
+		bool err = false;
+		while (str[i] != '/0' && err == false) {
+			figures++;
+			switch (str[i]) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				result += ((str[i] - 48) * 10 * figures);
+				break;
+			default:
+				result = 0;
+				err = true;
+				//LOG("Cannot parse int. String contains non-numerical characters");
+				break;
+			}
+		}
+		return result;
+	}
 private:
 
 	void Alloc(unsigned int requiered_memory)

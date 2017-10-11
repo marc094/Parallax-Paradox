@@ -6,6 +6,7 @@
 #include "j1Map.h"
 #include <math.h>
 #include <stdlib.h>
+#include <cstring>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -40,7 +41,7 @@ void j1Map::Draw()
 		for (uint y = 0; y < item_layer->data->height; y++) {
 			for (uint x = 0; x < item_layer->data->width; x++) {
 				// TODO 9: Complete the draw function
-				p2Point<int> tile_pos = MapToWorld(x, y);
+				iPoint tile_pos = MapToWorld(x, y);
 				SDL_Rect tile_rect = data.tilesets[0]->GetTileRect(item_layer->data->tiles[tile]);
 				App->render->Blit(data.tilesets[0]->texture, tile_pos.x, tile_pos.y, &tile_rect, item_layer->data->parallax_speed);
 				tile++;
@@ -362,9 +363,30 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	
 	memset(layer->tiles, 0, layer->size);
 	
-	uint i = 0;
-	for (pugi::xml_node tile : data.children()) {
-		layer->tiles[i++] = tile.first_attribute().as_uint(0);
+	p2SString encoding(data.attribute("encoding").as_string());
+
+	if (encoding == "csv") {
+		p2SString data_buffer = data.child_value();
+		uint i = 0;
+		uint buffer_index = 0;
+		uint figures = 0;
+		while (data_buffer.GetString()[buffer_index] != '/0') {
+			if (data_buffer.GetString()[buffer_index] != ',' && data_buffer.GetString()[buffer_index] != '/n')
+				figures++;
+			else {
+				p2SString buffer;
+				data_buffer.SubString(buffer_index, buffer_index + figures, buffer);
+				layer->tiles[i++] = (uint)buffer.ParseInt();
+				figures = 0;
+			}
+			buffer_index++;
+		}
+	}
+	else {
+		uint i = 0;
+		for (pugi::xml_node tile : data.children()) {
+			layer->tiles[i++] = tile.first_attribute().as_uint(0);
+		}
 	}
 
 	return true;
