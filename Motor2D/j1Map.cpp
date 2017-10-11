@@ -172,7 +172,7 @@ bool j1Map::Load(const char* file_name)
 	for (node_layer_objects = map_file.child("map").child("objectgroup"); node_layer_objects && ret; node_layer_objects = node_layer_objects.next_sibling("objectgroup"))
 	{
 		for (pugi::xml_node object : node_layer_objects.children()) {
-			if (object.attribute("name").as_string() == "Player") {
+			if (!strcmp(object.attribute("name").as_string(), "Player")) {
 				initial_player_pos.x = object.attribute("x").as_int();
 				initial_player_pos.y = object.attribute("y").as_int();
 			}
@@ -346,7 +346,8 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
-	pugi::xml_node data = node.first_child();
+	pugi::xml_node data = node.child("data");
+	layer->parallax_speed = node.child("properties").child("property").attribute("value").as_float();
 	if (data.root() == NULL) {
 		return false;
 	}
@@ -392,7 +393,8 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else {
 		for (pugi::xml_node tile : data.children()) {
-			layer->tiles[tile_index++] = tile.first_attribute().as_uint(0);
+			uint tile_id = tile.first_attribute().as_uint(0);
+			layer->tiles[tile_index++] = tile_id;
 		}
 	}
 
