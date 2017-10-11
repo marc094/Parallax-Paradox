@@ -63,6 +63,9 @@ private:
 	Animation landing;
 	Animation walking;
 	Animation changing_layers;
+
+public:
+	void Move(int x = 0, int y = 0);
 };
 
 #endif

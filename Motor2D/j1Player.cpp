@@ -4,9 +4,11 @@
 #include "j1App.h"
 #include "j1Map.h"
 #include "p2List.h"
+#include "j1Render.h"
 
 j1Player::j1Player()
 {
+	name.create("player");
 }
 
 
@@ -24,7 +26,6 @@ bool j1Player::Awake(pugi::xml_node&)
 {
 	bool ret = true;
 	LOG("Loading Player Module");
-	position = App->map->GetInitialPlayerPos();
 	pugi::xml_document player_anims;
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
 	pugi::xml_node doc_node = player_anims.first_child();
@@ -51,13 +52,15 @@ bool j1Player::Awake(pugi::xml_node&)
 // Called before the first frame
 bool j1Player::Start()
 {
-
+	position = App->map->GetInitialPlayerPos();
 	return true;
 }
 
 // Called each loop iteration
 bool j1Player::PreUpdate()
 {
+	App->render->camera.x = -position.x;
+	App->render->camera.y = -position.y;
 	return true;
 }
 
@@ -79,12 +82,24 @@ bool j1Player::CleanUp()
 	return true;
 }
 
-bool j1Player::Load(pugi::xml_node&)
+bool j1Player::Load(pugi::xml_node& data)
 {
+	position.x = data.child("position").attribute("x").as_int();
+	position.y = data.child("position").attribute("y").as_int();
 	return true;
 }
 
-bool j1Player::Save(pugi::xml_node&) const
+bool j1Player::Save(pugi::xml_node& data) const
 {
+	pugi::xml_node pos = data.append_child("position");
+
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y;
+
 	return true;
+}
+
+void j1Player::Move(int x, int y) {
+	position.x += x;
+	position.y += y;
 }
