@@ -35,7 +35,8 @@ public:
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
 	{
-		frames[last_frame++] = { rect, pivot };
+		frames.PushBack({ rect,pivot });
+		last_frame++;
 	}
 
 	AnimationFrame& GetCurrentFrame()

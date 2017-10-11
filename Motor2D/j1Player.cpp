@@ -27,7 +27,7 @@ bool j1Player::Awake(pugi::xml_node&)
 	position = App->map->GetInitialPlayerPos();
 	pugi::xml_document player_anims;
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
-	pugi::xml_node doc_node;
+	pugi::xml_node doc_node = player_anims.first_child();
 
 	for (pugi::xml_node animation : doc_node.children()) {
 		
