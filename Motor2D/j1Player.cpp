@@ -26,7 +26,20 @@ bool j1Player::Awake(pugi::xml_node&)
 	position = App->map->GetInitialPlayerPos();
 	pugi::xml_document player_anims;
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
-	
+	pugi::xml_node doc_node;
+
+	for (pugi::xml_node animation : doc_node.children()) {
+		
+		Animation aux;
+		aux.name = animation.name();
+
+		for (pugi::xml_node frames : animation.children())
+		{
+			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
+			aux.PushBack(aux_rect);
+			animation_list.add(aux);
+		}
+	}
 	if (result == NULL) {
 		LOG("Could not load map xml file %s. pugi error: %s", "animations.xml", result.description());
 		ret = false;
