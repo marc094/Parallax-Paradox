@@ -20,7 +20,17 @@ struct MapLayer {
 
 	// TODO 6: Short function to get the value of x,y
 //iPoint getWorldPositionFromMap(int x, int y, uint tile_width);
+enum ColliderType {
+	COLLIDER_PLAYER = 1,
+	COLLIDER_FRONT_LAYER,
+	COLLIDER_BACK_LAYER,
+};
+struct Collider
+{
+	SDL_Rect rect;
+	ColliderType collidertype;
 
+};
 
 // ----------------------------------------------------
 struct TileSet
@@ -63,6 +73,7 @@ struct MapData
 	// TODO 2: Add a list/array of layers to the map!
 	p2List<MapLayer*>	layers;
 };
+
 
 // ----------------------------------------------------
 class j1Map : public j1Module

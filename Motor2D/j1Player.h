@@ -53,6 +53,7 @@ public:
 private:
 	PlayerState state = IDLE;
 
+	pugi::xml_document player_anims;
 	uint		jump_height;
 	float		scale = 1.0f;
 	fPoint		position;
@@ -66,8 +67,7 @@ private:
 	Animation* jumping;
 	Animation* falling;
 	Animation* landing;
-	Animation* walking_right;
-	Animation* walking_left;
+	Animation* walking;
 	Animation* changing_layers;
 
 public:

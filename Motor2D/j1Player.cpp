@@ -30,11 +30,12 @@ bool j1Player::Awake(pugi::xml_node& conf)
 {
 	bool ret = true;
 	LOG("Loading Player Module");
-	pugi::xml_document player_anims;
+
 	pugi::xml_parse_result result = player_anims.load_file(conf.child("animations").child_value());
 	pugi::xml_node doc_node = player_anims.first_child().child("animationInfo");
 
 	player_texture = App->tex->Load(player_anims.first_child().child("spritesheet").attribute("path").as_string());
+
 
 	speed_vector = { 0, 0 };
 	for (pugi::xml_node animation : doc_node.children()) {
@@ -52,10 +53,8 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			falling = aux;
 		else if (!strcmp(aux->name, "landing"))
 			landing = aux;
-		else if (!strcmp(aux->name, "walking_right"))
-			walking_right = aux;
-		else if (!strcmp(aux->name, "walking_left"))
-			walking_left = aux;
+		else if (!strcmp(aux->name, "walking"))
+			walking = aux;
 		else if (!strcmp(aux->name, "changing"))
 			changing_layers = aux;
 
@@ -80,10 +79,11 @@ bool j1Player::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Player::Start()
 {
+	player_texture = App->tex->Load(player_anims.first_child().child("spritesheet").attribute("path").as_string());
+	
 	position = App->map->GetInitialPlayerPos();
 
 	current_animation = idle;
-
 	return true;
 }
 
@@ -104,11 +104,12 @@ bool j1Player::Update(float dt)
 	SelectAnim(speed_vector);
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	//speed_vector.x = 0;
-	//Move(0,0);
 
-	
-	App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
+	if (flipped == true)
+		App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
+	else
+		App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w / 2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect, 1.0f, 0, 0, 0, false);
+
 	return true;
 }
 
@@ -128,6 +129,9 @@ bool j1Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("position").attribute("x").as_int();
 	position.y = data.child("position").attribute("y").as_int();
+
+	
+
 	return true;
 }
 
@@ -146,7 +150,7 @@ void j1Player::Move() {
 	position.y += speed_vector.y;
 
 	if (state == IDLE) {
-		speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION);
+		speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
 		speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
 	}
 
@@ -167,35 +171,21 @@ void j1Player::Accelerate(int x, int y) {
 
 void j1Player::SelectAnim(fPoint speed_vect)
 {
-	/*if (speed_vect.x < 0)
-	{ 
-		uint i = 0;
-		while (animation_list[i] != NULL)
 	if (speed_vect.x != 0)
-	{
+	{ 
+		current_animation = walking;
+
 		if (speed_vect.x > 0)
 		{
-			current_animation = walking_right;
+			flipped = false;
 			
 		}
 		else if (speed_vect.x < 0)
 		{
 			
-			current_animation = walking_left;
+			flipped = true;
 		}
 	}
 	else
-	{
-		uint i = 0;
-		
-		while (animation_list[i] != NULL)
-		{
-			if (animation_list[i]->name == "idle")
-			{
-				current_animation = animation_list[i];
-			}
-			i++;
-		}
-	}*/
 		current_animation = idle;
 }

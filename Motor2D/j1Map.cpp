@@ -349,7 +349,26 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
 	pugi::xml_node data = node.child("data");
-	layer->parallax_speed = node.child("properties").child("property").attribute("value").as_float();
+	pugi::xml_node properties = node.child("properties");
+
+	for (pugi::xml_node object : properties.children()) {
+		if (!strcmp(object.attribute("name").as_string(), "Speed"))
+		{
+			layer->parallax_speed = object.attribute("value").as_float();
+		}
+		else if (!strcmp(object.attribute("name").as_string(), "Collider"))
+		{
+			ColliderType type;
+			if (!strcmp(object.attribute("value").as_string(), "Back wall"))
+				type = COLLIDER_BACK_LAYER;
+
+			else if (!strcmp(object.attribute("value").as_string(), "Front wall"))
+				type = COLLIDER_FRONT_LAYER;
+		}
+	}
+
+
+	
 	if (data.root() == NULL) {
 		return false;
 	}
