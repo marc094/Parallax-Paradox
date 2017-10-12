@@ -91,6 +91,8 @@ public:
 
 	fPoint GetInitialPlayerPos() const;
 
+
+
 private:
 
 	bool LoadMap();
@@ -102,6 +104,7 @@ private:
 public:
 
 	MapData data;
+	int		gravity;
 
 private:
 

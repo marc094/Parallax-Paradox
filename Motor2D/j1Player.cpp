@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include <cstring>
 #include "j1Textures.h"
+#include "j1Window.h"
 
 
 j1Player::j1Player()
@@ -35,11 +36,14 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 	player_texture = App->tex->Load(player_anims.first_child().child("spritesheet").attribute("path").as_string());
 
+	speed_vector = { 0, 0 };
 	for (pugi::xml_node animation : doc_node.children()) {
 		
 		Animation* aux = new Animation();
+
 		aux->name = animation.name();
-		
+		aux->speed = animation.attribute("duration").as_float();
+
 		if (!strcmp(aux->name, "idle"))
 			idle = aux;
 		else if (!strcmp(aux->name, "jumping"))
@@ -48,10 +52,14 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			falling = aux;
 		else if (!strcmp(aux->name, "landing"))
 			landing = aux;
-		else if (!strcmp(aux->name, "walking"))
-			walking = aux;
+		else if (!strcmp(aux->name, "walking_right"))
+			walking_right = aux;
+		else if (!strcmp(aux->name, "walking_left"))
+			walking_left = aux;
 		else if (!strcmp(aux->name, "changing"))
 			changing_layers = aux;
+
+
 
 		for (pugi::xml_node frames : animation.children())
 		{
@@ -60,6 +68,8 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			animation_list.add(aux);
 		}
 	}
+	current_animation = idle;
+
 	if (result == NULL) {
 		LOG("Could not load map xml file %s. pugi error: %s", conf.child("animations").child_value(), result.description());
 		ret = false;
@@ -71,7 +81,9 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	position = App->map->GetInitialPlayerPos();
+
 	current_animation = idle;
+
 	return true;
 }
 
@@ -90,10 +102,13 @@ bool j1Player::Update(float dt)
 	App->render->camera.y = -position.y;
 
 	SelectAnim(speed_vector);
-
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	App->render->Blit(player_texture, (int)position.x, (int)position.y, &frame.rect);
+	//speed_vector.x = 0;
+	//Move(0,0);
+
+	
+	App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
 	return true;
 }
 
@@ -149,17 +164,24 @@ void j1Player::Accelerate(int x, int y) {
 	state = RUNNING;
 }
 
+
 void j1Player::SelectAnim(fPoint speed_vect)
 {
 	/*if (speed_vect.x < 0)
 	{ 
 		uint i = 0;
 		while (animation_list[i] != NULL)
+	if (speed_vect.x != 0)
+	{
+		if (speed_vect.x > 0)
 		{
-			if (animation_list[i]->name == "walking")
-			{
-				current_animation = animation_list[i++];
-			}
+			current_animation = walking_right;
+			
+		}
+		else if (speed_vect.x < 0)
+		{
+			
+			current_animation = walking_left;
 		}
 	}
 	else
@@ -175,4 +197,5 @@ void j1Player::SelectAnim(fPoint speed_vect)
 			i++;
 		}
 	}*/
+		current_animation = idle;
 }

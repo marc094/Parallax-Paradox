@@ -66,13 +66,15 @@ private:
 	Animation* jumping;
 	Animation* falling;
 	Animation* landing;
-	Animation* walking;
+	Animation* walking_right;
+	Animation* walking_left;
 	Animation* changing_layers;
 
 public:
 	void Move();
 	void Accelerate(int x = 0, int y = 0);
 	void SelectAnim(fPoint speed_vector);
+	void Move_y(int y);
 };
 
 #endif
