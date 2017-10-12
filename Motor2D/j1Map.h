@@ -14,6 +14,9 @@ struct MapLayer {
 	uint			height;
 	uint			size;
 	float			parallax_speed = 1.0f;
+
+	p2List<Collider*>   layer_colliders;
+	ColliderType collidertype;
 };
 
 // ----------------------------------------------------
@@ -28,7 +31,7 @@ enum ColliderType {
 struct Collider
 {
 	SDL_Rect rect;
-	ColliderType collidertype;
+
 
 };
 
@@ -70,6 +73,7 @@ struct MapData
 	SDL_Color			background_color;
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
+
 	// TODO 2: Add a list/array of layers to the map!
 	p2List<MapLayer*>	layers;
 };
