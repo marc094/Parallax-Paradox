@@ -52,7 +52,7 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		//App->render->camera.y -= 1;
-		App->player->Move(0, -1);
+		App->player->Move(0, -5);
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		//App->render->camera.y += 1;

@@ -70,6 +70,7 @@ private:
 public:
 	void Move(int x = 0, int y = 0);
 	void SelectAnim(fPoint speed_vector);
+	void Move_y(int y);
 };
 
 #endif

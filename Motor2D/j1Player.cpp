@@ -97,11 +97,14 @@ bool j1Player::PreUpdate()
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
+
 	SelectAnim(speed_vector);
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	speed_vector = { 0, 0 };
-	//App->render->Blit(player_texture, (position.x + App->render->camera.w / 2), (position.y + App->render->camera.h / 2), &frame.rect);
+	speed_vector.x = 0;
+	Move(0,0);
+
+	
 	App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
 	return true;
 }
@@ -138,10 +141,21 @@ bool j1Player::Save(pugi::xml_node& data) const
 void j1Player::Move(int x, int y) {
 
 	speed_vector.x = x;
-	speed_vector.y = y;
+	speed_vector.y += y;
+
+	speed_vector.y += App->map->gravity;
+
+	if (position.y + speed_vector.y > App->map->GetInitialPlayerPos().y + 80 )
+	{
+
+		speed_vector.y = 0;
+	}
+
+
 	position.x += speed_vector.x;
 	position.y += speed_vector.y;
 }
+
 
 void j1Player::SelectAnim(fPoint speed_vect)
 {
@@ -162,6 +176,5 @@ void j1Player::SelectAnim(fPoint speed_vect)
 	{
 		current_animation = idle;
 	}
-
 
 }

@@ -2,6 +2,18 @@
 #define __j1ENTITIES_H__
 
 #include "j1Module.h"
+#include "SDL/include/SDL.h"
+
+enum Collider_type {
+	COLLIDER_PLAYER,
+	COLLIDER_WALL,
+};
+
+struct Collider {
+	SDL_Rect rect;
+	Collider_type collider_type;
+};
+
 class j1Entities :
 	public j1Module
 {

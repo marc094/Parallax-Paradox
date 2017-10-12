@@ -91,6 +91,8 @@ public:
 
 	iPoint GetInitialPlayerPos() const;
 
+
+
 private:
 
 	bool LoadMap();
@@ -102,6 +104,7 @@ private:
 public:
 
 	MapData data;
+	int		gravity;
 
 private:
 
@@ -109,6 +112,7 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 	iPoint				initial_player_pos;
+
 	SDL_Texture* background;
 };
 
