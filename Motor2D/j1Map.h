@@ -89,7 +89,7 @@ public:
 	// TODO 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
-	iPoint GetInitialPlayerPos() const;
+	fPoint GetInitialPlayerPos() const;
 
 private:
 
@@ -108,7 +108,7 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
-	iPoint				initial_player_pos;
+	fPoint				initial_player_pos;
 	SDL_Texture* background;
 };
 

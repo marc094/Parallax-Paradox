@@ -47,11 +47,11 @@
   <tile id="423" terrain="1,1,,"/>
   <tile id="424" terrain="1,,,"/>
  </tileset>
- <imagelayer name="Capa de Imagen 1" visible="0">
-  <image source="map 1 concept.png"/>
- </imagelayer>
- <imagelayer name="Capa de Imagen 2" visible="0">
-  <image source="../Documents/GitHub/Dev_class5_handout/Game/textures/background.png"/>
+  <imagelayer name="Background" visible="0">
+    <image source="textures/background.png"/>
+  </imagelayer>
+  <imagelayer name="Capa de Imagen 1" visible="0">
+    <image source="map 1 concept.png"/>
  </imagelayer>
  <objectgroup name="Player Pos">
   <object id="1" name="Player" x="927" y="1005" width="14.6667" height="14.6667"/>

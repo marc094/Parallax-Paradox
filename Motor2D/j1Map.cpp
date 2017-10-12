@@ -117,9 +117,7 @@ bool j1Map::Load(const char* file_name)
 {
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
-
-	background = App->tex->Load("background.png");
-
+	
 	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
 
 	if(result == NULL)
@@ -173,11 +171,14 @@ bool j1Map::Load(const char* file_name)
 	{
 		for (pugi::xml_node object : node_layer_objects.children()) {
 			if (!strcmp(object.attribute("name").as_string(), "Player")) {
-				initial_player_pos.x = object.attribute("x").as_int();
-				initial_player_pos.y = object.attribute("y").as_int();
+				initial_player_pos.x = object.attribute("x").as_float();
+				initial_player_pos.y = object.attribute("y").as_float();
 			}
 		}
 	}
+
+
+	background = App->tex->Load(map_file.child("map").child("imagelayer").child("image").attribute("source").as_string());
 
 	if(ret == true)
 	{
@@ -401,6 +402,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return true;
 }
 
-iPoint j1Map::GetInitialPlayerPos() const {
+fPoint j1Map::GetInitialPlayerPos() const {
 	return initial_player_pos;
 }

@@ -35,6 +35,8 @@
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
+#define CLAMP( value, min, max ) ( MAX( MIN( value, max ), min ) )
+#define REDUCE_TO( value, dest, step ) ( (value > dest) ? (value - dest < step) ? dest : value - step : (value < dest) ? (dest - value < step) ? dest : value + step : dest ) //Don't even ask about this
 
 typedef unsigned int uint;
 typedef unsigned char uchar;

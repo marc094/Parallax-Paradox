@@ -30,10 +30,10 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	bool ret = true;
 	LOG("Loading Player Module");
 	pugi::xml_document player_anims;
-	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
-	pugi::xml_node doc_node = player_anims.first_child();
+	pugi::xml_parse_result result = player_anims.load_file(conf.child("animations").child_value());
+	pugi::xml_node doc_node = player_anims.first_child().child("animationInfo");
 
-	player_texture = App->tex->Load("Character sprites.png");
+	player_texture = App->tex->Load(player_anims.first_child().child("spritesheet").attribute("path").as_string());
 
 	for (pugi::xml_node animation : doc_node.children()) {
 		
@@ -61,7 +61,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 		}
 	}
 	if (result == NULL) {
-		LOG("Could not load map xml file %s. pugi error: %s", "animations.xml", result.description());
+		LOG("Could not load map xml file %s. pugi error: %s", conf.child("animations").child_value(), result.description());
 		ret = false;
 	}
 	return true;
@@ -71,25 +71,29 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	position = App->map->GetInitialPlayerPos();
+	current_animation = idle;
 	return true;
 }
 
 // Called each loop iteration
 bool j1Player::PreUpdate()
 {
-	App->render->camera.x = -position.x;
-	App->render->camera.y = -position.y;
 	return true;
 }
 
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
+	Move();
+
+	App->render->camera.x = -position.x;
+	App->render->camera.y = -position.y;
+
 	SelectAnim(speed_vector);
 
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	App->render->Blit(player_texture, position.x, position.y, &frame.rect);
+	App->render->Blit(player_texture, (int)position.x, (int)position.y, &frame.rect);
 	return true;
 }
 
@@ -122,14 +126,32 @@ bool j1Player::Save(pugi::xml_node& data) const
 	return true;
 }
 
-void j1Player::Move(int x, int y) {
-	position.x += x;
-	position.y += y;
+void j1Player::Move() {
+	position.x += speed_vector.x;
+	position.y += speed_vector.y;
+
+	if (state == IDLE) {
+		speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION);
+		speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
+	}
+
+	state = IDLE;
+}
+
+
+void j1Player::Accelerate(int x, int y) {
+	speed_vector.x += ((float)x) / (1.0f/ACCELERATION);
+	speed_vector.y += ((float)y) / (1.0f/ACCELERATION);
+
+	speed_vector.x = CLAMP(speed_vector.x, -5, 5);
+	speed_vector.y = CLAMP(speed_vector.y, -5, 5);
+
+	state = RUNNING;
 }
 
 void j1Player::SelectAnim(fPoint speed_vect)
 {
-	if (speed_vect.x < 0)
+	/*if (speed_vect.x < 0)
 	{ 
 		uint i = 0;
 		while (animation_list[i] != NULL)
@@ -152,5 +174,5 @@ void j1Player::SelectAnim(fPoint speed_vect)
 			}
 			i++;
 		}
-	}
+	}*/
 }

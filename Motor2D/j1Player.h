@@ -7,6 +7,9 @@
 #include "Animation.h"
 #include "p2List.h"
 
+#define ACCELERATION 0.5f
+#define DECELERATION 0.1f
+
 class j1Player :
 	public j1Module
 {
@@ -52,7 +55,7 @@ private:
 
 	uint		jump_height;
 	float		scale = 1.0f;
-	iPoint		position;
+	fPoint		position;
 	fPoint		speed_vector;
 	bool		flipped;
 
@@ -67,7 +70,8 @@ private:
 	Animation* changing_layers;
 
 public:
-	void Move(int x = 0, int y = 0);
+	void Move();
+	void Accelerate(int x = 0, int y = 0);
 	void SelectAnim(fPoint speed_vector);
 };
 
