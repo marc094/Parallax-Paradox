@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include <cstring>
 #include "j1Textures.h"
+#include "j1Window.h"
 
 
 j1Player::j1Player()
@@ -33,12 +34,13 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
 	pugi::xml_node doc_node = player_anims.first_child();
 
-	player_texture = App->tex->Load("Character sprites.png");
+
 
 	for (pugi::xml_node animation : doc_node.children()) {
 		
 		Animation* aux = new Animation();
-1		aux->name = animation.name();
+
+		aux->name = animation.name();
 		
 		if (!strcmp(aux->name, "idle"))
 			idle = aux;
@@ -60,6 +62,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			animation_list.add(aux);
 		}
 	}
+	current_animation = idle;
 	if (result == NULL) {
 		LOG("Could not load map xml file %s. pugi error: %s", "animations.xml", result.description());
 		ret = false;
@@ -71,6 +74,8 @@ bool j1Player::Awake(pugi::xml_node& conf)
 bool j1Player::Start()
 {
 	position = App->map->GetInitialPlayerPos();
+	player_texture = App->tex->Load("Character sprites.png");
+
 	return true;
 }
 
@@ -85,11 +90,12 @@ bool j1Player::PreUpdate()
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
-	SelectAnim(speed_vector);
 
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	App->render->Blit(player_texture, position.x, position.y, &frame.rect);
+	
+	//App->render->Blit(player_texture, (position.x + App->render->camera.w / 2), (position.y + App->render->camera.h / 2), &frame.rect);
+	App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
 	return true;
 }
 
@@ -129,28 +135,5 @@ void j1Player::Move(int x, int y) {
 
 void j1Player::SelectAnim(fPoint speed_vect)
 {
-	if (speed_vect.x < 0)
-	{ 
-		uint i = 0;
-		while (animation_list[i] != NULL)
-		{
-			if (animation_list[i]->name == "walking")
-			{
-				current_animation = animation_list[i++];
-			}
-		}
-	}
-	else
-	{
-		uint i = 0;
-		
-		while (animation_list[i] != NULL)
-		{
-			if (animation_list[i]->name == "idle")
-			{
-				current_animation = animation_list[i];
-			}
-			i++;
-		}
-	}
+	
 }

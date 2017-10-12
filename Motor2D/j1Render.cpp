@@ -69,6 +69,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
+
 	return true;
 }
 
@@ -123,14 +124,25 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y, bool scaling) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
 
+	uint scale = App->win->GetScale();
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	if (scaling == true)
+	{
+
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
+
+	}
+	else
+	{
+		rect.x = (int)(camera.x * speed) + x;
+		rect.y = (int)(camera.y * speed) + y;
+	}
+
 
 	if(section != NULL)
 	{
@@ -245,3 +257,4 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	return ret;
 }
+

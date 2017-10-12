@@ -7,9 +7,9 @@
 	<map />
 	<scene />
 	<player>
-		<position x="1319" y="561" />
+		<position x="449" y="639" />
 	</player>
 	<renderer>
-		<camera x="-1319" y="-561" />
+		<camera x="-449" y="-639" />
 	</renderer>
 </game_state>
