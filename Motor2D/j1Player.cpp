@@ -35,16 +35,14 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	pugi::xml_node doc_node = player_anims.first_child();
 
 
-
+	speed_vector = { 0, 0 };
 	for (pugi::xml_node animation : doc_node.children()) {
 		
 		Animation* aux = new Animation();
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 		aux->name = animation.name();
-		
+		aux->speed = animation.attribute("duration").as_float();
+
 		if (!strcmp(aux->name, "idle"))
 			idle = aux;
 		else if (!strcmp(aux->name, "jumping"))
@@ -53,10 +51,14 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			falling = aux;
 		else if (!strcmp(aux->name, "landing"))
 			landing = aux;
-		else if (!strcmp(aux->name, "walking"))
-			walking = aux;
+		else if (!strcmp(aux->name, "walking_right"))
+			walking_right = aux;
+		else if (!strcmp(aux->name, "walking_left"))
+			walking_left = aux;
 		else if (!strcmp(aux->name, "changing"))
 			changing_layers = aux;
+
+
 
 		for (pugi::xml_node frames : animation.children())
 		{
@@ -66,6 +68,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 		}
 	}
 	current_animation = idle;
+
 	if (result == NULL) {
 		LOG("Could not load map xml file %s. pugi error: %s", "animations.xml", result.description());
 		ret = false;
@@ -85,6 +88,7 @@ bool j1Player::Start()
 // Called each loop iteration
 bool j1Player::PreUpdate()
 {
+
 	App->render->camera.x = -position.x;
 	App->render->camera.y = -position.y;
 	return true;
@@ -93,10 +97,10 @@ bool j1Player::PreUpdate()
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
-
+	SelectAnim(speed_vector);
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	
+	speed_vector = { 0, 0 };
 	//App->render->Blit(player_texture, (position.x + App->render->camera.w / 2), (position.y + App->render->camera.h / 2), &frame.rect);
 	App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
 	return true;
@@ -132,11 +136,32 @@ bool j1Player::Save(pugi::xml_node& data) const
 }
 
 void j1Player::Move(int x, int y) {
-	position.x += x;
-	position.y += y;
+
+	speed_vector.x = x;
+	speed_vector.y = y;
+	position.x += speed_vector.x;
+	position.y += speed_vector.y;
 }
 
 void j1Player::SelectAnim(fPoint speed_vect)
 {
-	
+	if (speed_vect.x != 0)
+	{
+		if (speed_vect.x > 0)
+		{
+			current_animation = walking_right;
+			
+		}
+		else if (speed_vect.x < 0)
+		{
+			
+			current_animation = walking_left;
+		}
+	}
+	else
+	{
+		current_animation = idle;
+	}
+
+
 }

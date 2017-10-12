@@ -28,15 +28,17 @@
     <frame number="5" x="0" y ="0" w="0" h ="0"/>
     <frame number="6" x="0" y ="0" w="0" h ="0"/>
   </landing>
-  <walking frames="0" duration="0">
-    <frame number="0" x="0" y ="0" w="12" h ="14"/>
-    <frame number="1" x="17" y ="0" w="12" h ="14"/>
-    <frame number="2" x="32" y ="0" w="12" h ="14"/>
-    <frame number="3" x="0" y ="0" w="0" h ="0"/>
-    <frame number="4" x="0" y ="0" w="0" h ="0"/>
-    <frame number="5" x="0" y ="0" w="0" h ="0"/>
-    <frame number="6" x="0" y ="0" w="0" h ="0"/>
-  </walking>
+  <walking_right frames="3" duration="0.08f">
+    <frame number="0" x="0" y ="0" w="12" h ="14"/>   
+    <frame number="1" x="32" y ="0" w="12" h ="14"/>
+    <frame number="2" x="17" y ="0" w="12" h ="14"/>
+  </walking_right>
+  <walking_left frames="3" duration="0.08f">
+    <frame number="0" x="112" y ="34" w="12" h ="14"/>
+    <frame number="1" x="80" y ="34" w="12" h ="14"/>
+    <frame number="2" x="95" y ="34" w="12" h ="14"/>
+
+  </walking_left>
   <changing frames="0" duration="0">
     <frame number="0" x="0" y ="0" w="0" h ="0"/>
     <frame number="1" x="0" y ="0" w="0" h ="0"/>

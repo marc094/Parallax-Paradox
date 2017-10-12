@@ -63,7 +63,8 @@ private:
 	Animation* jumping;
 	Animation* falling;
 	Animation* landing;
-	Animation* walking;
+	Animation* walking_right;
+	Animation* walking_left;
 	Animation* changing_layers;
 
 public:
