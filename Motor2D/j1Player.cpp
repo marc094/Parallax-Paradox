@@ -25,7 +25,7 @@ void j1Player::Init()
 }
 
 // Called before render is available
-bool j1Player::Awake(pugi::xml_node&)
+bool j1Player::Awake(pugi::xml_node& conf)
 {
 	bool ret = true;
 	LOG("Loading Player Module");
@@ -33,18 +33,31 @@ bool j1Player::Awake(pugi::xml_node&)
 	pugi::xml_parse_result result = player_anims.load_file("animations.xml");
 	pugi::xml_node doc_node = player_anims.first_child();
 
-	Player_texture = App->tex->Load("Character sprites.png");
+	player_texture = App->tex->Load("Character sprites.png");
 
 	for (pugi::xml_node animation : doc_node.children()) {
 		
-		Animation aux;
-		aux.name = animation.name();
+		Animation* aux;
+		aux->name = animation.name();
+		
+		if (!strcmp(aux->name, "idle"))
+			idle = aux;
+		else if (!strcmp(aux->name, "jumping"))
+			jumping = aux;
+		else if (!strcmp(aux->name, "falling"))
+			falling = aux;
+		else if (!strcmp(aux->name, "landing"))
+			landing = aux;
+		else if (!strcmp(aux->name, "walking"))
+			walking = aux;
+		else if (!strcmp(aux->name, "changing"))
+			changing_layers = aux;
 
 		for (pugi::xml_node frames : animation.children())
 		{
 			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
-			aux.PushBack(aux_rect);
-			animation_list.add(&aux);
+			aux->PushBack(aux_rect);
+			animation_list.add(aux);
 		}
 	}
 	if (result == NULL) {
@@ -76,7 +89,7 @@ bool j1Player::Update(float dt)
 
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
-	App->render->Blit(Player_texture, position.x, position.y, &frame.rect);
+	App->render->Blit(player_texture, position.x, position.y, &frame.rect);
 	return true;
 }
 
