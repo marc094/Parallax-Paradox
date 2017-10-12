@@ -38,7 +38,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	for (pugi::xml_node animation : doc_node.children()) {
 		
 		Animation* aux = new Animation();
-1		aux->name = animation.name();
+		aux->name = animation.name();
 		
 		if (!strcmp(aux->name, "idle"))
 			idle = aux;
