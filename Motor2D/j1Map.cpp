@@ -42,9 +42,11 @@ void j1Map::Draw()
 		for (uint y = 0; y < item_layer->data->height; y++) {
 			for (uint x = 0; x < item_layer->data->width; x++) {
 				// TODO 9: Complete the draw function
-				iPoint tile_pos = MapToWorld(x, y);
-				SDL_Rect tile_rect = data.tilesets[0]->GetTileRect(item_layer->data->tiles[tile]);
-				App->render->Blit(data.tilesets[0]->texture, tile_pos.x, tile_pos.y, &tile_rect, item_layer->data->parallax_speed);
+				if (item_layer->data->tiles[tile] != 0) {
+					iPoint tile_pos = MapToWorld(x, y);
+					SDL_Rect tile_rect = data.tilesets[0]->GetTileRect(item_layer->data->tiles[tile]);
+					App->render->Blit(data.tilesets[0]->texture, tile_pos.x, tile_pos.y, &tile_rect, item_layer->data->parallax_speed);
+				}
 				tile++;
 			}
 		}
@@ -413,14 +415,21 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	else {
 		for (pugi::xml_node tile : data_node.children()) {
 			uint tile_id = tile.first_attribute().as_uint(0);
-			layer->tiles[tile_index++] = tile_id;
+			layer->tiles[tile_index] = tile_id;
 			if (tile_id != 0)
 			{
 				Collider* aux = new Collider;
-				aux->rect = data.tilesets[0]->GetTileRect(tile_id);
+				SDL_Rect rect;
+				rect.w = data.tile_width;
+				rect.h = data.tile_height;
+				rect.x = ((rect.w) * (tile_index % data.width));
+				rect.y = ((rect.h) * (tile_index / data.width));
+				//aux->rect = data.tilesets[0]->GetTileRect(tile_id);
+				aux->rect = rect;
 				aux->collidertype = type;
 				layer->layer_colliders.add(aux);
 			}
+			tile_index++;
 		}
 	}
 

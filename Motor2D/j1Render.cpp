@@ -124,7 +124,7 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y, bool scaling) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y, bool scaling, bool h_flip) const
 {
 	bool ret = true;
 
@@ -167,7 +167,11 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if (h_flip)
+		flip = SDL_FLIP_HORIZONTAL;
+
+	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
@@ -176,7 +180,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	return ret;
 }
 
-bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
+bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, float speed, Uint8 a, bool filled, bool use_camera) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
@@ -187,8 +191,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)((camera.x * speed) + rect.x * scale);
+		rec.y = (int)((camera.y * speed) + rect.y * scale);
 		rec.w *= scale;
 		rec.h *= scale;
 	}

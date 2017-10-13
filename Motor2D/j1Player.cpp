@@ -96,20 +96,6 @@ bool j1Player::PreUpdate()
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
-	Move();
-	Checkcollisions();
-
-	App->render->camera.x = -position.x;
-	App->render->camera.y = -position.y;
-
-	SelectAnim(speed_vector);
-	AnimationFrame frame = current_animation->GetCurrentFrame();
-
-
-	if (flipped == true)
-		App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w/2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect,1.0f,0,0,0,false);
-	else
-		App->render->Blit(player_texture, (-App->render->camera.x + (App->render->camera.w / 2)), (-App->render->camera.y + (App->render->camera.h / 2)), &frame.rect, 1.0f, 0, 0, 0, false);
 
 	return true;
 }
@@ -117,6 +103,20 @@ bool j1Player::Update(float dt)
 // Called each loop iteration
 bool j1Player::PostUpdate()
 {
+	Move();
+	Checkcollisions();
+
+	App->render->camera.x = -position.x + App->render->camera.w / 2;
+	App->render->camera.y = -position.y + App->render->camera.h / 2;
+
+	SelectAnim(speed_vector);
+	AnimationFrame frame = current_animation->GetCurrentFrame();
+
+
+	if (flipped == true)
+		App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false, true);
+	else
+		App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false);
 	return true;
 }
 
@@ -130,8 +130,6 @@ bool j1Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("position").attribute("x").as_int();
 	position.y = data.child("position").attribute("y").as_int();
-
-	
 
 	return true;
 }
@@ -196,18 +194,24 @@ void j1Player::Checkcollisions()
 	if (App->map->data.layers[0] != NULL)
 	{
 		uint i = 0;
-		while (App->map->data.layers[0]->layer_colliders[i] != NULL && i < App->map->data.layers[0]->layer_colliders.count())
+		while (i < App->map->data.layers[0]->layer_colliders.count() && App->map->data.layers[0]->layer_colliders[i] != NULL)
 		{
 			SDL_Rect aux = App->map->data.layers[0]->layer_colliders[i]->rect;
+			
+			App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[0]->parallax_speed);
 
-			if (position.x + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w)
-			{
-				speed_vector.x = 0;
-			}
-			if (position.y + speed_vector.y > aux.y && position.x + speed_vector.y < aux.y + aux.h)
+			/*aux.x = (int)(position.x * App->map->data.layers[0]->parallax_speed) - aux.x * scale;
+			aux.y = (int)(position.y * App->map->data.layers[0]->parallax_speed) - aux.y * scale;*/
+
+			if (position.x + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 			{
 				speed_vector.y = 0;
+				speed_vector.x = 0;
 			}
+			/*if (position.y + speed_vector.y > aux.y && position.x + speed_vector.y < aux.y + aux.h)
+			{
+				speed_vector.y = 0;
+			}*/
 			i++;
 		}
 	}
