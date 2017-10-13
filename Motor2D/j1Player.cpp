@@ -105,14 +105,20 @@ bool j1Player::Update(float dt)
 // Called each loop iteration
 bool j1Player::PostUpdate()
 {
+
+	SelectAnim(speed_vector);
+	AnimationFrame frame = current_animation->GetCurrentFrame();
+
+
 	Move();
-	Checkcollisions();
+
+
+	Accelerate(0, 1);
+
 
 	App->render->camera.x = -position.x + App->render->camera.w / 2;
 	App->render->camera.y = -position.y + App->render->camera.h / 2;
 
-	SelectAnim(speed_vector);
-	AnimationFrame frame = current_animation->GetCurrentFrame();
 
 
 	if (flipped == true)
@@ -147,13 +153,17 @@ bool j1Player::Save(pugi::xml_node& data) const
 }
 
 void j1Player::Move() {
+
+
+	Checkcollisions();
+
 	position.x += speed_vector.x;
 	position.y += speed_vector.y;
 
-	if (state == IDLE) {
+
 		speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
 		speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
-	}
+	
 
 	state = IDLE;
 }
@@ -193,32 +203,38 @@ void j1Player::SelectAnim(fPoint speed_vect)
 
 void j1Player::Checkcollisions()
 {
+	AnimationFrame frame = current_animation->GetCurrentFrame();
+
 	if (App->map->data.layers[1] != NULL)
 	{
 		uint i = 0;
 		while (i < App->map->data.layers[1]->layer_colliders.count() && App->map->data.layers[1]->layer_colliders[i] != NULL)
 		{
 			SDL_Rect aux = App->map->data.layers[1]->layer_colliders[i]->rect;
-
-			App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[1]->parallax_speed);
+			SDL_Rect player_frame = frame.rect;
+			//App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[1]->parallax_speed);
 		
 			aux.x = (int)( App->map->data.layers[1]->parallax_speed) + aux.x * scale;
 			aux.y = (int)(App->map->data.layers[1]->parallax_speed) + aux.y * scale;
 			aux.w *= scale;
 			aux.h *= scale;
+			player_frame.w *= scale;
+			player_frame.h *= scale;
+			
 
-			/*aux.x = (int)(position.x * App->map->data.layers[0]->parallax_speed) - aux.x * scale;
-			aux.y = (int)(position.y * App->map->data.layers[0]->parallax_speed) - aux.y * scale;*/
-
-			if (position.x + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
+			if (position.x + player_frame.w > aux.x && position.x < aux.x + aux.w && position.y + player_frame.h > aux.y && position.y < aux.y + aux.h)
 			{
-				speed_vector.y = 0;
-				speed_vector.x = 0;
+			
+			if (position.y + speed_vector.y < aux.y + aux.h && speed_vector.y < 0)
+			{
 			}
-			/*if (position.y + speed_vector.y > aux.y && position.x + speed_vector.y < aux.y + aux.h)
+			else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
 			{
 				speed_vector.y = 0;
-			}*/
+			}
+
+			}
+
 			i++;
 		}
 	}
