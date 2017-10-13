@@ -50,6 +50,8 @@ public:
 
 	bool Save(pugi::xml_node&) const;
 
+	void Checkcollisions();
+
 private:
 	PlayerState state = IDLE;
 
@@ -74,7 +76,7 @@ public:
 	void Move();
 	void Accelerate(int x = 0, int y = 0);
 	void SelectAnim(fPoint speed_vector);
-	void Move_y(int y);
+
 };
 
 #endif

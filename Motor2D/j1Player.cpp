@@ -97,6 +97,7 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	Move();
+	Checkcollisions();
 
 	App->render->camera.x = -position.x;
 	App->render->camera.y = -position.y;
@@ -188,4 +189,26 @@ void j1Player::SelectAnim(fPoint speed_vect)
 	}
 	else
 		current_animation = idle;
+}
+
+void j1Player::Checkcollisions()
+{
+	if (App->map->data.layers[0] != NULL)
+	{
+		uint i = 0;
+		while (App->map->data.layers[0]->layer_colliders[i] != NULL && i < App->map->data.layers[0]->layer_colliders.count())
+		{
+			SDL_Rect aux = App->map->data.layers[0]->layer_colliders[i]->rect;
+
+			if (position.x + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w)
+			{
+				speed_vector.x = 0;
+			}
+			if (position.y + speed_vector.y > aux.y && position.x + speed_vector.y < aux.y + aux.h)
+			{
+				speed_vector.y = 0;
+			}
+			i++;
+		}
+	}
 }

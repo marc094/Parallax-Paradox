@@ -348,8 +348,9 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
-	pugi::xml_node data = node.child("data");
+	pugi::xml_node data_node = node.child("data");
 	pugi::xml_node properties = node.child("properties");
+	ColliderType type;
 
 	for (pugi::xml_node object : properties.children()) {
 		if (!strcmp(object.attribute("name").as_string(), "Speed"))
@@ -358,7 +359,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		}
 		else if (!strcmp(object.attribute("name").as_string(), "Collider"))
 		{
-			ColliderType type;
 			if (!strcmp(object.attribute("value").as_string(), "Back wall"))
 				type = COLLIDER_BACK_LAYER;
 
@@ -366,10 +366,8 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				type = COLLIDER_FRONT_LAYER;
 		}
 	}
-
-
 	
-	if (data.root() == NULL) {
+	if (data_node.root() == NULL) {
 		return false;
 	}
 
@@ -385,7 +383,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	
 	memset(layer->tiles, 0, layer->size);
 	
-	p2SString encoding(data.attribute("encoding").as_string());
+	p2SString encoding(data_node.attribute("encoding").as_string());
 
 	uint tile_index = 0;
 	if (encoding == "csv")
@@ -393,7 +391,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		//p2SString data_buffer(data.child_value());
 		uint buffer_index = 0;
 		uint figures = 0;
-		const char* aux_buf = data.child_value();//data_buffer.GetString();
+		const char* aux_buf = data_node.child_value();//data_buffer.GetString();
 		while (aux_buf[buffer_index] != '\0') {
 			if (aux_buf[buffer_index] != ',' && aux_buf[buffer_index] != '\n')
 				figures++;
@@ -413,9 +411,16 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		}
 	}
 	else {
-		for (pugi::xml_node tile : data.children()) {
+		for (pugi::xml_node tile : data_node.children()) {
 			uint tile_id = tile.first_attribute().as_uint(0);
 			layer->tiles[tile_index++] = tile_id;
+			if (tile_id != 0)
+			{
+				Collider* aux = new Collider;
+				aux->rect = data.tilesets[0]->GetTileRect(tile_id);
+				aux->collidertype = type;
+				layer->layer_colliders.add(aux);
+			}
 		}
 	}
 

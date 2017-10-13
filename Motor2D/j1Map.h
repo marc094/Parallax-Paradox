@@ -6,6 +6,19 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+
+enum ColliderType {
+	COLLIDER_PLAYER = 1,
+	COLLIDER_FRONT_LAYER,
+	COLLIDER_BACK_LAYER,
+};
+struct Collider
+{
+	SDL_Rect rect;
+	ColliderType collidertype;
+
+};
+
 // TODO 1: Create a struct for the map layer
 struct MapLayer {
 	uint*			tiles = nullptr;
@@ -16,24 +29,14 @@ struct MapLayer {
 	float			parallax_speed = 1.0f;
 
 	p2List<Collider*>   layer_colliders;
-	ColliderType collidertype;
+
 };
 
 // ----------------------------------------------------
 
 	// TODO 6: Short function to get the value of x,y
 //iPoint getWorldPositionFromMap(int x, int y, uint tile_width);
-enum ColliderType {
-	COLLIDER_PLAYER = 1,
-	COLLIDER_FRONT_LAYER,
-	COLLIDER_BACK_LAYER,
-};
-struct Collider
-{
-	SDL_Rect rect;
 
-
-};
 
 // ----------------------------------------------------
 struct TileSet
