@@ -83,6 +83,8 @@ bool j1Player::Start()
 	
 	position = App->map->GetInitialPlayerPos();
 
+	scale = App->win->GetScale();
+
 	current_animation = idle;
 	return true;
 }
@@ -191,14 +193,19 @@ void j1Player::SelectAnim(fPoint speed_vect)
 
 void j1Player::Checkcollisions()
 {
-	if (App->map->data.layers[0] != NULL)
+	if (App->map->data.layers[1] != NULL)
 	{
 		uint i = 0;
-		while (i < App->map->data.layers[0]->layer_colliders.count() && App->map->data.layers[0]->layer_colliders[i] != NULL)
+		while (i < App->map->data.layers[1]->layer_colliders.count() && App->map->data.layers[1]->layer_colliders[i] != NULL)
 		{
-			SDL_Rect aux = App->map->data.layers[0]->layer_colliders[i]->rect;
-			
-			App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[0]->parallax_speed);
+			SDL_Rect aux = App->map->data.layers[1]->layer_colliders[i]->rect;
+
+			App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[1]->parallax_speed);
+		
+			aux.x = (int)( App->map->data.layers[1]->parallax_speed) + aux.x * scale;
+			aux.y = (int)(App->map->data.layers[1]->parallax_speed) + aux.y * scale;
+			aux.w *= scale;
+			aux.h *= scale;
 
 			/*aux.x = (int)(position.x * App->map->data.layers[0]->parallax_speed) - aux.x * scale;
 			aux.y = (int)(position.y * App->map->data.layers[0]->parallax_speed) - aux.y * scale;*/
