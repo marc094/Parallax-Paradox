@@ -161,8 +161,8 @@ void j1Player::Move() {
 	position.y += speed_vector.y;
 
 
-		speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
-		speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
+	speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
+	speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
 	
 
 	state = IDLE;
@@ -212,7 +212,7 @@ void j1Player::Checkcollisions()
 		{
 			SDL_Rect aux = App->map->data.layers[1]->layer_colliders[i]->rect;
 			SDL_Rect player_frame = frame.rect;
-			//App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[1]->parallax_speed);
+			App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[1]->parallax_speed);
 		
 			aux.x = (int)( App->map->data.layers[1]->parallax_speed) + aux.x * scale;
 			aux.y = (int)(App->map->data.layers[1]->parallax_speed) + aux.y * scale;
@@ -222,19 +222,27 @@ void j1Player::Checkcollisions()
 			player_frame.h *= scale;
 			
 
-			if (position.x + player_frame.w > aux.x && position.x < aux.x + aux.w && position.y + player_frame.h > aux.y && position.y < aux.y + aux.h)
+			if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h +speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 			{
-			
-			if (position.y + speed_vector.y < aux.y + aux.h && speed_vector.y < 0)
-			{
-			}
-			else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
-			{
-				speed_vector.y = 0;
-			}
+				if (position.y + speed_vector.y < aux.y + aux.h && position.y > aux.y + aux.h && speed_vector.y < 0)
+				{
+					speed_vector.y = 0;
+				}
+				else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
+				{
+					speed_vector.y = 0;
+				}
 
-			}
 
+				if (position.x + speed_vector.x < aux.x + aux.w && position.x > aux.x + aux.w && speed_vector.x < 0)
+				{
+					speed_vector.x = 0;
+				}
+				else if (position.x + player_frame.w + speed_vector.x > aux.x && speed_vector.x >= 0)
+				{
+					speed_vector.x = 0;
+				}
+			}
 			i++;
 		}
 	}
