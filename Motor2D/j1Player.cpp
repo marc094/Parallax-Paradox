@@ -224,23 +224,27 @@ void j1Player::Checkcollisions()
 
 			if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h +speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 			{
-				if (position.y + speed_vector.y < aux.y + aux.h && position.y > aux.y + aux.h && speed_vector.y < 0)
+				if (position.x < aux.x + aux.w && position.x + player_frame.w > aux.x)
 				{
-					speed_vector.y = 0;
+					if (position.y + speed_vector.y < aux.y + aux.h && position.y > aux.y + aux.h && speed_vector.y < 0)
+					{
+						speed_vector.y = 0;
+					}
+					else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
+					{
+						speed_vector.y = 0;
+					}
 				}
-				else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
+				if (position.y < aux.y + aux.h && position.y + player_frame.h > aux.y)
 				{
-					speed_vector.y = 0;
-				}
-
-
-				if (position.x + speed_vector.x < aux.x + aux.w && position.x > aux.x + aux.w && speed_vector.x < 0)
-				{
-					speed_vector.x = 0;
-				}
-				else if (position.x + player_frame.w + speed_vector.x > aux.x && speed_vector.x >= 0)
-				{
-					speed_vector.x = 0;
+					if (position.x + speed_vector.x < aux.x + aux.w && position.x > aux.x + aux.w && speed_vector.x < 0)
+					{
+						speed_vector.x = 0;
+					}
+					else if (position.x + player_frame.w + speed_vector.x > aux.x && speed_vector.x >= 0)
+					{
+						speed_vector.x = 0;
+					}
 				}
 			}
 			i++;
