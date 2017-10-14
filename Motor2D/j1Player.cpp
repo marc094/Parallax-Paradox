@@ -110,10 +110,18 @@ bool j1Player::PostUpdate()
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
 
+	Checkcollisions(COLLIDER_BACK_LAYER);
+
 	Move();
 
+	//if (jump == true && isjumping == false)
+	//{
+	//	Accelerate(0, -100);
+	//	isjumping = true;
+	//}
 
-	Accelerate(0, 1);
+
+	//Accelerate(0, 1);
 
 
 	App->render->camera.x = -position.x + App->render->camera.w / 2;
@@ -125,6 +133,8 @@ bool j1Player::PostUpdate()
 		App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false, true);
 	else
 		App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false);
+	jump = false;
+
 	return true;
 }
 
@@ -154,8 +164,6 @@ bool j1Player::Save(pugi::xml_node& data) const
 
 void j1Player::Move() {
 
-
-	Checkcollisions();
 
 	position.x += speed_vector.x;
 	position.y += speed_vector.y;
@@ -201,53 +209,65 @@ void j1Player::SelectAnim(fPoint speed_vect)
 		current_animation = idle;
 }
 
-void j1Player::Checkcollisions()
+void j1Player::Checkcollisions(ColliderType collidertype)
 {
 	AnimationFrame frame = current_animation->GetCurrentFrame();
-
-	if (App->map->data.layers[1] != NULL)
+	SDL_Rect player_frame = frame.rect;
+	uint j = 0;
+	bool checked = false;
+	while (checked == false && App->map->data.layers[j] != NULL)
 	{
-		uint i = 0;
-		while (i < App->map->data.layers[1]->layer_colliders.count() && App->map->data.layers[1]->layer_colliders[i] != NULL)
+
+		if (App->map->data.layers[j]->layer_colliders[0]->collidertype == collidertype)
 		{
-			SDL_Rect aux = App->map->data.layers[1]->layer_colliders[i]->rect;
-			SDL_Rect player_frame = frame.rect;
-			App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[1]->parallax_speed);
-		
-			aux.x = (int)( App->map->data.layers[1]->parallax_speed) + aux.x * scale;
-			aux.y = (int)(App->map->data.layers[1]->parallax_speed) + aux.y * scale;
-			aux.w *= scale;
-			aux.h *= scale;
-			player_frame.w *= scale;
-			player_frame.h *= scale;
+			uint i = 0;
+			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
+			{
+				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
 			
 
-			if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h +speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
-			{
-				if (position.x < aux.x + aux.w && position.x + player_frame.w > aux.x)
+				aux.x = (int)(App->map->data.layers[j]->parallax_speed) + (aux.x * scale);
+				aux.y = (int)(App->map->data.layers[j]->parallax_speed) + (aux.y * scale);
+				aux.w *= scale;
+				aux.h *= scale;
+				player_frame.w *= scale;
+				player_frame.h *= scale;
+
+
+				App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
+
+				if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 				{
-					if (position.y + speed_vector.y < aux.y + aux.h && position.y > aux.y + aux.h && speed_vector.y < 0)
+					if (position.x < aux.x + aux.w && position.x + player_frame.w > aux.x)
 					{
-						speed_vector.y = 0;
+						if (position.y + speed_vector.y < aux.y + aux.h && position.y > aux.y + aux.h && speed_vector.y < 0)
+						{
+							speed_vector.y = 0;
+						}
+						else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
+						{
+							speed_vector.y = 0;
+							isjumping = false;
+						}
 					}
-					else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
+					if (position.y < aux.y + aux.h && position.y + player_frame.h > aux.y)
 					{
-						speed_vector.y = 0;
+						if (position.x + speed_vector.x < aux.x + aux.w && position.x > aux.x + aux.w && speed_vector.x < 0)
+						{
+							speed_vector.x = 0;
+						}
+						else if (position.x + player_frame.w + speed_vector.x > aux.x && speed_vector.x >= 0)
+						{
+							speed_vector.x = 0;
+						}
 					}
 				}
-				if (position.y < aux.y + aux.h && position.y + player_frame.h > aux.y)
-				{
-					if (position.x + speed_vector.x < aux.x + aux.w && position.x > aux.x + aux.w && speed_vector.x < 0)
-					{
-						speed_vector.x = 0;
-					}
-					else if (position.x + player_frame.w + speed_vector.x > aux.x && speed_vector.x >= 0)
-					{
-						speed_vector.x = 0;
-					}
-				}
+				i++;
+				checked = true;
 			}
-			i++;
+
 		}
+		j++;
 	}
+
 }

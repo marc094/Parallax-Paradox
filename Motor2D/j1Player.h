@@ -6,6 +6,7 @@
 #include "SDL\include\SDL.h"
 #include "Animation.h"
 #include "p2List.h"
+#include "j1Map.h"
 
 #define ACCELERATION 0.5f
 #define DECELERATION 0.1f
@@ -50,10 +51,13 @@ public:
 
 	bool Save(pugi::xml_node&) const;
 
-	void Checkcollisions();
+	void Checkcollisions(ColliderType collidertype);
+
+	bool jump;
 
 private:
 	PlayerState state = IDLE;
+	bool isjumping;
 
 	pugi::xml_document player_anims;
 	uint		jump_height;

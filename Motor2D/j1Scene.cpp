@@ -51,9 +51,12 @@ bool j1Scene::Update(float dt)
 		App->SaveGame();
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		//App->player->jump = true;
+		App->player->Accelerate(0, -1);
+	}
 		//App->render->camera.y -= 1;
-		App->player->Accelerate(0, -2);
-
+	
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		//App->render->camera.y += 1;
 		App->player->Accelerate(0, 1);
