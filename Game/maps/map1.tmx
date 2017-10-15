@@ -57,6 +57,9 @@
   <tile id="423" terrain="1,1,,"/>
   <tile id="424" terrain="1,,,"/>
  </tileset>
+ <imagelayer name="Capa de Imagen 1">
+  <image source="textures/background2.png" width="1600" height="1280"/>
+ </imagelayer>
  <objectgroup name="Player Pos">
   <object id="1" name="Player" x="927" y="1005" width="14.6667" height="14.6667"/>
   <object id="4" name="Final" x="784.091" y="183.182" width="15.7273" height="7.81818"/>
