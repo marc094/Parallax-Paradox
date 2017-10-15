@@ -411,9 +411,9 @@ bool j1App::ReloadNow() {
 
 	if (ret)
 		ret = tex->Start() &
-			player->Start() &
 			map->Start() &
 			scene->Start() &
+			player->Start()&
 			audio->Start();
 
 	return ret;
