@@ -260,7 +260,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				{
 					if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x + player_rect.w + speed_vector.x > aux.x)
 					{
-						if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y > aux.y + aux.h && speed_vector.y < 0)
+						if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y + speed_vector.y > aux.y && speed_vector.y < 0)
 						{
 							speed_vector.y = 0;
 						}
@@ -273,7 +273,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 					}
 					if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y + player_rect.h + speed_vector.y > aux.y)
 					{
-						if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x > aux.x + aux.w && speed_vector.x < 0)
+						if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x + player_rect.w + speed_vector.x > aux.x + aux.w && speed_vector.x < 0)
 						{
 							speed_vector.x = 0;
 						}
