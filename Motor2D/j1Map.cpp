@@ -405,9 +405,23 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				strncpy_s(buf, figures + 1 , &aux_buf[buffer_index - figures], _TRUNCATE);
 
 				p2SString buffer(buf);
-				layer->tiles[tile_index++] = (uint)buffer.ParseInt();
+				uint tile_id = (uint)buffer.ParseInt();
+				layer->tiles[tile_index++] = tile_id;
 				figures = 0;
 				free(buf);
+
+				if (tile_id != 0)
+				{
+					Collider* aux = new Collider;
+					SDL_Rect rect;
+					rect.w = data.tile_width;
+					rect.h = data.tile_height;
+					rect.x = ((rect.w) * (tile_index % data.width));
+					rect.y = ((rect.h) * (tile_index / data.width));
+					aux->rect = rect;
+					aux->collidertype = type;
+					layer->layer_colliders.add(aux);
+				}
 			}
 			buffer_index++;
 		}
@@ -424,7 +438,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				rect.h = data.tile_height;
 				rect.x = ((rect.w) * (tile_index % data.width));
 				rect.y = ((rect.h) * (tile_index / data.width));
-				//aux->rect = data.tilesets[0]->GetTileRect(tile_id);
 				aux->rect = rect;
 				aux->collidertype = type;
 				layer->layer_colliders.add(aux);

@@ -20,10 +20,17 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node& data)
 {
 	LOG("Loading Scene");
 	bool ret = true;
+
+	for (pugi::xml_node level : data.children())
+	{
+		xml_file_name.PushBack(level.attribute("name").as_string());
+	}
+
+	level = 1;
 
 	return ret;
 }
@@ -31,7 +38,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load(xml_file_name.GetString());
+	App->map->Load(xml_file_name[level-1].GetString());
 	return true;
 }
 
@@ -50,12 +57,10 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		App->SaveGame();
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	{
-		//App->player->jump = true;
-		App->player->Accelerate(0, -1);
-	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+		//App->player->Accelerate(0, -1);
 		//App->render->camera.y -= 1;
+		App->player->SwapLayer();
 	
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		//App->render->camera.y += 1;
@@ -68,6 +73,12 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		//App->render->camera.x += 1;
 		App->player->Accelerate(1);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->player->isJumping())
+	{
+		App->player->setJumping(true);
+		App->player->Accelerate(0, -10);
+	}
 
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();

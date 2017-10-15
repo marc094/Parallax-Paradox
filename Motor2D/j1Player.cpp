@@ -118,7 +118,7 @@ bool j1Player::PostUpdate()
 
 
 	//Gravity
-	Accelerate(0, 0.5f);
+	Accelerate(0, 0.1f);
 
 
 	App->render->camera.x = -position.x + App->render->camera.w / 2;
@@ -208,7 +208,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 	SDL_Rect player_frame = frame.rect;
 	uint j = 0;
 	bool checked = false;
-	while (checked == false && App->map->data.layers[j] != NULL)
+	while (checked == false && j < App->map->data.layers.count() && App->map->data.layers[j] != NULL)
 	{
 
 		if (App->map->data.layers[j]->layer_colliders[0]->collidertype == collidertype)

@@ -15,7 +15,7 @@ public:
 	virtual ~j1Scene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 
 	// Called before the first frame
 	bool Start();
@@ -35,7 +35,7 @@ public:
 private:
 	uint level;
 
-	p2SString xml_file_name = "map1.tmx";
+	p2DynArray<p2SString> xml_file_name;
 };
 
 #endif // __j1SCENE_H__
