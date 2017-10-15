@@ -236,21 +236,19 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
 			{
 				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
-				SDL_Rect player_frame = frame.rect;
 
 				fPoint collision_pos = position * App->map->data.layers[j]->parallax_speed;
-				SDL_Rect player_rect = player_frame;
+
+				SDL_Rect player_rect = frame.rect;
 				player_rect.x = position.x;
 				player_rect.y = position.y;
+				player_rect.w *= scale;
+				player_rect.h *= scale;
 
 				aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
 				aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
 				aux.w *= scale;
 				aux.h *= scale;
-
-				player_frame.w *= scale;
-				player_frame.h *= scale;
-
 
 				player_rect.x = (int)(App->render->camera.x * 1.0f) + (player_rect.x /** scale*/);
 				player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
@@ -260,7 +258,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 
 				if (player_rect.x + player_rect.w + speed_vector.x > aux.x && player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.y + player_rect.h + speed_vector.y > aux.y && player_rect.y + speed_vector.y < aux.y + aux.h)
 				{
-					if (player_rect.x < aux.x + aux.w && player_rect.x + player_rect.w > aux.x)
+					if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x + player_rect.w + speed_vector.x > aux.x)
 					{
 						if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y > aux.y + aux.h && speed_vector.y < 0)
 						{
@@ -273,7 +271,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 							jumping->Reset();
 						}
 					}
-					if (player_rect.y < aux.y + aux.h && player_rect.y + player_rect.h > aux.y)
+					if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y + player_rect.h + speed_vector.y > aux.y)
 					{
 						if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x > aux.x + aux.w && speed_vector.x < 0)
 						{
@@ -303,4 +301,8 @@ void j1Player::SwapLayer() {
 		current_layer = COLLIDER_BACK_LAYER;
 		//scale = 0.7f;
 	}
+}
+
+uint j1Player::GetCurrentLayer() {
+	return (uint)current_layer - 2;
 }

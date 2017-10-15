@@ -58,6 +58,8 @@ public:
 	void setJumping(bool jump) { isjumping = jump; }
 
 	void SwapLayer();
+
+	uint GetCurrentLayer();
 private:
 	PlayerState state = IDLE;
 	bool isjumping;

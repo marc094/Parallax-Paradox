@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <cstring>
+#include "j1Player.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -36,8 +37,14 @@ void j1Map::Draw()
 	App->render->Blit(background, 0, 0,0,0.7f);
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
+	uint layer = 0;
+	Uint8 alpha = 255;
 	while (item_layer != NULL)
 	{
+		if (layer == App->player->GetCurrentLayer())
+			alpha = 255;
+		else alpha = 128;
+		SDL_SetTextureAlphaMod(data.tilesets[0]->texture, alpha);
 		uint tile = 0;
 		for (uint y = 0; y < item_layer->data->height; y++) {
 			for (uint x = 0; x < item_layer->data->width; x++) {
@@ -50,8 +57,11 @@ void j1Map::Draw()
 				tile++;
 			}
 		}
+		layer++;
 		item_layer = item_layer->next;
 	}
+
+	SDL_SetTextureAlphaMod(data.tilesets[0]->texture, 255);
 
 }
 
