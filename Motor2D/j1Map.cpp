@@ -53,7 +53,6 @@ void j1Map::Draw()
 		item_layer = item_layer->next;
 	}
 
-
 }
 
 //iPoint getWorldPositionFromMap(int x, int y, uint tile_width) {
