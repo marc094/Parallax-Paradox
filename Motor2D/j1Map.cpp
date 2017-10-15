@@ -180,6 +180,11 @@ bool j1Map::Load(const char* file_name)
 				initial_player_pos.x = object.attribute("x").as_float();
 				initial_player_pos.y = object.attribute("y").as_float();
 			}
+			else if (!strcmp(object.attribute("name").as_string(), "Final"))
+			{
+				final_pos.x = object.attribute("x").as_float();
+				final_pos.y = object.attribute("y").as_float();
+			}
 		}
 	}
 
@@ -368,6 +373,9 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 			else if (!strcmp(object.attribute("value").as_string(), "Front wall"))
 				type = COLLIDER_FRONT_LAYER;
+
+			else if (!strcmp(object.attribute("value").as_string(), "None"))
+				type = COLLIDER_NONE;
 		}
 	}
 	
@@ -432,7 +440,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		for (pugi::xml_node tile : data_node.children()) {
 			uint tile_id = tile.first_attribute().as_uint(0);
 			layer->tiles[tile_index] = tile_id;
-			if (tile_id != 0)
+			if (tile_id != 0 && type != COLLIDER_NONE)
 			{
 				Collider* aux = new Collider;
 				SDL_Rect rect;

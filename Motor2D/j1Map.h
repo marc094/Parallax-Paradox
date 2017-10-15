@@ -10,6 +10,7 @@ enum ColliderType {
 	COLLIDER_PLAYER = 1,
 	COLLIDER_FRONT_LAYER,
 	COLLIDER_BACK_LAYER,
+	COLLIDER_NONE
 };
 struct Collider
 {
@@ -166,6 +167,7 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 	fPoint				initial_player_pos;
+	fPoint				final_pos;
 	SDL_Texture* background;
 };
 
