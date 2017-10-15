@@ -9,10 +9,12 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Player.h"
+#include "j1Textures.h"
 
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
+	level = 1;
 }
 
 // Destructor
@@ -29,8 +31,6 @@ bool j1Scene::Awake(pugi::xml_node& data)
 	{
 		xml_file_name.PushBack(level.attribute("name").as_string());
 	}
-
-	level = 1;
 
 	return ret;
 }
@@ -109,6 +109,13 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
 	return true;
+}
+
+void j1Scene::ChangeScene(uint _level) {
+	level = _level;
+
+	App->CleanUp();
+	App->Awake();
+
 }

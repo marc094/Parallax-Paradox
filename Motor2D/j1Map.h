@@ -6,7 +6,6 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-
 enum ColliderType {
 	COLLIDER_PLAYER = 1,
 	COLLIDER_FRONT_LAYER,
@@ -29,6 +28,19 @@ struct MapLayer {
 	float			parallax_speed = 1.0f;
 
 	p2List<Collider*>   layer_colliders;
+
+	~MapLayer() {
+		RELEASE(tiles);
+		p2List_item<Collider*>* item;
+		item = layer_colliders.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+		layer_colliders.clear();
+	}
 
 };
 
@@ -57,6 +69,8 @@ struct TileSet
 	int					num_tiles_height;
 	int					offset_x;
 	int					offset_y;
+
+	~TileSet();
 };
 
 enum MapTypes
@@ -79,6 +93,28 @@ struct MapData
 
 	// TODO 2: Add a list/array of layers to the map!
 	p2List<MapLayer*>	layers;
+
+	~MapData() {
+		p2List_item<TileSet*>* item;
+		item = tilesets.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+		tilesets.clear();
+
+		p2List_item<MapLayer*>* _item;
+		_item = layers.start;
+
+		while (_item != NULL)
+		{
+			RELEASE(_item->data);
+			_item = _item->next;
+		}
+		layers.clear();
+	}
 };
 
 

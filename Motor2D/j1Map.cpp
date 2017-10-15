@@ -112,6 +112,9 @@ bool j1Map::CleanUp()
 	// Clean up the pugui tree
 	map_file.reset();
 
+	App->tex->UnLoad(background);
+	background = nullptr;
+
 	return true;
 }
 
@@ -179,7 +182,6 @@ bool j1Map::Load(const char* file_name)
 			}
 		}
 	}
-
 
 	background = App->tex->Load(map_file.child("map").child("imagelayer").child("image").attribute("source").as_string());
 
@@ -451,4 +453,9 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 fPoint j1Map::GetInitialPlayerPos() const {
 	return initial_player_pos;
+}
+
+TileSet::~TileSet() {
+	App->tex->UnLoad(texture);
+	texture = nullptr;
 }

@@ -126,6 +126,14 @@ public:
 	{
 		return abs(v.x - x) + abs(v.y - y);
 	}
+
+	p2Point operator *(TYPE f) {
+		p2Point<TYPE> p{
+			x * f,
+			y * f
+		};
+		return (p);
+	}
 };
 
 typedef p2Point<int> iPoint;

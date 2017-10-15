@@ -34,10 +34,8 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	pugi::xml_parse_result result = player_anims.load_file(conf.child("animations").child_value());
 	pugi::xml_node doc_node = player_anims.first_child().child("animationInfo");
 
-	player_texture = App->tex->Load(player_anims.first_child().child("spritesheet").attribute("path").as_string());
-
-
 	speed_vector = { 0, 0 };
+
 	for (pugi::xml_node animation : doc_node.children()) {
 		
 		Animation* aux = new Animation();
@@ -78,9 +76,9 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 // Called before the first frame
 bool j1Player::Start()
-{
+{	
 	player_texture = App->tex->Load(player_anims.first_child().child("spritesheet").attribute("path").as_string());
-	
+
 	position = App->map->GetInitialPlayerPos();
 
 	scale = App->win->GetScale();
@@ -118,7 +116,7 @@ bool j1Player::PostUpdate()
 
 
 	//Gravity
-	Accelerate(0, 0.1f);
+	Accelerate(0, 0.2f);
 
 
 	App->render->camera.x = -position.x + App->render->camera.w / 2;
@@ -134,6 +132,19 @@ bool j1Player::PostUpdate()
 // Called before quitting
 bool j1Player::CleanUp()
 {
+	App->tex->UnLoad(player_texture);
+	player_texture = nullptr;
+	player_anims.reset();
+	animation_list.clear();
+	idle = nullptr;
+	jumping = nullptr;
+	falling = nullptr;
+	landing = nullptr;
+	walking = nullptr;
+	changing_layers = nullptr;
+
+	position = { 0.0f,0.0f };
+	speed_vector = { 0.0f,0.0f };
 	return true;
 }
 
@@ -218,6 +229,8 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
 				SDL_Rect player_frame = frame.rect;
 
+				fPoint collision_pos = position * App->map->data.layers[j]->parallax_speed;
+
 				aux.x = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.x * scale);
 				aux.y = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.y * scale);
 				aux.w *= scale;
@@ -226,7 +239,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				player_frame.h *= scale;
 
 
-				aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
+				App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
 
 				if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 				{

@@ -48,10 +48,7 @@
   <tile id="424" terrain="1,,,"/>
  </tileset>
  <imagelayer name="Background">
-  <image source="../../Motor2D/background.png" width="1600" height="1280"/>
-  <properties>
-   <property name="source" value="background.png"/>
-  </properties>
+  <image source="textures/background.png" width="1600" height="1280"/>
  </imagelayer>
  <objectgroup name="Player Pos">
   <object id="1" name="Player" x="927" y="1005" width="14.6667" height="14.6667"/>

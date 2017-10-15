@@ -32,6 +32,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void ChangeScene(uint level);
+
 private:
 	uint level;
 
