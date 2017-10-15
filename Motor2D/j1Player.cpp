@@ -122,15 +122,15 @@ bool j1Player::PostUpdate()
 
 
 	//Gravity
-	Accelerate(0, 0.3f);
+	Accelerate(0, 0.5f);
 
 
-	App->render->camera.x = -position.x + App->render->camera.w / 2;
-	App->render->camera.y = -position.y + App->render->camera.h / 2;
+	App->render->camera.x = -position.x *scale + App->render->camera.w / 2;
+	App->render->camera.y = -position.y *scale + App->render->camera.h / 2;
 
 
 
-	App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false, flipped);
+	App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, true, flipped);
 
 	return true;
 }
@@ -239,39 +239,47 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				SDL_Rect player_frame = frame.rect;
 
 				fPoint collision_pos = position * App->map->data.layers[j]->parallax_speed;
+				SDL_Rect player_rect = player_frame;
+				player_rect.x = position.x;
+				player_rect.y = position.y;
 
-				aux.x = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.x * scale);
-				aux.y = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.y * scale);
+				aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
+				aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
 				aux.w *= scale;
 				aux.h *= scale;
+
 				player_frame.w *= scale;
 				player_frame.h *= scale;
 
 
-				//App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
+				player_rect.x = (int)(App->render->camera.x * 1.0f) + (player_rect.x /** scale*/);
+				player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
 
-				if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
+				/*aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
+				player_rect = App->render->DrawQuad(player_rect, 255, 0, 0, 1.0f);*/
+
+				if (player_rect.x + player_rect.w + speed_vector.x > aux.x && player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.y + player_rect.h + speed_vector.y > aux.y && player_rect.y + speed_vector.y < aux.y + aux.h)
 				{
-					if (position.x < aux.x + aux.w && position.x + player_frame.w > aux.x)
+					if (player_rect.x < aux.x + aux.w && player_rect.x + player_rect.w > aux.x)
 					{
-						if (position.y + speed_vector.y < aux.y + aux.h && position.y > aux.y + aux.h && speed_vector.y < 0)
+						if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y > aux.y + aux.h && speed_vector.y < 0)
 						{
 							speed_vector.y = 0;
 						}
-						else if (position.y + player_frame.h + speed_vector.y > aux.y && speed_vector.y >= 0)
+						else if (player_rect.y + player_rect.h + speed_vector.y > aux.y && speed_vector.y >= 0)
 						{
 							speed_vector.y = 0;
 							isjumping = false;
 							jumping->Reset();
 						}
 					}
-					if (position.y < aux.y + aux.h && position.y + player_frame.h > aux.y)
+					if (player_rect.y < aux.y + aux.h && player_rect.y + player_rect.h > aux.y)
 					{
-						if (position.x + speed_vector.x < aux.x + aux.w && position.x > aux.x + aux.w && speed_vector.x < 0)
+						if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x > aux.x + aux.w && speed_vector.x < 0)
 						{
 							speed_vector.x = 0;
 						}
-						else if (position.x + player_frame.w + speed_vector.x > aux.x && speed_vector.x >= 0)
+						else if (player_rect.x + player_rect.w + speed_vector.x > aux.x && speed_vector.x >= 0)
 						{
 							speed_vector.x = 0;
 						}
@@ -289,10 +297,10 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 void j1Player::SwapLayer() {
 	if (current_layer == COLLIDER_BACK_LAYER) {
 		current_layer = COLLIDER_FRONT_LAYER;
-		scale = 1.0f;
+		//scale = 1.0f;
 	}
 	else {
 		current_layer = COLLIDER_BACK_LAYER;
-		scale = 0.7f;
+		//scale = 0.7f;
 	}
 }
