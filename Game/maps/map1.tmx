@@ -58,11 +58,11 @@
   <tile id="424" terrain="1,,,"/>
  </tileset>
  <imagelayer name="Background">
-  <image source="textures/background.png" width="1600" height="1280"/>
+  <image source="textures/background.png"/>
  </imagelayer>
  <objectgroup name="Player Pos">
   <object id="1" name="Player" x="927" y="1005" width="14.6667" height="14.6667"/>
-  <object id="4" name="Final" x="769" y="139" width="63" height="52"/>
+  <object id="4" name="Final" x="784.091" y="183.182" width="15.7273" height="7.81818"/>
  </objectgroup>
  <layer name="Back Layer" width="100" height="80">
   <properties>
