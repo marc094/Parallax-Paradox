@@ -34,6 +34,8 @@ public:
 
 	void ChangeScene(uint level);
 
+	void CheckEnd();
+
 private:
 	uint level;
 	uint max_level;

@@ -85,7 +85,7 @@ public:
 	void Move();
 	void Accelerate(float x = 0, float y = 0);
 	void SelectAnim(fPoint speed_vector);
-
+	fPoint GetPosition() const { return position; }
 };
 
 #endif

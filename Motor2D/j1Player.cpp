@@ -8,6 +8,7 @@
 #include <cstring>
 #include "j1Textures.h"
 #include "j1Window.h"
+#include "j1Scene.h"
 
 
 j1Player::j1Player()
@@ -229,7 +230,6 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 	bool checked = false;
 	while (checked == false && j < App->map->data.layers.count() && App->map->data.layers[j] != NULL)
 	{
-
 		if (App->map->data.layers[j]->layer_colliders[0]->collidertype == collidertype)
 		{
 			uint i = 0;
@@ -248,7 +248,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				player_frame.h *= scale;
 
 
-				App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
+				//App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
 
 				if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 				{

@@ -146,7 +146,9 @@ public:
 
 	fPoint GetInitialPlayerPos() const;
 
-
+	fPoint GetFinalPlayerPos() const {
+		return final_pos;
+	}
 
 private:
 

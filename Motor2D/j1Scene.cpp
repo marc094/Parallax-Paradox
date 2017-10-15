@@ -108,6 +108,8 @@ bool j1Scene::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		ChangeScene(level + 1);
 
+	CheckEnd();
+
 	return ret;
 }
 
@@ -125,4 +127,9 @@ void j1Scene::ChangeScene(uint _level) {
 	level = _level;
 
 	App->Reload();
+}
+
+void j1Scene::CheckEnd() {
+	if (App->player->GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 10)
+		App->scene->ChangeScene(level+1);
 }
