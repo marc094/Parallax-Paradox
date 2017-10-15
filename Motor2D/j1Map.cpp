@@ -177,6 +177,11 @@ bool j1Map::Load(const char* file_name)
 				initial_player_pos.x = object.attribute("x").as_float();
 				initial_player_pos.y = object.attribute("y").as_float();
 			}
+			else if (!strcmp(object.attribute("name").as_string(), "Final"))
+			{
+				final_pos.x = object.attribute("x").as_float();
+				final_pos.y = object.attribute("y").as_float();
+			}
 		}
 	}
 

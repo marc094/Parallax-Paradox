@@ -130,6 +130,7 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 	fPoint				initial_player_pos;
+	fPoint				final_pos;
 	SDL_Texture* background;
 };
 
