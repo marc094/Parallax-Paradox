@@ -13,6 +13,7 @@ Space: Jump
 
 F1: Change levels
 F2: Return to the initial position
+F4: Switch debug mode on/off
 F5: Save
 F6: Load
 
