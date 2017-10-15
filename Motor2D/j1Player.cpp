@@ -42,6 +42,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 		aux->name = animation.name();
 		aux->speed = animation.attribute("duration").as_float();
+		aux->loop = animation.attribute("loop").as_bool();
 
 		if (!strcmp(aux->name, "idle"))
 			idle = aux;
@@ -107,6 +108,8 @@ bool j1Player::PostUpdate()
 {
 
 	SelectAnim(speed_vector);
+
+
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
 
@@ -194,8 +197,11 @@ void j1Player::Accelerate(float x, float y) {
 
 void j1Player::SelectAnim(fPoint speed_vect)
 {
-	if (speed_vect.x != 0)
+	if (isjumping == true)
+		current_animation = jumping;
+	else if (speed_vect.x != 0)
 	{ 
+	
 		current_animation = walking;
 
 		if (speed_vect.x > 0)
@@ -253,6 +259,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 						{
 							speed_vector.y = 0;
 							isjumping = false;
+							jumping->Reset();
 						}
 					}
 					if (position.y < aux.y + aux.h && position.y + player_frame.h > aux.y)
