@@ -166,6 +166,11 @@ void j1App::FinishUpdate()
 
 	if(want_to_load == true)
 		LoadGameNow();
+
+	if (want_to_reload == true)
+	{
+		ReloadNow();
+	}
 }
 
 // Call modules before each loop iteration
@@ -367,4 +372,53 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+bool j1App::ReloadNow() {
+
+	pugi::xml_document	config_file;
+	pugi::xml_node		config;
+	pugi::xml_node		app_config;
+
+	bool ret = false;
+
+	want_to_reload = false;
+
+	config = LoadConfig(config_file);
+
+	if (config.empty() == false)
+	{
+		// self-config
+		ret = true;
+		app_config = config.child("app");
+		title.create(app_config.child("title").child_value());
+		organization.create(app_config.child("organization").child_value());
+	}
+
+	if(ret)
+		ret = tex->CleanUp() &
+			player->CleanUp() &
+			map->CleanUp() & 
+			scene->CleanUp() &
+			audio->CleanUp();
+
+	if (ret)
+		ret = tex->Awake(config.child(tex->name.GetString())) &
+			player->Awake(config.child(player->name.GetString())) &
+			map->Awake(config.child(map->name.GetString())) &
+			scene->Awake(config.child(scene->name.GetString())) &
+			audio->Awake(config.child(audio->name.GetString()));
+
+	if (ret)
+		ret = tex->Start() &
+			player->Start() &
+			map->Start() &
+			scene->Start() &
+			audio->Start();
+
+	return ret;
+}
+
+void j1App::Reload() {
+	want_to_reload = true;
 }

@@ -26,9 +26,10 @@ bool j1Scene::Awake(pugi::xml_node& data)
 {
 	LOG("Loading Scene");
 	bool ret = true;
-
+	max_level = 0;
 	for (pugi::xml_node level : data.children())
 	{
+		max_level++;
 		xml_file_name.PushBack(level.attribute("name").as_string());
 	}
 
@@ -38,6 +39,8 @@ bool j1Scene::Awake(pugi::xml_node& data)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	if (level > max_level)
+		level = 1;
 	App->map->Load(xml_file_name[level-1].GetString());
 	return true;
 }
@@ -77,7 +80,7 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->player->isJumping())
 	{
 		App->player->setJumping(true);
-		App->player->Accelerate(0, -10);
+		App->player->Accelerate(0, -12);
 	}
 
 	//App->render->Blit(img, 0, 0);
@@ -102,6 +105,9 @@ bool j1Scene::PostUpdate()
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		ChangeScene(level + 1);
+
 	return ret;
 }
 
@@ -109,13 +115,14 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	xml_file_name.Clear();
+	
 	return true;
 }
 
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
 
-	App->CleanUp();
-	App->Awake();
-
+	App->Reload();
 }

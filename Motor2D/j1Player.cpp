@@ -32,6 +32,13 @@ bool j1Player::Awake(pugi::xml_node& conf)
 	LOG("Loading Player Module");
 
 	pugi::xml_parse_result result = player_anims.load_file(conf.child("animations").child_value());
+
+
+	if (result == NULL) {
+		LOG("Could not load map xml file %s. pugi error: %s", conf.child("animations").child_value(), result.description());
+		ret = false;
+	}
+
 	pugi::xml_node doc_node = player_anims.first_child().child("animationInfo");
 
 	speed_vector = { 0, 0 };
@@ -66,13 +73,8 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			animation_list.add(aux);
 		}
 	}
-	current_animation = idle;
 
-	if (result == NULL) {
-		LOG("Could not load map xml file %s. pugi error: %s", conf.child("animations").child_value(), result.description());
-		ret = false;
-	}
-	return true;
+	return ret;
 }
 
 // Called before the first frame
@@ -119,7 +121,7 @@ bool j1Player::PostUpdate()
 
 
 	//Gravity
-	Accelerate(0, 0.2f);
+	Accelerate(0, 0.3f);
 
 
 	App->render->camera.x = -position.x + App->render->camera.w / 2;
@@ -145,6 +147,7 @@ bool j1Player::CleanUp()
 	landing = nullptr;
 	walking = nullptr;
 	changing_layers = nullptr;
+	current_animation = nullptr;
 
 	position = { 0.0f,0.0f };
 	speed_vector = { 0.0f,0.0f };

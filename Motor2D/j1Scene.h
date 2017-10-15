@@ -36,6 +36,7 @@ public:
 
 private:
 	uint level;
+	uint max_level;
 
 	p2DynArray<p2SString> xml_file_name;
 };

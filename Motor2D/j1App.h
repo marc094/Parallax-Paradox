@@ -49,6 +49,7 @@ public:
 
 	void LoadGame();
 	void SaveGame() const;
+	void Reload();
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
 private:
@@ -74,6 +75,7 @@ private:
 	// Load / Save
 	bool LoadGameNow();
 	bool SavegameNow() const;
+	bool ReloadNow();
 
 public:
 
@@ -101,6 +103,7 @@ private:
 
 	mutable bool		want_to_save;
 	bool				want_to_load;
+	bool				want_to_reload;
 	p2SString			load_game = "save_game.xml";
 	mutable p2SString	save_game = "save_game.xml";
 };
