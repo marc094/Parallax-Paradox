@@ -106,7 +106,10 @@ bool j1Scene::PostUpdate()
 		ret = false;
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		ChangeScene(level + 1);
+		ChangeScene(1);
+
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		ChangeScene(level);
 
 	CheckEnd();
 
