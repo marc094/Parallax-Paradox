@@ -53,11 +53,11 @@ public:
 
 	void Checkcollisions(ColliderType collidertype);
 
-	bool isJumping() { return isjumping; }
+	bool isJumping() const { return isjumping; }
 
 	void setJumping(bool jump) { isjumping = jump; }
 
-	void SwapLayer() { current_layer = (current_layer == COLLIDER_BACK_LAYER) ? COLLIDER_FRONT_LAYER : COLLIDER_BACK_LAYER; }
+	void SwapLayer();
 private:
 	PlayerState state = IDLE;
 	bool isjumping;

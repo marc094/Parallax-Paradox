@@ -204,8 +204,7 @@ void j1Player::SelectAnim(fPoint speed_vect)
 
 void j1Player::Checkcollisions(ColliderType collidertype)
 {
-	AnimationFrame frame = current_animation->GetCurrentFrame();
-	SDL_Rect player_frame = frame.rect;
+	AnimationFrame frame = current_animation->frames[current_animation->getFrameIndex()];
 	uint j = 0;
 	bool checked = false;
 	while (checked == false && j < App->map->data.layers.count() && App->map->data.layers[j] != NULL)
@@ -217,6 +216,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
 			{
 				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
+				SDL_Rect player_frame = frame.rect;
 
 				aux.x = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.x * scale);
 				aux.y = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.y * scale);
@@ -226,7 +226,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				player_frame.h *= scale;
 
 
-				App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
+				aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
 
 				if (position.x + player_frame.w + speed_vector.x > aux.x && position.x + speed_vector.x < aux.x + aux.w && position.y + player_frame.h + speed_vector.y > aux.y && position.y + speed_vector.y < aux.y + aux.h)
 				{
@@ -257,9 +257,19 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				i++;
 				checked = true;
 			}
-
 		}
 		j++;
 	}
 
+}
+
+void j1Player::SwapLayer() {
+	if (current_layer == COLLIDER_BACK_LAYER) {
+		current_layer = COLLIDER_FRONT_LAYER;
+		scale = 1.0f;
+	}
+	else {
+		current_layer = COLLIDER_BACK_LAYER;
+		scale = 0.7f;
+	}
 }
