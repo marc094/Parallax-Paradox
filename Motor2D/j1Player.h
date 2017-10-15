@@ -53,8 +53,11 @@ public:
 
 	void Checkcollisions(ColliderType collidertype);
 
-	bool jump;
+	bool isJumping() { return isjumping; }
 
+	void setJumping(bool jump) { isjumping = jump; }
+
+	void SwapLayer() { current_layer = (current_layer == COLLIDER_BACK_LAYER) ? COLLIDER_FRONT_LAYER : COLLIDER_BACK_LAYER; }
 private:
 	PlayerState state = IDLE;
 	bool isjumping;
@@ -76,9 +79,11 @@ private:
 	Animation* walking;
 	Animation* changing_layers;
 
+	ColliderType current_layer;
+
 public:
 	void Move();
-	void Accelerate(int x = 0, int y = 0);
+	void Accelerate(float x = 0, float y = 0);
 	void SelectAnim(fPoint speed_vector);
 
 };

@@ -85,6 +85,8 @@ bool j1Player::Start()
 
 	scale = App->win->GetScale();
 
+	current_layer = COLLIDER_FRONT_LAYER;
+
 	current_animation = idle;
 	return true;
 }
@@ -110,18 +112,13 @@ bool j1Player::PostUpdate()
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
 
-	Checkcollisions(COLLIDER_BACK_LAYER);
+	Checkcollisions(current_layer);
 
 	Move();
 
-	//if (jump == true && isjumping == false)
-	//{
-	//	Accelerate(0, -100);
-	//	isjumping = true;
-	//}
 
-
-	//Accelerate(0, 1);
+	//Gravity
+	Accelerate(0, 0.5f);
 
 
 	App->render->camera.x = -position.x + App->render->camera.w / 2;
@@ -129,11 +126,7 @@ bool j1Player::PostUpdate()
 
 
 
-	if (flipped == true)
-		App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false, true);
-	else
-		App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false);
-	jump = false;
+	App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, false, flipped);
 
 	return true;
 }
@@ -170,19 +163,19 @@ void j1Player::Move() {
 
 
 	speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
-	speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
+	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
 	
 
 	state = IDLE;
 }
 
 
-void j1Player::Accelerate(int x, int y) {
-	speed_vector.x += ((float)x) / (1.0f/ACCELERATION);
-	speed_vector.y += ((float)y) / (1.0f/ACCELERATION);
+void j1Player::Accelerate(float x, float y) {
+	speed_vector.x += (x) / (1.0f/ACCELERATION);
+	speed_vector.y += (y) / (1.0f/ACCELERATION);
 
 	speed_vector.x = CLAMP(speed_vector.x, -5, 5);
-	speed_vector.y = CLAMP(speed_vector.y, -5, 5);
+	speed_vector.y = CLAMP(speed_vector.y, -10, 10);
 
 	state = RUNNING;
 }
@@ -224,10 +217,9 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
 			{
 				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
-			
 
-				aux.x = (int)(App->map->data.layers[j]->parallax_speed) + (aux.x * scale);
-				aux.y = (int)(App->map->data.layers[j]->parallax_speed) + (aux.y * scale);
+				aux.x = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.x * scale);
+				aux.y = /*(int)(App->map->data.layers[j]->parallax_speed) + */(aux.y * scale);
 				aux.w *= scale;
 				aux.h *= scale;
 				player_frame.w *= scale;
