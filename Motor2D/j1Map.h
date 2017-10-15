@@ -11,6 +11,7 @@ enum ColliderType {
 	COLLIDER_PLAYER = 1,
 	COLLIDER_FRONT_LAYER,
 	COLLIDER_BACK_LAYER,
+	COLLIDER_NONE
 };
 struct Collider
 {
