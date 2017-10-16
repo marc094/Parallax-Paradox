@@ -170,7 +170,7 @@ private:
 	bool				map_loaded;
 	fPoint				initial_player_pos;
 	fPoint				final_pos;
-	SDL_Texture* background;
+	SDL_Texture*		background;
 };
 
 #endif // __j1MAP_H__

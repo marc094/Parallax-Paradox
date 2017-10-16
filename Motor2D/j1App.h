@@ -90,6 +90,8 @@ public:
 	j1Entities*			entities;
 	j1Player*			player;
 
+	bool debug = false;
+
 private:
 
 	p2List<j1Module*>	modules;

@@ -128,7 +128,8 @@ bool j1Player::PostUpdate()
 	App->render->camera.x = -position.x *scale + App->render->camera.w / 2;
 	App->render->camera.y = -position.y *scale + App->render->camera.h / 2;
 
-
+	if (position.y > 1400)
+		App->Reload();
 
 	App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, true, flipped);
 
@@ -159,7 +160,7 @@ bool j1Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("position").attribute("x").as_int();
 	position.y = data.child("position").attribute("y").as_int();
-
+	speed_vector = { 0, 0 };
 	return true;
 }
 
@@ -245,16 +246,20 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				player_rect.w *= scale;
 				player_rect.h *= scale;
 
-				aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
-				aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
 				aux.w *= scale;
 				aux.h *= scale;
 
-				player_rect.x = (int)(App->render->camera.x * 1.0f) + (player_rect.x /** scale*/);
-				player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
+				if (!App->debug) {
+					aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
+					aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
 
-				/*aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed);
-				player_rect = App->render->DrawQuad(player_rect, 255, 0, 0, 1.0f);*/
+					player_rect.x = (int)(App->render->camera.x * 1.0f) + (player_rect.x /** scale*/);
+					player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
+				}
+				else {
+					aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
+					player_rect = App->render->DrawQuad(player_rect, 255, 0, 0, 1.0f, 128);
+				}
 
 				if (player_rect.x + player_rect.w + speed_vector.x > aux.x && player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.y + player_rect.h + speed_vector.y > aux.y && player_rect.y + speed_vector.y < aux.y + aux.h)
 				{
