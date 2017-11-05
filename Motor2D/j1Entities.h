@@ -3,7 +3,8 @@
 
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
-
+#include "Animation.h"
+#include "j1Map.h"
 
 class j1Entities :
 	public j1Module
@@ -62,13 +63,29 @@ public:
 	{
 		return true;
 	}
-
+	enum State
+	{
+		IDLE,
+		ALERT,
+	};
 	struct Enemy
 	{
 		Animation* current_animation;
 		Animation Idle;
 		Animation Moving;
+		SDL_Rect Collider;
+		fPoint Initial_pos;
+		ColliderType CurrentLayer;
+		State State;
 	};
+
+private:
+	pugi::xml_document animations;
+
+
+	
+
+
 };
 
 #endif
