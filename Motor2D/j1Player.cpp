@@ -40,7 +40,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 		ret = false;
 	}
 
-	pugi::xml_node doc_node = player_anims.first_child().child("animationInfo");
+	pugi::xml_node doc_node = player_anims.child("Enemies");
 
 	speed_vector = { 0, 0 };
 
@@ -249,6 +249,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				aux.w *= scale;
 				aux.h *= scale;
 
+				SetSpVecToCollisions(aux, player_rect, speed_vector);
 
 				if (!App->debug) {
 					aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
@@ -272,21 +273,33 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 
 }
 
+
+void j1Player::SetSpVecToCollisions(const SDL_Rect collider, const  SDL_Rect entity, fPoint &speed_vector)
 {
+	if (entity.x + entity.w + speed_vector.x > collider.x && entity.x + speed_vector.x < collider.x + collider.w && entity.y + entity.h + speed_vector.y > collider.y && entity.y + speed_vector.y < collider.y + collider.h)
 	{
 		if (entity.x  < collider.x + collider.w && entity.x + entity.w  > collider.x)
 		{
+			if (entity.y + speed_vector.y < collider.y + collider.h && entity.y + speed_vector.y > collider.y && speed_vector.y < 0)
 			{
+				speed_vector.y = 0;
 			}
+			else if (entity.y + entity.h + speed_vector.y > collider.y && speed_vector.y >= 0)
 			{
+				speed_vector.y = 0;
 				isjumping = false;
 				jumping->Reset();
 			}
 		}
+		if (entity.y  < collider.y + collider.h && entity.y + entity.h  > collider.y)
 		{
+			if (entity.x + speed_vector.x < collider.x + collider.w && entity.x + entity.w + speed_vector.x > collider.x + collider.w && speed_vector.x < 0)
 			{
+				speed_vector.x = 0;
 			}
+			else if (entity.x + entity.w + speed_vector.x > collider.x && speed_vector.x >= 0)
 			{
+				speed_vector.x = 0;
 			}
 		}
 	}
