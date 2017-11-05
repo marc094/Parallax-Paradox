@@ -2,62 +2,64 @@
 
 <animations>
   <player>
-  <animationInfo>
-    <jumping frames="0" duration="0.1f" loop ="0">
-      <frame number="0" x="0" y ="17" w="13" h ="14"/>
-      <frame number="1" x="16" y ="16" w="13" h ="14"/>
-      <frame number="2" x="32" y ="18" w="13" h ="14"/>
-    </jumping>
-    <falling frames="0" duration="0" loop ="0">
-      <frame number="0" x="0" y ="0" w="0" h ="0"/>
-      <frame number="1" x="0" y ="0" w="0" h ="0"/>
-      <frame number="2" x="0" y ="0" w="0" h ="0"/>
-      <frame number="3" x="0" y ="0" w="0" h ="0"/>
-      <frame number="4" x="0" y ="0" w="0" h ="0"/>
-      <frame number="5" x="0" y ="0" w="0" h ="0"/>
-      <frame number="6" x="0" y ="0" w="0" h ="0"/>
-    </falling>
-    <landing frames="0" duration="0" loop ="0">
-      <frame number="0" x="0" y ="0" w="0" h ="0"/>
-      <frame number="1" x="0" y ="0" w="0" h ="0"/>
-      <frame number="2" x="0" y ="0" w="0" h ="0"/>
-      <frame number="3" x="0" y ="0" w="0" h ="0"/>
-      <frame number="4" x="0" y ="0" w="0" h ="0"/>
-      <frame number="5" x="0" y ="0" w="0" h ="0"/>
-      <frame number="6" x="0" y ="0" w="0" h ="0"/>
-    </landing>
-    <walking frames="3" duration="0.08f" loop ="1">
-      <frame number="0" x="0" y ="0" w="12" h ="14"/>
-      <frame number="1" x="32" y ="0" w="12" h ="14"/>
-      <frame number="2" x="17" y ="0" w="12" h ="14"/>
-    </walking>
-    <changing frames="0" duration="0" loop ="0">
-      <frame number="0" x="0" y ="0" w="0" h ="0"/>
-      <frame number="1" x="0" y ="0" w="0" h ="0"/>
-      <frame number="2" x="0" y ="0" w="0" h ="0"/>
-      <frame number="3" x="0" y ="0" w="0" h ="0"/>
-      <frame number="4" x="0" y ="0" w="0" h ="0"/>
-      <frame number="5" x="0" y ="0" w="0" h ="0"/>
-      <frame number="6" x="0" y ="0" w="0" h ="0"/>
-    </changing>
-    <idle frames="1" duration="0" loop ="1">
-      <frame number="0" x="0" y ="0" w="12" h ="14"/>
-    </idle>
-  </animationInfo>
-  </player>
-  <enemy1>
     <animationInfo>
-      <idle frames ="1" duration ="0" loop ="1">
-        <frame number="0" x="0" y ="0" w="12" h ="14"/>
-      </idle>
+      <jumping frames="0" duration="0.1f" loop ="0">
+        <frame number="0" x="0" y ="17" w="13" h ="14"/>
+        <frame number="1" x="16" y ="16" w="13" h ="14"/>
+        <frame number="2" x="32" y ="18" w="13" h ="14"/>
+      </jumping>
+      <falling frames="0" duration="0" loop ="0">
+        <frame number="0" x="0" y ="0" w="0" h ="0"/>
+        <frame number="1" x="0" y ="0" w="0" h ="0"/>
+        <frame number="2" x="0" y ="0" w="0" h ="0"/>
+        <frame number="3" x="0" y ="0" w="0" h ="0"/>
+        <frame number="4" x="0" y ="0" w="0" h ="0"/>
+        <frame number="5" x="0" y ="0" w="0" h ="0"/>
+        <frame number="6" x="0" y ="0" w="0" h ="0"/>
+      </falling>
+      <landing frames="0" duration="0" loop ="0">
+        <frame number="0" x="0" y ="0" w="0" h ="0"/>
+        <frame number="1" x="0" y ="0" w="0" h ="0"/>
+        <frame number="2" x="0" y ="0" w="0" h ="0"/>
+        <frame number="3" x="0" y ="0" w="0" h ="0"/>
+        <frame number="4" x="0" y ="0" w="0" h ="0"/>
+        <frame number="5" x="0" y ="0" w="0" h ="0"/>
+        <frame number="6" x="0" y ="0" w="0" h ="0"/>
+      </landing>
       <walking frames="3" duration="0.08f" loop ="1">
         <frame number="0" x="0" y ="0" w="12" h ="14"/>
         <frame number="1" x="32" y ="0" w="12" h ="14"/>
         <frame number="2" x="17" y ="0" w="12" h ="14"/>
       </walking>
-      
+      <changing frames="0" duration="0" loop ="0">
+        <frame number="0" x="0" y ="0" w="0" h ="0"/>
+        <frame number="1" x="0" y ="0" w="0" h ="0"/>
+        <frame number="2" x="0" y ="0" w="0" h ="0"/>
+        <frame number="3" x="0" y ="0" w="0" h ="0"/>
+        <frame number="4" x="0" y ="0" w="0" h ="0"/>
+        <frame number="5" x="0" y ="0" w="0" h ="0"/>
+        <frame number="6" x="0" y ="0" w="0" h ="0"/>
+      </changing>
+      <idle frames="1" duration="0" loop ="1">
+        <frame number="0" x="0" y ="0" w="12" h ="14"/>
+      </idle>
     </animationInfo>
-  </enemy1>
-  
+  </player>
+  <Enemies>
+    <ground>
+      <enemyInfo speed="1" gravity="true" />
+      <animationInfo>
+        <idle frames ="1" duration ="0" loop ="1">
+          <frame number="0" x="0" y ="0" w="12" h ="14"/>
+        </idle>
+        <walking frames="3" duration="0.08f" loop ="1">
+          <frame number="0" x="0" y ="0" w="12" h ="14"/>
+          <frame number="1" x="32" y ="0" w="12" h ="14"/>
+          <frame number="2" x="17" y ="0" w="12" h ="14"/>
+        </walking>
+
+      </animationInfo>
+    </ground>
+  </Enemies>
   <spritesheet path="Character sprites.png"/>
 </animations>

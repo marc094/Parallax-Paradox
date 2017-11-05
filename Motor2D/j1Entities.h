@@ -13,16 +13,26 @@ public:
 	j1Entities();
 	~j1Entities();
 
+	enum State
+	{
+		IDLE,
+		ALERT,
+	};
+	enum Type
+	{
+		GROUND,
+		AIR,
+	};
+
+
 	void Init()
 	{
 		active = true;
 	}
 
 	// Called before render is available
-	virtual bool Awake(pugi::xml_node&)
-	{
-		return true;
-	}
+	virtual bool Awake(pugi::xml_node&);
+
 
 	// Called before the first frame
 	virtual bool Start()
@@ -63,25 +73,29 @@ public:
 	{
 		return true;
 	}
-	enum State
-	{
-		IDLE,
-		ALERT,
-	};
+
+	void Add_Enemy(Type type, fPoint position, ColliderType layer);
+
+
 	struct Enemy
 	{
 		Animation* current_animation;
-		Animation Idle;
-		Animation Moving;
-		SDL_Rect Collider;
-		fPoint Initial_pos;
-		ColliderType CurrentLayer;
-		State State;
+		Animation idle_anim;
+		Animation moving_anim;
+		SDL_Rect collider;
+		fPoint position;
+		ColliderType currentLayer;
+		State state;
+		Type type;
+		fPoint speed_vect;
+		bool gravity;
 	};
+	p2List<Enemy*>* Enemies;
 
 private:
-	pugi::xml_document animations;
-
+	pugi::xml_document enemy_animations;
+	pugi::xml_node ground_enemy_node;
+	pugi::xml_node flying_enemy_node;
 
 	
 

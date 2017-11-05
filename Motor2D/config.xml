@@ -7,16 +7,21 @@
   </app>
 	
   <renderer>
-    <vsync value="false"/>
+    <vsync value="true"/>
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="2"/>
+    <resolution width="1024" height="768" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+  
+  <scene>
+    <level name="map1.tmx"/>
+    <level name="map2.tmx"/>
+  </scene>
 
   <file_system>
     <path>data.zip</path>
@@ -25,5 +30,13 @@
   <map>
     <folder>maps/</folder>
   </map>
+
+  <player>
+    <animations>animations.xml</animations>
+  </player>
+  <entities>
+    <animations>animations.xml</animations>
+  </entities>    
+
 
 </config>

@@ -40,7 +40,7 @@ bool j1Player::Awake(pugi::xml_node& conf)
 		ret = false;
 	}
 
-	pugi::xml_node doc_node = player_anims.child("Enemies");
+	pugi::xml_node doc_node = player_anims.child("animations").child("player").child("animationInfo");
 
 	speed_vector = { 0, 0 };
 
@@ -272,7 +272,6 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 	}
 
 }
-
 
 void j1Player::SetSpVecToCollisions(const SDL_Rect collider, const  SDL_Rect entity, fPoint &speed_vector)
 {
