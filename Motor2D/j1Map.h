@@ -19,7 +19,7 @@ struct Collider
 
 };
 
-// TODO 1: Create a struct for the map layer
+
 struct MapLayer {
 	uint*			tiles = nullptr;
 	p2SString		name = nullptr;
@@ -47,14 +47,14 @@ struct MapLayer {
 
 // ----------------------------------------------------
 
-	// TODO 6: Short function to get the value of x,y
+	
 //iPoint getWorldPositionFromMap(int x, int y, uint tile_width);
 
 
 // ----------------------------------------------------
 struct TileSet
 {
-	// TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
+	
 	SDL_Rect GetTileRect(int id) const;
 
 	p2SString			name;
@@ -92,7 +92,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 
-	// TODO 2: Add a list/array of layers to the map!
+	
 	p2List<MapLayer*>	layers;
 
 	~MapData() {
@@ -141,7 +141,7 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
-	// TODO 8: Create a method that translates x,y coordinates from map positions to world positions
+	
 	iPoint MapToWorld(int x, int y) const;
 
 	fPoint GetInitialPlayerPos() const;
@@ -155,7 +155,7 @@ private:
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
-	// TODO 3: Create a method that loads a single layer
+	
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
 public:
