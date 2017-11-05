@@ -4,6 +4,7 @@
 
 j1Collision::j1Collision()
 {
+	name.create("collision");
 }
 
 
