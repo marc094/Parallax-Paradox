@@ -62,6 +62,13 @@ public:
 	{
 		return true;
 	}
+
+	struct Enemy
+	{
+		Animation* current_animation;
+		Animation Idle;
+		Animation Moving;
+	};
 };
 
 #endif

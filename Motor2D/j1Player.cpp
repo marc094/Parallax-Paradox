@@ -249,6 +249,7 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 				aux.w *= scale;
 				aux.h *= scale;
 
+
 				if (!App->debug) {
 					aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
 					aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
@@ -261,38 +262,33 @@ void j1Player::Checkcollisions(ColliderType collidertype)
 					player_rect = App->render->DrawQuad(player_rect, 255, 0, 0, 1.0f, 128);
 				}
 
-				if (player_rect.x + player_rect.w + speed_vector.x > aux.x && player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.y + player_rect.h + speed_vector.y > aux.y && player_rect.y + speed_vector.y < aux.y + aux.h)
-				{
-					if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x + player_rect.w + speed_vector.x > aux.x)
-					{
-						if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y + speed_vector.y > aux.y && speed_vector.y < 0)
-						{
-							speed_vector.y = 0;
-						}
-						else if (player_rect.y + player_rect.h + speed_vector.y > aux.y && speed_vector.y >= 0)
-						{
-							speed_vector.y = 0;
-							isjumping = false;
-							jumping->Reset();
-						}
-					}
-					if (player_rect.y + speed_vector.y < aux.y + aux.h && player_rect.y + player_rect.h + speed_vector.y > aux.y)
-					{
-						if (player_rect.x + speed_vector.x < aux.x + aux.w && player_rect.x + player_rect.w + speed_vector.x > aux.x + aux.w && speed_vector.x < 0)
-						{
-							speed_vector.x = 0;
-						}
-						else if (player_rect.x + player_rect.w + speed_vector.x > aux.x && speed_vector.x >= 0)
-						{
-							speed_vector.x = 0;
-						}
-					}
-				}
+				
 				i++;
 				checked = true;
 			}
 		}
 		j++;
+	}
+
+}
+
+{
+	{
+		if (entity.x  < collider.x + collider.w && entity.x + entity.w  > collider.x)
+		{
+			{
+			}
+			{
+				isjumping = false;
+				jumping->Reset();
+			}
+		}
+		{
+			{
+			}
+			{
+			}
+		}
 	}
 
 }

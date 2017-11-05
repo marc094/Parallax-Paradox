@@ -57,6 +57,8 @@ public:
 
 	void setJumping(bool jump) { isjumping = jump; }
 
+	void SetSpVecToCollisions(const SDL_Rect collider,const  SDL_Rect entity, fPoint& speed_vector);
+
 	void SwapLayer();
 
 	uint GetCurrentLayer();
