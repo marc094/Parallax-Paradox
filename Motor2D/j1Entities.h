@@ -56,10 +56,8 @@ public:
 	}
 
 	// Called before quitting
-	virtual bool CleanUp()
-	{
-		return true;
-	}
+	virtual bool CleanUp();
+
 
 	virtual bool Load(pugi::xml_node&)
 	{
@@ -80,6 +78,7 @@ public:
 		Animation* current_animation;
 		Animation idle_anim;
 		Animation moving_anim;
+		Animation alert_anim;
 		Rect collider;
 		fPoint position;
 		ColliderType currentLayer;
@@ -98,7 +97,7 @@ private:
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
 	SDL_Texture* enemy_texture;
-	
+	Animation exclamation;
 
 
 };

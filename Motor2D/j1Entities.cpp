@@ -34,7 +34,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 	ground_enemy_node = doc_node.child("Enemies").child("ground");
 	
 
-	
+	exclamation.PushBack({ 0,36,3,8 });
 
 
 	return true;
@@ -45,6 +45,7 @@ bool j1Entities::Start()
 	
 	Add_Enemy(GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
 
+	on_collision = false;
 	return true;
 }
 
@@ -55,7 +56,7 @@ bool j1Entities::Update(float dt)
 	while (current_enemy != NULL)
 	{
 		//Check Collisions 
-		
+
 		Rect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
 		collider_rect.x = current_enemy->data->position.x;
 		collider_rect.y = current_enemy->data->position.y;
@@ -64,24 +65,72 @@ bool j1Entities::Update(float dt)
 		player_rect.y = App->player->GetPosition().y;
 
 
-		on_collision = App->collision->CheckEnemyCollisions(collider_rect, player_rect );
+		if (App->collision->CheckEnemyCollisions(collider_rect, player_rect))
+			App->Reload();
 
 		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
 		
+
+
 		//Move
-		Move(&current_enemy->data->position, &current_enemy->data->speed_vect);
+		Rect alert_rect;
+		alert_rect.x = collider_rect.x - 50;
+		alert_rect.y = collider_rect.y - 50;
+		alert_rect.w = collider_rect.w + 100;
+		alert_rect.h = collider_rect.h + 100;
+
+		bool flipped = false;
+
+		if (App->collision->CheckEnemyCollisions(alert_rect, player_rect))
+		{
+			current_enemy->data->state = ALERT;
+		}
+	
+
+		if (current_enemy->data->state == ALERT)
+		{
+			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
+			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL());
+
+			if (player_rect.x < collider_rect.x)
+			{
+				flipped = true;
+			}
+
+			if (current_enemy->data->current_animation->Finished())
+			{
+				current_enemy->data->state = IDLE;
+			}
+		}
+		else
+		{
+			current_enemy->data->alert_anim.Reset();
+			current_enemy->data->state = IDLE;
+			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
+			Accelerate(&current_enemy->data->speed_vect, 0.3f, 0);
+		}
 		
+		Move(&current_enemy->data->position, &current_enemy->data->speed_vect);
+
 		//Gravity
-		Accelerate(&current_enemy->data->speed_vect, current_enemy->data->position.x, current_enemy->data->position.y);
+		Accelerate(&current_enemy->data->speed_vect, 0, 0.5f);
 		
 
 		//Blit
-		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL());
+
+		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL(), 1.0f, 0, 0, 0, true, flipped);
 		current_enemy = current_enemy->next;
 	}
 	return true;
 }
+bool j1Entities::CleanUp()
+{
+	App->tex->UnLoad(enemy_texture);
+	enemy_texture = nullptr;
+	Enemies.clear();
 
+	return true;
+}
 
 void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 {
@@ -111,6 +160,8 @@ void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 				aux->idle_anim = aux_anim;
 			else if (!strcmp(aux_anim.name, "walking"))
 				aux->moving_anim = aux_anim;
+			else if (!strcmp(aux_anim.name, "alert"))
+				aux->alert_anim = aux_anim;
 		}
 
 	}

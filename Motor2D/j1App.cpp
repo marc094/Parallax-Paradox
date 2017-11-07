@@ -404,6 +404,7 @@ bool j1App::ReloadNow() {
 			player->CleanUp() &
 			map->CleanUp() & 
 			scene->CleanUp() &
+			entities->CleanUp()&
 			audio->CleanUp();
 
 	if (ret)
@@ -411,6 +412,7 @@ bool j1App::ReloadNow() {
 			player->Awake(config.child(player->name.GetString())) &
 			map->Awake(config.child(map->name.GetString())) &
 			scene->Awake(config.child(scene->name.GetString())) &
+			entities->Awake(config.child(entities->name.GetString())) &
 			audio->Awake(config.child(audio->name.GetString()));
 
 	if (ret)
@@ -418,6 +420,7 @@ bool j1App::ReloadNow() {
 			map->Start() &
 			scene->Start() &
 			player->Start()&
+			entities->Start()&
 			audio->Start();
 
 	return ret;

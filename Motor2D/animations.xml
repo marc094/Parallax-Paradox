@@ -57,7 +57,11 @@
           <frame number="1" x="32" y ="0" w="12" h ="14"/>
           <frame number="2" x="17" y ="0" w="12" h ="14"/>
         </walking>
-
+        <alert frames="3" duration="0.08f" loop ="0">
+          <frame number="0" x="18" y ="46" w="10" h ="15"/>
+          <frame number="1" x="34" y ="48" w="10" h ="13"/>
+          <frame number="2" x="50" y ="46" w="10" h ="15"/>
+        </alert>
       </animationInfo>
     </ground>
   </Enemies>
