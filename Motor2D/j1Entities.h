@@ -6,6 +6,7 @@
 #include "Animation.h"
 #include "j1Map.h"
 
+
 class j1Entities :
 	public j1Module
 {
@@ -71,7 +72,8 @@ public:
 	}
 
 	void Add_Enemy(Type type, fPoint position, ColliderType layer);
-
+	void Move(fPoint* position, fPoint* speed_vector);
+	void j1Entities::Accelerate(fPoint* speed_vector, float x, float y);
 
 	struct Enemy
 	{
@@ -81,14 +83,14 @@ public:
 		Rect collider;
 		fPoint position;
 		ColliderType currentLayer;
-		Rect enemyrect;
+		SDL_Rect enemyrect;
 		State state;
 		Type type;
 		fPoint speed_vect;
 		bool gravity;
 	};
 	p2List<Enemy*> Enemies;
-	
+	bool on_collision;
 
 
 private:

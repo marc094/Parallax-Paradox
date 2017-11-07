@@ -59,7 +59,7 @@ public:
 
 	uint GetCurrentLayer();
 
-	Rect player_rect;
+	SDL_Rect player_rect;
 private:
 	PlayerState state = IDLE;
 	bool isjumping;

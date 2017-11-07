@@ -54,12 +54,27 @@ bool j1Entities::Update(float dt)
 	p2List_item<Enemy*>* current_enemy = Enemies.start;
 	while (current_enemy != NULL)
 	{
-		//Check Collisions
+		//Check Collisions 
+		
 		Rect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
 		collider_rect.x = current_enemy->data->position.x;
 		collider_rect.y = current_enemy->data->position.y;
-		bool on_collision = App->collision->CheckEnemyCollisions(collider_rect, App->player->player_rect);
+		Rect player_rect = App->player->player_rect;
+		player_rect.x = App->player->GetPosition().x;
+		player_rect.y = App->player->GetPosition().y;
+
+
+		on_collision = App->collision->CheckEnemyCollisions(collider_rect, player_rect );
+
+		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
 		
+		//Move
+		Move(&current_enemy->data->position, &current_enemy->data->speed_vect);
+		
+		//Gravity
+		Accelerate(&current_enemy->data->speed_vect, current_enemy->data->position.x, current_enemy->data->position.y);
+		
+
 		//Blit
 		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL());
 		current_enemy = current_enemy->next;
@@ -105,4 +120,26 @@ void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 	aux->collider = aux->current_animation->GetCurrentFrame().rect;
 
 	Enemies.add(aux);
+}
+
+void j1Entities::Move(fPoint* position, fPoint* speed_vector) {
+
+
+	position->x += speed_vector->x;
+	position->y += speed_vector->y;
+
+
+	speed_vector->x = REDUCE_TO(speed_vector->x, 0, DECELERATION * 2);
+	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
+
+
+}
+
+void j1Entities::Accelerate(fPoint* speed_vector, float x, float y) {
+	speed_vector->x += (x) / (1.0f / ACCELERATION);
+	speed_vector->y += (y) / (1.0f / ACCELERATION);
+
+	//speed_vector->x = CLAMP(speed_vector.x, -5, 5);
+	//speed_vector->y = CLAMP(speed_vector.y, -10, 10);
+
 }
