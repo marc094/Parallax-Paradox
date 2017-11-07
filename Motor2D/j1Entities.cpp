@@ -68,9 +68,7 @@ bool j1Entities::Update(float dt)
 		if (App->collision->CheckEnemyCollisions(collider_rect, player_rect))
 			App->Reload();
 
-		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
 		
-
 
 		//Move
 		Rect alert_rect;
@@ -107,10 +105,13 @@ bool j1Entities::Update(float dt)
 			current_enemy->data->alert_anim.Reset();
 			current_enemy->data->state = IDLE;
 			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
-			Accelerate(&current_enemy->data->speed_vect, 0.3f, 0);
+			Accelerate(&current_enemy->data->speed_vect, 0.6f, 0);
 		}
 		
+		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
+
 		Move(&current_enemy->data->position, &current_enemy->data->speed_vect);
+
 
 		//Gravity
 		Accelerate(&current_enemy->data->speed_vect, 0, 0.5f);
