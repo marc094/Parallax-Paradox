@@ -52,9 +52,8 @@ bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
-void j1Collision::Checkcollisions(ColliderType collidertype, Rect rect_frame,fPoint position, fPoint* speed_vector)
+void j1Collision::Checkcollisions(ColliderType collidertype, Rect rect_frame, fPoint position, fPoint* speed_vector)
 {
-
 	uint j = 0;
 	bool checked = false;
 	while (checked == false && j < App->map->data.layers.count() && App->map->data.layers[j] != NULL)
@@ -77,8 +76,6 @@ void j1Collision::Checkcollisions(ColliderType collidertype, Rect rect_frame,fPo
 				aux.w *= scale;
 				aux.h *= scale;
 
-				SetSpVecToCollisions(aux, player_rect, *speed_vector);
-
 				if (!App->debug) {
 					aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
 					aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
@@ -89,9 +86,16 @@ void j1Collision::Checkcollisions(ColliderType collidertype, Rect rect_frame,fPo
 				else {
 					App->render->DrawQuad(aux.toSDL(), 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
 					App->render->DrawQuad(player_rect.toSDL(), 255, 0, 0, 1.0f, 128);
+					
+					aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
+					aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
+
+					player_rect.x = (int)(App->render->camera.x * 1.0f) + (player_rect.x /** scale*/);
+					player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
 				}
 
-
+				SetSpVecToCollisions(aux, player_rect, *speed_vector);
+				
 				i++;
 				checked = true;
 			}
@@ -130,7 +134,7 @@ void j1Collision::SetSpVecToCollisions(const Rect collider1, const  Rect collide
 	}
 
 }
-bool j1Collision::CheckEnemyCollisions(const Rect collider1, const  Rect collider2)
+bool j1Collision::CheckEnemyCollisions(const Rect collider1, const Rect collider2)
 {
 	bool ret = false;
 	if (collider2.x + collider2.w   > collider1.x && collider2.x  < collider1.x + collider1.w
