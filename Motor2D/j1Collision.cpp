@@ -52,7 +52,7 @@ bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
-void j1Collision::Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame,fPoint position, fPoint* speed_vector)
+void j1Collision::Checkcollisions(ColliderType collidertype, Rect rect_frame,fPoint position, fPoint* speed_vector)
 {
 
 	uint j = 0;
@@ -64,11 +64,11 @@ void j1Collision::Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame
 			uint i = 0;
 			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
 			{
-				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
+				Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
 
 				fPoint collision_pos = position * App->map->data.layers[j]->parallax_speed;
 
-				SDL_Rect player_rect = rect_frame;
+				Rect player_rect = rect_frame;
 				player_rect.x = position.x;
 				player_rect.y = position.y;
 				player_rect.w *= scale;
@@ -87,8 +87,8 @@ void j1Collision::Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame
 					player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
 				}
 				else {
-					aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
-					player_rect = App->render->DrawQuad(player_rect, 255, 0, 0, 1.0f, 128);
+					App->render->DrawQuad(aux.toSDL(), 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
+					App->render->DrawQuad(player_rect.toSDL(), 255, 0, 0, 1.0f, 128);
 				}
 
 
@@ -100,7 +100,7 @@ void j1Collision::Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame
 	}
 
 }
-void j1Collision::SetSpVecToCollisions(const SDL_Rect collider1, const  SDL_Rect collider2, fPoint &speed_vector)
+void j1Collision::SetSpVecToCollisions(const Rect collider1, const  Rect collider2, fPoint &speed_vector)
 {
 	if (collider2.x + collider2.w + speed_vector.x > collider1.x && collider2.x + speed_vector.x < collider1.x + collider1.w
 		&& collider2.y + collider2.h + speed_vector.y > collider1.y && collider2.y + speed_vector.y < collider1.y + collider1.h) //there's contact
@@ -130,7 +130,7 @@ void j1Collision::SetSpVecToCollisions(const SDL_Rect collider1, const  SDL_Rect
 	}
 
 }
-bool j1Collision::CheckEnemyCollisions(const SDL_Rect collider1, const  SDL_Rect collider2)
+bool j1Collision::CheckEnemyCollisions(const Rect collider1, const  Rect collider2)
 {
 	bool ret = false;
 	if (collider2.x + collider2.w   > collider1.x && collider2.x  < collider1.x + collider1.w

@@ -428,7 +428,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				if (tile_id != 0)
 				{
 					Collider* aux = new Collider;
-					SDL_Rect rect;
+					Rect rect;
 					rect.w = data.tile_width;
 					rect.h = data.tile_height;
 					rect.x = ((rect.w) * (tile_index % data.width));
@@ -448,7 +448,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 			if (tile_id != 0 && type != COLLIDER_NONE)
 			{
 				Collider* aux = new Collider;
-				SDL_Rect rect;
+				Rect rect;
 				rect.w = data.tile_width;
 				rect.h = data.tile_height;
 				rect.x = ((rect.w) * (tile_index % data.width));

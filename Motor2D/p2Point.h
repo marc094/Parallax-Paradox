@@ -7,6 +7,33 @@
 
 #include "p2Defs.h"
 #include <math.h>
+#include "SDL\include\SDL_rect.h"
+
+
+struct Rect {
+	int x, y, w, h;
+
+	SDL_Rect toSDL() {
+		return { x, y, w, h };
+	}
+
+	Rect(const Rect &rect) {
+		x = rect.x;
+		y = rect.y;
+		w = rect.w;
+		h = rect.h;
+	}
+
+	Rect(const SDL_Rect &rect) {
+		x = rect.x;
+		y = rect.y;
+		w = rect.w;
+		h = rect.h;
+	}
+
+	Rect()
+	{}
+};
 
 template<class TYPE>
 class p2Point

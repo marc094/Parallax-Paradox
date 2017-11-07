@@ -14,7 +14,7 @@ enum ColliderType {
 };
 struct Collider
 {
-	SDL_Rect rect;
+	Rect rect;
 	ColliderType collidertype;
 
 };
@@ -49,10 +49,10 @@ public:
 	virtual bool Load(pugi::xml_node&);
 
 	virtual bool Save(pugi::xml_node&) const;
-	void Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame, fPoint position , fPoint* speed_vector);
-	bool CheckEnemyCollisions(const SDL_Rect collider, const  SDL_Rect entity);
+	void Checkcollisions(ColliderType collidertype, Rect rect_frame, fPoint position , fPoint* speed_vector);
+	bool CheckEnemyCollisions(const Rect collider, const  Rect entity);
 private:
-	void SetSpVecToCollisions(const SDL_Rect collider, const  SDL_Rect entity, fPoint &speed_vector);
+	void SetSpVecToCollisions(const Rect collider, const  Rect entity, fPoint &speed_vector);
 	int scale;
 };
 #endif

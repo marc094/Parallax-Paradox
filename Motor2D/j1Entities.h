@@ -78,10 +78,10 @@ public:
 		Animation* current_animation;
 		Animation idle_anim;
 		Animation moving_anim;
-		SDL_Rect collider;
+		Rect collider;
 		fPoint position;
 		ColliderType currentLayer;
-		SDL_Rect enemyrect;
+		Rect enemyrect;
 		State state;
 		Type type;
 		fPoint speed_vect;

@@ -132,7 +132,7 @@ bool j1Player::Update(float dt)
 	if (position.y > 1400)
 		App->Reload();
 
-	App->render->Blit(player_texture, position.x, position.y, &player_rect, 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(player_texture, position.x, position.y, &player_rect.toSDL(), 1.0f, 0, 0, 0, true, flipped);
 	return true;
 }
 
