@@ -35,4 +35,8 @@
     <animations>animations.xml</animations>
   </player>
 
+  <entities>
+    <animations>animations.xml</animations>
+  </entities>
+
 </config>
