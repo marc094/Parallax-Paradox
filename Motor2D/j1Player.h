@@ -51,7 +51,7 @@ public:
 
 	bool Save(pugi::xml_node&) const;
 
-	void Checkcollisions(ColliderType collidertype);
+	void Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame);
 
 	bool isJumping() const { return isjumping; }
 

@@ -5,20 +5,8 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "j1Collision.h"
 
-enum ColliderType {
-	COLLIDER_PLAYER = 1,
-	COLLIDER_BACK_LAYER,
-	COLLIDER_FRONT_LAYER,
-	COLLIDER_ENEMY,
-	COLLIDER_NONE
-};
-struct Collider
-{
-	SDL_Rect rect;
-	ColliderType collidertype;
-
-};
 
 
 struct MapLayer {

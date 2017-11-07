@@ -35,10 +35,8 @@ public:
 
 
 	// Called before the first frame
-	virtual bool Start()
-	{
-		return true;
-	}
+	virtual bool Start();
+
 
 	// Called each loop iteration
 	virtual bool PreUpdate()
@@ -53,10 +51,8 @@ public:
 	}
 
 	// Called each loop iteration
-	virtual bool PostUpdate()
-	{
-		return true;
-	}
+	virtual bool PostUpdate();
+
 
 	// Called before quitting
 	virtual bool CleanUp()
@@ -85,18 +81,22 @@ public:
 		SDL_Rect collider;
 		fPoint position;
 		ColliderType currentLayer;
+		ColliderType enemycollider;
+		SDL_Rect enemyrect;
 		State state;
 		Type type;
 		fPoint speed_vect;
 		bool gravity;
 	};
-	p2List<Enemy*>* Enemies;
+	p2List<Enemy*> Enemies;
+
+
 
 private:
 	pugi::xml_document enemy_animations;
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
-
+	SDL_Texture* enemy_texture;
 	
 
 

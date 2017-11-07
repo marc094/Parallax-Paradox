@@ -5,6 +5,20 @@
 #include "SDL\include\SDL_rect.h"
 #include "p2Point.h"
 
+enum ColliderType {
+	COLLIDER_PLAYER = 1,
+	COLLIDER_BACK_LAYER,
+	COLLIDER_FRONT_LAYER,
+	COLLIDER_ENEMY,
+	COLLIDER_NONE
+};
+struct Collider
+{
+	SDL_Rect rect;
+	ColliderType collidertype;
+
+};
+
 class j1Collision :
 	public j1Module
 {
@@ -35,8 +49,9 @@ public:
 	virtual bool Load(pugi::xml_node&);
 
 	virtual bool Save(pugi::xml_node&) const;
-
+	void Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame, fPoint position , fPoint* speed_vector);
 private:
 	void SetSpVecToCollisions(const SDL_Rect collider, const  SDL_Rect entity, fPoint &speed_vector);
+	int scale;
 };
 #endif

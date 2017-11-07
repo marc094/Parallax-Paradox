@@ -9,6 +9,7 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+#include "j1Collision.h"
 
 
 j1Player::j1Player()
@@ -116,7 +117,13 @@ bool j1Player::PostUpdate()
 	AnimationFrame frame = current_animation->GetCurrentFrame();
 
 
-	Checkcollisions(current_layer);
+	App->collision->Checkcollisions(current_layer, frame.rect,position,&speed_vector);
+	if (speed_vector.y == 0)
+	{
+			speed_vector.y = 0;
+			isjumping = false;
+			jumping->Reset();
+	}
 
 	Move();
 
@@ -224,86 +231,6 @@ void j1Player::SelectAnim(fPoint speed_vect)
 		current_animation = idle;
 }
 
-void j1Player::Checkcollisions(ColliderType collidertype)
-{
-	AnimationFrame frame = current_animation->frames[current_animation->getFrameIndex()];
-	uint j = 0;
-	bool checked = false;
-	while (checked == false && j < App->map->data.layers.count() && App->map->data.layers[j] != NULL)
-	{
-		if (App->map->data.layers[j]->layer_colliders[0]->collidertype == collidertype)
-		{
-			uint i = 0;
-			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
-			{
-				SDL_Rect aux = App->map->data.layers[j]->layer_colliders[i]->rect;
-
-				fPoint collision_pos = position * App->map->data.layers[j]->parallax_speed;
-
-				SDL_Rect player_rect = frame.rect;
-				player_rect.x = position.x;
-				player_rect.y = position.y;
-				player_rect.w *= scale;
-				player_rect.h *= scale;
-
-				aux.w *= scale;
-				aux.h *= scale;
-
-				SetSpVecToCollisions(aux, player_rect, speed_vector);
-
-				if (!App->debug) {
-					aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed) + (aux.x /** scale*/);
-					aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed) + (aux.y /** scale*/);
-
-					player_rect.x = (int)(App->render->camera.x * 1.0f) + (player_rect.x /** scale*/);
-					player_rect.y = (int)(App->render->camera.y * 1.0f) + (player_rect.y /** scale*/);
-				}
-				else {
-					aux = App->render->DrawQuad(aux, 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
-					player_rect = App->render->DrawQuad(player_rect, 255, 0, 0, 1.0f, 128);
-				}
-
-				
-				i++;
-				checked = true;
-			}
-		}
-		j++;
-	}
-
-}
-
-void j1Player::SetSpVecToCollisions(const SDL_Rect collider, const  SDL_Rect entity, fPoint &speed_vector)
-{
-	if (entity.x + entity.w + speed_vector.x > collider.x && entity.x + speed_vector.x < collider.x + collider.w && entity.y + entity.h + speed_vector.y > collider.y && entity.y + speed_vector.y < collider.y + collider.h)
-	{
-		if (entity.x  < collider.x + collider.w && entity.x + entity.w  > collider.x)
-		{
-			if (entity.y + speed_vector.y < collider.y + collider.h && entity.y + speed_vector.y > collider.y && speed_vector.y < 0)
-			{
-				speed_vector.y = 0;
-			}
-			else if (entity.y + entity.h + speed_vector.y > collider.y && speed_vector.y >= 0)
-			{
-				speed_vector.y = 0;
-				isjumping = false;
-				jumping->Reset();
-			}
-		}
-		if (entity.y  < collider.y + collider.h && entity.y + entity.h  > collider.y)
-		{
-			if (entity.x + speed_vector.x < collider.x + collider.w && entity.x + entity.w + speed_vector.x > collider.x + collider.w && speed_vector.x < 0)
-			{
-				speed_vector.x = 0;
-			}
-			else if (entity.x + entity.w + speed_vector.x > collider.x && speed_vector.x >= 0)
-			{
-				speed_vector.x = 0;
-			}
-		}
-	}
-
-}
 
 void j1Player::SwapLayer() {
 	if (current_layer == COLLIDER_BACK_LAYER) {

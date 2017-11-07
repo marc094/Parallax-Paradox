@@ -2,7 +2,8 @@
 #include "j1App.h"
 #include "p2Defs.h"
 #include "p2Log.h"
-
+#include "j1Render.h"
+#include "j1Textures.h"
 
 j1Entities::j1Entities() : j1Module()
 {
@@ -26,13 +27,38 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		ret = false;
 	}
 
+
+
 	pugi::xml_node doc_node = enemy_animations.child("animations");
 	ground_enemy_node = doc_node.child("Enemies").child("ground");
+	
 
-	Add_Enemy(GROUND, { 0,0 }, COLLIDER_FRONT_LAYER);
+	
+
 
 	return true;
 }
+bool j1Entities::Start()
+{	
+	enemy_texture = App->tex->Load(enemy_animations.first_child().child("spritesheet").attribute("path").as_string());
+	
+	Add_Enemy(GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
+
+	return true;
+}
+
+bool j1Entities::PostUpdate()
+{
+	//Blit 
+	p2List_item<Enemy*>* current_enemy = Enemies.start;
+	while (!current_enemy == NULL)
+	{
+		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect);
+		current_enemy = current_enemy->next;
+	}
+	return true;
+}
+
 
 void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 {
@@ -70,5 +96,5 @@ void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 	aux->current_animation = &aux->idle_anim;
 	aux->collider = aux->current_animation->GetCurrentFrame().rect;
 
-	Enemies->add(aux);
+	Enemies.add(aux);
 }
