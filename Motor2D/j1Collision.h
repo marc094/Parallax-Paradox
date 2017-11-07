@@ -50,6 +50,7 @@ public:
 
 	virtual bool Save(pugi::xml_node&) const;
 	void Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame, fPoint position , fPoint* speed_vector);
+	bool CheckEnemyCollisions(const SDL_Rect collider, const  SDL_Rect entity);
 private:
 	void SetSpVecToCollisions(const SDL_Rect collider, const  SDL_Rect entity, fPoint &speed_vector);
 	int scale;

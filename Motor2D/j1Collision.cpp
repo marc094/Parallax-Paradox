@@ -130,3 +130,34 @@ void j1Collision::SetSpVecToCollisions(const SDL_Rect collider1, const  SDL_Rect
 	}
 
 }
+bool j1Collision::CheckEnemyCollisions(const SDL_Rect collider1, const  SDL_Rect collider2)
+{
+	bool ret = false;
+	if (collider2.x + collider2.w   > collider1.x && collider2.x  < collider1.x + collider1.w
+		&& collider2.y + collider2.h > collider1.y && collider2.y < collider1.y + collider1.h) //there's contact
+	{
+		if (collider2.x < collider1.x + collider1.w && collider2.x + collider2.w > collider1.x) //collider2 is in x-axis collision with collider1
+		{
+			if (collider2.y < collider1.y + collider1.h && collider2.y > collider1.y)
+			{
+				ret = true;
+			}
+			else if (collider2.y + collider2.h  > collider1.y )
+			{
+				ret = true;
+			}
+		}
+		if (collider2.y < collider1.y + collider2.h && collider2.y + collider2.h > collider1.y)
+		{
+			if (collider2.x < collider1.x + collider1.w && collider2.x + collider2.w > collider1.x + collider1.w)
+			{
+				ret = true;
+			}
+			else if (collider2.x + collider2.w > collider1.x)
+			{
+				ret = true;
+			}
+		}
+	}
+	return ret;
+}

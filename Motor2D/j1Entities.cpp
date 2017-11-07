@@ -4,6 +4,7 @@
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Textures.h"
+#include "j1Player.h"
 
 j1Entities::j1Entities() : j1Module()
 {
@@ -47,12 +48,18 @@ bool j1Entities::Start()
 	return true;
 }
 
-bool j1Entities::PostUpdate()
+bool j1Entities::Update(float dt)
 {
-	//Blit 
+
 	p2List_item<Enemy*>* current_enemy = Enemies.start;
 	while (!current_enemy == NULL)
 	{
+		//Check Collisions
+		SDL_Rect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
+		collider_rect.x = current_enemy->data->position.x;
+		collider_rect.y = current_enemy->data->position.y;
+		bool on_collision = App->collision->CheckEnemyCollisions(collider_rect, App->player->player_rect);
+		
 		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect);
 		current_enemy = current_enemy->next;
 	}

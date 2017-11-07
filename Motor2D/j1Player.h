@@ -51,17 +51,15 @@ public:
 
 	bool Save(pugi::xml_node&) const;
 
-	void Checkcollisions(ColliderType collidertype, SDL_Rect rect_frame);
-
 	bool isJumping() const { return isjumping; }
 
 	void setJumping(bool jump) { isjumping = jump; }
 
-	void SetSpVecToCollisions(const SDL_Rect collider,const  SDL_Rect entity, fPoint& speed_vector);
-
 	void SwapLayer();
 
 	uint GetCurrentLayer();
+
+	SDL_Rect player_rect;
 private:
 	PlayerState state = IDLE;
 	bool isjumping;

@@ -97,32 +97,26 @@ bool j1Player::Start()
 // Called each loop iteration
 bool j1Player::PreUpdate()
 {
+	AnimationFrame frame = current_animation->GetCurrentFrame();
+	player_rect = frame.rect;
+
 	return true;
 }
 
 // Called each loop iteration
 bool j1Player::Update(float dt)
 {
-
-	return true;
-}
-
-// Called each loop iteration
-bool j1Player::PostUpdate()
-{
-
 	SelectAnim(speed_vector);
 
 
-	AnimationFrame frame = current_animation->GetCurrentFrame();
 
 
-	App->collision->Checkcollisions(current_layer, frame.rect,position,&speed_vector);
+	App->collision->Checkcollisions(current_layer, player_rect, position, &speed_vector);
 	if (speed_vector.y == 0)
 	{
-			speed_vector.y = 0;
-			isjumping = false;
-			jumping->Reset();
+		speed_vector.y = 0;
+		isjumping = false;
+		jumping->Reset();
 	}
 
 	Move();
@@ -138,7 +132,15 @@ bool j1Player::PostUpdate()
 	if (position.y > 1400)
 		App->Reload();
 
-	App->render->Blit(player_texture, position.x, position.y, &frame.rect, 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(player_texture, position.x, position.y, &player_rect, 1.0f, 0, 0, 0, true, flipped);
+	return true;
+}
+
+// Called each loop iteration
+bool j1Player::PostUpdate()
+{
+
+	
 
 	return true;
 }

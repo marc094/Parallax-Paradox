@@ -45,14 +45,14 @@ public:
 	}
 
 	// Called each loop iteration
-	virtual bool Update(float dt)
+	virtual bool Update(float dt);
+
+
+	// Called each loop iteration
+	virtual bool PostUpdate()
 	{
 		return true;
 	}
-
-	// Called each loop iteration
-	virtual bool PostUpdate();
-
 
 	// Called before quitting
 	virtual bool CleanUp()
@@ -81,7 +81,6 @@ public:
 		SDL_Rect collider;
 		fPoint position;
 		ColliderType currentLayer;
-		ColliderType enemycollider;
 		SDL_Rect enemyrect;
 		State state;
 		Type type;
@@ -89,7 +88,7 @@ public:
 		bool gravity;
 	};
 	p2List<Enemy*> Enemies;
-
+	
 
 
 private:
