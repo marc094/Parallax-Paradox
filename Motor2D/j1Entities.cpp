@@ -32,6 +32,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 
 	pugi::xml_node doc_node = enemy_animations.child("animations");
 	ground_enemy_node = doc_node.child("Enemies").child("ground");
+	boxer_enemy_node = doc_node.child("Enemies").child("boxer");
 	
 
 	exclamation.PushBack({ 0,36,3,8 });
@@ -43,7 +44,9 @@ bool j1Entities::Start()
 {	
 	enemy_texture = App->tex->Load(enemy_animations.first_child().child("spritesheet").attribute("path").as_string());
 	
+
 	Add_Enemy(GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
+	Add_Enemy(BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
 
 	on_collision = false;
 	return true;
@@ -105,7 +108,6 @@ bool j1Entities::Update(float dt)
 			current_enemy->data->alert_anim.Reset();
 			current_enemy->data->state = IDLE;
 			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
-			Accelerate(&current_enemy->data->speed_vect, 0.6f, 0);
 		}
 		
 		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
@@ -141,33 +143,42 @@ void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 	aux->speed_vect = { 0,0 };
 	aux->currentLayer = layer;
 
+	pugi::xml_node current_node;
+
 	if (type == GROUND)
 	{
-		for (pugi::xml_node animation : ground_enemy_node.child("animationInfo").children()) {
-
-			Animation aux_anim;
-
-			aux_anim.name = animation.name();
-			aux_anim.speed = animation.attribute("duration").as_float();
-			aux_anim.loop = animation.attribute("loop").as_bool();
-
-			for (pugi::xml_node frames : animation.children())
-			{
-				SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
-				aux_anim.PushBack(aux_rect);
-			}
-
-			if (!strcmp(aux_anim.name, "idle"))
-				aux->idle_anim = aux_anim;
-			else if (!strcmp(aux_anim.name, "walking"))
-				aux->moving_anim = aux_anim;
-			else if (!strcmp(aux_anim.name, "alert"))
-				aux->alert_anim = aux_anim;
-		}
-
+		current_node = ground_enemy_node;
+	}
+	else if (type == BOXER)
+	{
+		current_node = boxer_enemy_node;
 	}
 
-	aux->gravity = ground_enemy_node.child("enemyInfo").attribute("gravity").as_bool();
+	for (pugi::xml_node animation : current_node.child("animationInfo").children()) {
+
+		Animation aux_anim;
+
+		aux_anim.name = animation.name();
+		aux_anim.speed = animation.attribute("duration").as_float();
+		aux_anim.loop = animation.attribute("loop").as_bool();
+
+		for (pugi::xml_node frames : animation.children())
+		{
+			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
+			aux_anim.PushBack(aux_rect);
+		}
+
+		if (!strcmp(aux_anim.name, "idle"))
+			aux->idle_anim = aux_anim;
+		else if (!strcmp(aux_anim.name, "walking"))
+			aux->moving_anim = aux_anim;
+		else if (!strcmp(aux_anim.name, "alert"))
+			aux->alert_anim = aux_anim;
+	}
+
+	
+
+	aux->gravity = current_node.child("enemyInfo").attribute("gravity").as_bool();
 	aux->current_animation = &aux->idle_anim;
 	aux->collider = aux->current_animation->GetCurrentFrame().rect;
 

@@ -175,6 +175,9 @@ void j1App::FinishUpdate()
 	{
 		ReloadNow();
 	}
+
+
+
 }
 
 // Call modules before each loop iteration

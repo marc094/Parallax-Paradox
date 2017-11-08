@@ -14,7 +14,7 @@ enum ColliderType {
 };
 struct Collider
 {
-	Rect rect;
+	iRect rect;
 	ColliderType collidertype;
 
 };

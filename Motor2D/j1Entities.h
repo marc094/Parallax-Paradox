@@ -22,6 +22,7 @@ public:
 	enum Type
 	{
 		GROUND,
+		BOXER,
 		AIR,
 	};
 
@@ -79,7 +80,7 @@ public:
 		Animation idle_anim;
 		Animation moving_anim;
 		Animation alert_anim;
-		Rect collider;
+		iRect collider;
 		fPoint position;
 		ColliderType currentLayer;
 		SDL_Rect enemyrect;
@@ -96,9 +97,10 @@ private:
 	pugi::xml_document enemy_animations;
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
+	pugi::xml_node boxer_enemy_node;
 	SDL_Texture* enemy_texture;
 	Animation exclamation;
-
+	float parallax_speed;
 
 };
 
