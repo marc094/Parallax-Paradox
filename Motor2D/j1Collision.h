@@ -49,10 +49,10 @@ public:
 	virtual bool Load(pugi::xml_node&);
 
 	virtual bool Save(pugi::xml_node&) const;
-	void Checkcollisions(ColliderType collidertype, Rect rect_frame, fPoint position , fPoint* speed_vector);
-	bool CheckEnemyCollisions(const Rect collider, const  Rect entity);
+	void Checkcollisions(ColliderType collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector) const;
+	bool DoCollide(const iRect collider1, const iRect collider2) const;
 private:
-	void SetSpVecToCollisions(const Rect collider, const  Rect entity, fPoint &speed_vector);
+	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector) const;
 	int scale;
 };
 #endif

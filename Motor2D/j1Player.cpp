@@ -98,7 +98,7 @@ bool j1Player::Start()
 bool j1Player::PreUpdate()
 {
 	AnimationFrame frame = current_animation->GetCurrentFrame();
-	player_rect = frame.rect.toSDL();
+	player_rect = frame.rect.toSDL_Rect();
 	return true;
 }
 

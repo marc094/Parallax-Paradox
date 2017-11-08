@@ -57,21 +57,21 @@ bool j1Entities::Update(float dt)
 	{
 		//Check Collisions 
 
-		Rect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
+		iRect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
 		collider_rect.x = current_enemy->data->position.x;
 		collider_rect.y = current_enemy->data->position.y;
-		Rect player_rect = App->player->player_rect;
+		iRect player_rect = App->player->player_rect;
 		player_rect.x = App->player->GetPosition().x;
 		player_rect.y = App->player->GetPosition().y;
 
 
-		if (App->collision->CheckEnemyCollisions(collider_rect, player_rect))
+		if (App->collision->DoCollide(collider_rect, player_rect))
 			App->Reload();
 
 		
 
 		//Move
-		Rect alert_rect;
+		iRect alert_rect;
 		alert_rect.x = collider_rect.x - 50;
 		alert_rect.y = collider_rect.y - 50;
 		alert_rect.w = collider_rect.w + 100;
@@ -79,7 +79,7 @@ bool j1Entities::Update(float dt)
 
 		bool flipped = false;
 
-		if (App->collision->CheckEnemyCollisions(alert_rect, player_rect))
+		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
 			current_enemy->data->state = ALERT;
 		}
@@ -88,7 +88,7 @@ bool j1Entities::Update(float dt)
 		if (current_enemy->data->state == ALERT)
 		{
 			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
-			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL());
+			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL_Rect());
 
 			if (player_rect.x < collider_rect.x)
 			{
@@ -119,7 +119,7 @@ bool j1Entities::Update(float dt)
 
 		//Blit
 
-		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL(), 1.0f, 0, 0, 0, true, flipped);
+		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 		current_enemy = current_enemy->next;
 	}
 	return true;

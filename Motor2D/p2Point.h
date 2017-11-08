@@ -9,12 +9,12 @@
 #include <math.h>
 #include "SDL\include\SDL_rect.h"
 
-
+template<class TYPE>
 struct Rect {
-	int x, y, w, h;
+	TYPE x, y, w, h;
 
-	SDL_Rect toSDL() {
-		return { x, y, w, h };
+	SDL_Rect toSDL_Rect() {
+		return { (int)x, (int)y, (int)w, (int)h };
 	}
 
 	Rect(const Rect &rect) {
@@ -31,9 +31,16 @@ struct Rect {
 		h = rect.h;
 	}
 
-	Rect()
-	{}
+	Rect operator *(TYPE n) const {
+		Rect<TYPE> r(x * n, y * n, w * n, h * n);
+		return r;
+	}
+
+	Rect(){}
+	Rect(TYPE x, TYPE y, TYPE w, TYPE h) : x(x), y(y), w(w), h(h){}
+	~Rect(){}
 };
+typedef Rect<int> iRect;
 
 template<class TYPE>
 class p2Point
@@ -154,7 +161,8 @@ public:
 		return abs(v.x - x) + abs(v.y - y);
 	}
 
-	p2Point operator *(TYPE f) {
+	p2Point operator *(const TYPE& f) const
+	{
 		p2Point<TYPE> p{
 			x * f,
 			y * f

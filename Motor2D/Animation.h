@@ -6,7 +6,7 @@
 #include "p2DynArray.h"
 
 struct AnimationFrame {
-	Rect rect;
+	iRect rect;
 	iPoint pivot;
 };
 
@@ -35,7 +35,7 @@ public:
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
 	{
-		frames.PushBack({ Rect(rect), pivot });
+		frames.PushBack({ iRect(rect), pivot });
 		last_frame++;
 	}
 
@@ -74,7 +74,7 @@ public:
 		speed = anim.speed;
 
 		for (uint i = 0; i < anim.frames.Count(); i++)
-			frames.PushBack({ Rect(anim.frames[i].rect), anim.frames[i].pivot });
+			frames.PushBack({ iRect(anim.frames[i].rect), anim.frames[i].pivot });
 
 		loops = anim.loops;
 		name = anim.name;
