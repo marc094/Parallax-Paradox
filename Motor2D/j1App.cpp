@@ -93,6 +93,7 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	}
 
 	if(ret == true)
@@ -175,7 +176,8 @@ void j1App::PrepareUpdate()
 	frame_count++;
 	last_sec_frame_count++;
 
-
+	// TODO 4: Calculate the dt: differential time since last frame
+	delta_time = frame_time.Read();
 	frame_time.Start();
 }
 
@@ -200,7 +202,8 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 	}
 
-	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float avg_fps = float(frame_count) / ten_sec_timer.ReadSec();
+	ten_sec_timer.ReadSec() >= 10 ? ten_sec_timer.Start(), frame_count = 0 : ' '; //This is questionable
 	float seconds_since_startup = startup_time.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
 	uint32 frames_on_last_update = prev_last_sec_frame_count;
@@ -209,6 +212,16 @@ void j1App::FinishUpdate()
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
 	App->win->SetTitle(title);
+
+	// TODO 2: Use SDL_Delay to make sure you get your capped framerate
+	delay_time.Start();
+	int delay_ms = (1000 / framerate_cap) - last_frame_ms;
+	if (delay_ms > 0)
+		SDL_Delay(delay_ms);
+
+	// TODO 3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
+	uint wait_ms = delay_time.Read();
+	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
 // Call modules before each loop iteration
@@ -249,7 +262,10 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(dt);
+		// TODO 5: send dt as an argument to all updates
+		// you will need to update module parent class
+		// and all modules that use update
+		ret = pModule->Update(dt);
 	}
 
 	return ret;
