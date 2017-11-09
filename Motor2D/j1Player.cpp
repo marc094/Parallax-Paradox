@@ -47,23 +47,23 @@ bool j1Player::Awake(pugi::xml_node& conf)
 
 	for (pugi::xml_node animation : doc_node.children()) {
 		
-		Animation* aux = new Animation();
+		Animation aux/* = new Animation()*/;
 
-		aux->name = animation.name();
-		aux->speed = animation.attribute("duration").as_float();
-		aux->loop = animation.attribute("loop").as_bool();
+		aux.name = animation.name();
+		aux.speed = animation.attribute("duration").as_float();
+		aux.loop = animation.attribute("loop").as_bool();
 
-		if (!strcmp(aux->name, "idle"))
+		if (!strcmp(aux.name, "idle"))
 			idle = aux;
-		else if (!strcmp(aux->name, "jumping"))
+		else if (!strcmp(aux.name, "jumping"))
 			jumping = aux;
-		else if (!strcmp(aux->name, "falling"))
+		else if (!strcmp(aux.name, "falling"))
 			falling = aux;
-		else if (!strcmp(aux->name, "landing"))
+		else if (!strcmp(aux.name, "landing"))
 			landing = aux;
-		else if (!strcmp(aux->name, "walking"))
+		else if (!strcmp(aux.name, "walking"))
 			walking = aux;
-		else if (!strcmp(aux->name, "changing"))
+		else if (!strcmp(aux.name, "changing"))
 			changing_layers = aux;
 
 

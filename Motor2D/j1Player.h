@@ -74,12 +74,12 @@ private:
 	SDL_Texture* player_texture;
 	Animation* current_animation = nullptr;
 	p2List<Animation*> animation_list;
-	Animation* idle;
-	Animation* jumping;
-	Animation* falling;
-	Animation* landing;
-	Animation* walking;
-	Animation* changing_layers;
+	Animation idle;
+	Animation jumping;
+	Animation falling;
+	Animation landing;
+	Animation walking;
+	Animation changing_layers;
 
 	ColliderType current_layer;
 
