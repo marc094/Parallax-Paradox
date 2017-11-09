@@ -53,6 +53,13 @@ bool j1Player::Awake(pugi::xml_node& conf)
 		aux.speed = animation.attribute("duration").as_float();
 		aux.loop = animation.attribute("loop").as_bool();
 
+		for (pugi::xml_node frames : animation.children())
+		{
+			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
+			aux.PushBack(aux_rect);
+			animation_list.add(aux);
+		}
+
 		if (!strcmp(aux.name, "idle"))
 			idle = aux;
 		else if (!strcmp(aux.name, "jumping"))
@@ -65,15 +72,6 @@ bool j1Player::Awake(pugi::xml_node& conf)
 			walking = aux;
 		else if (!strcmp(aux.name, "changing"))
 			changing_layers = aux;
-
-
-
-		for (pugi::xml_node frames : animation.children())
-		{
-			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("h").as_int(), frames.attribute("h").as_int() };
-			aux->PushBack(aux_rect);
-			animation_list.add(aux);
-		}
 	}
 
 	return ret;
@@ -90,7 +88,7 @@ bool j1Player::Start()
 
 	current_layer = COLLIDER_FRONT_LAYER;
 
-	current_animation = idle;
+	current_animation = &idle;
 	return true;
 }
 
@@ -113,7 +111,7 @@ bool j1Player::Update(float dt)
 	{
 		speed_vector.y = 0;
 		isjumping = false;
-		jumping->Reset();
+		jumping.Reset();
 	}
 
 	Move();
@@ -149,12 +147,12 @@ bool j1Player::CleanUp()
 	player_texture = nullptr;
 	player_anims.reset();
 	animation_list.clear();
-	idle = nullptr;
-	jumping = nullptr;
-	falling = nullptr;
-	landing = nullptr;
-	walking = nullptr;
-	changing_layers = nullptr;
+	idle.Reset();
+	jumping.Reset();
+	falling.Reset();
+	landing.Reset();
+	walking.Reset();
+	changing_layers.Reset();
 	current_animation = nullptr;
 
 	position = { 0.0f,0.0f };
@@ -209,11 +207,11 @@ void j1Player::Accelerate(float x, float y) {
 void j1Player::SelectAnim(fPoint speed_vect)
 {
 	if (isjumping == true)
-		current_animation = jumping;
+		current_animation = &jumping;
 	else if (speed_vect.x != 0)
 	{ 
 	
-		current_animation = walking;
+		current_animation = &walking;
 
 		if (speed_vect.x > 0)
 		{
@@ -227,7 +225,7 @@ void j1Player::SelectAnim(fPoint speed_vect)
 		}
 	}
 	else
-		current_animation = idle;
+		current_animation = &idle;
 }
 
 

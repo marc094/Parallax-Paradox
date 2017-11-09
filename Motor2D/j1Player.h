@@ -73,7 +73,7 @@ private:
 
 	SDL_Texture* player_texture;
 	Animation* current_animation = nullptr;
-	p2List<Animation*> animation_list;
+	p2List<Animation> animation_list;
 	Animation idle;
 	Animation jumping;
 	Animation falling;
