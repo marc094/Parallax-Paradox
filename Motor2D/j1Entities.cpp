@@ -28,25 +28,22 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		ret = false;
 	}
 
+	if (ret) {
+		pugi::xml_node doc_node = enemy_animations.child("animations");
+		ground_enemy_node = doc_node.child("Enemies").child("ground");
+		boxer_enemy_node = doc_node.child("Enemies").child("boxer");
 
-
-	pugi::xml_node doc_node = enemy_animations.child("animations");
-	ground_enemy_node = doc_node.child("Enemies").child("ground");
-	boxer_enemy_node = doc_node.child("Enemies").child("boxer");
-	
-
-	exclamation.PushBack({ 0,36,3,8 });
-
-
-	return true;
+		exclamation.PushBack({ 0,36,3,8 });
+	}
+	return ret;
 }
 bool j1Entities::Start()
 {	
 	enemy_texture = App->tex->Load(enemy_animations.first_child().child("spritesheet").attribute("path").as_string());
 	
 
-	Add_Enemy(GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
-	Add_Enemy(BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
+	Add_Enemy(Enemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
+	Add_Enemy(Enemy::BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
 
 	on_collision = false;
 	return true;
@@ -54,12 +51,10 @@ bool j1Entities::Start()
 
 bool j1Entities::Update(float dt)
 {
-
 	p2List_item<Enemy*>* current_enemy = Enemies.start;
 	while (current_enemy != NULL)
 	{
-		//Check Collisions 
-
+		//Check Collisions
 		iRect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
 		collider_rect.x = current_enemy->data->position.x;
 		collider_rect.y = current_enemy->data->position.y;
@@ -70,8 +65,6 @@ bool j1Entities::Update(float dt)
 
 		if (App->collision->DoCollide(collider_rect, player_rect))
 			App->Reload();
-
-		
 
 		//Move
 		iRect alert_rect;
@@ -84,11 +77,11 @@ bool j1Entities::Update(float dt)
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
-			current_enemy->data->state = ALERT;
+			current_enemy->data->state = Enemy::ALERT;
 		}
 	
 
-		if (current_enemy->data->state == ALERT)
+		if (current_enemy->data->state == Enemy::ALERT)
 		{
 			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
 			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL_Rect());
@@ -100,27 +93,24 @@ bool j1Entities::Update(float dt)
 
 			if (current_enemy->data->current_animation->Finished())
 			{
-				current_enemy->data->state = IDLE;
+				current_enemy->data->state = Enemy::IDLE;
 			}
 		}
 		else
 		{
 			current_enemy->data->alert_anim.Reset();
-			current_enemy->data->state = IDLE;
+			current_enemy->data->state = Enemy::IDLE;
 			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
 		}
 		
 		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
 
-		Move(&current_enemy->data->position, &current_enemy->data->speed_vect);
-
+		Move(current_enemy->data->position, current_enemy->data->speed_vect);
 
 		//Gravity
-		Accelerate(&current_enemy->data->speed_vect, 0, 0.5f);
-		
+		Accelerate(current_enemy->data->speed_vect, 0, 0.5f);
 
 		//Blit
-
 		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 		current_enemy = current_enemy->next;
 	}
@@ -135,21 +125,21 @@ bool j1Entities::CleanUp()
 	return true;
 }
 
-void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
+void j1Entities::Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer)
 {
 	Enemy* aux = new Enemy();
 	aux->position = position;
-	aux->state = IDLE;
+	aux->state = Enemy::IDLE;
 	aux->speed_vect = { 0,0 };
 	aux->currentLayer = layer;
 
 	pugi::xml_node current_node;
 
-	if (type == GROUND)
+	if (type == Enemy::GROUND)
 	{
 		current_node = ground_enemy_node;
 	}
-	else if (type == BOXER)
+	else if (type == Enemy::BOXER)
 	{
 		current_node = boxer_enemy_node;
 	}
@@ -185,22 +175,22 @@ void j1Entities::Add_Enemy(Type type, fPoint position, ColliderType layer)
 	Enemies.add(aux);
 }
 
-void j1Entities::Move(fPoint* position, fPoint* speed_vector) {
+void j1Entities::Move(fPoint& position, fPoint& speed_vector) const {
 
 
-	position->x += speed_vector->x;
-	position->y += speed_vector->y;
+	position.x += speed_vector.x;
+	position.y += speed_vector.y;
 
 
-	speed_vector->x = REDUCE_TO(speed_vector->x, 0, DECELERATION * 2);
+	speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
 	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
 
 
 }
 
-void j1Entities::Accelerate(fPoint* speed_vector, float x, float y) {
-	speed_vector->x += (x) / (1.0f / ACCELERATION);
-	speed_vector->y += (y) / (1.0f / ACCELERATION);
+void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const {
+	speed_vector.x += (x) / (1.0f / ACCELERATION);
+	speed_vector.y += (y) / (1.0f / ACCELERATION);
 
 	//speed_vector->x = CLAMP(speed_vector.x, -5, 5);
 	//speed_vector->y = CLAMP(speed_vector.y, -10, 10);

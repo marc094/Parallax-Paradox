@@ -83,16 +83,16 @@ private:
 public:
 
 	// Modules
-	j1Window*			win;
-	j1Input*			input;
-	j1Render*			render;
-	j1Textures*			tex;
-	j1Audio*			audio;
-	j1Scene*			scene;
-	j1Map*				map;
-	j1Entities*			entities;
-	j1Collision*		collision;
-	j1Player*			player;
+	j1Window*			win = nullptr;
+	j1Input*			input = nullptr;
+	j1Render*			render = nullptr;
+	j1Textures*			tex = nullptr;
+	j1Audio*			audio = nullptr;
+	j1Scene*			scene = nullptr;
+	j1Map*				map = nullptr;
+	j1Entities*			entities = nullptr;
+	j1Collision*		collision = nullptr;
+	j1Player*			player = nullptr;
 
 	bool debug = false;
 
@@ -107,9 +107,9 @@ private:
 	p2SString			title;
 	p2SString			organization;
 
-	mutable bool		want_to_save;
-	bool				want_to_load;
-	bool				want_to_reload;
+	mutable bool		want_to_save = false;
+	bool				want_to_load = false;
+	bool				want_to_reload = false;
 	p2SString			load_game = "save_game.xml";
 	mutable p2SString	save_game = "save_game.xml";
 

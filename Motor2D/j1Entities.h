@@ -11,20 +11,39 @@ class j1Entities :
 	public j1Module
 {
 public:
+
+	struct Enemy
+	{
+		enum Type
+		{
+			GROUND,
+			BOXER,
+			AIR,
+		};
+
+		enum State
+		{
+			IDLE,
+			ALERT,
+		};
+
+		Animation* current_animation = nullptr;
+		Animation idle_anim;
+		Animation moving_anim;
+		Animation alert_anim;
+		iRect collider;
+		fPoint position;
+		ColliderType currentLayer;
+		SDL_Rect enemyrect;
+		State state;
+		Type type;
+		fPoint speed_vect;
+		bool gravity;
+	};
+
+
 	j1Entities();
 	~j1Entities();
-
-	enum State
-	{
-		IDLE,
-		ALERT,
-	};
-	enum Type
-	{
-		GROUND,
-		BOXER,
-		AIR,
-	};
 
 
 	void Init()
@@ -70,25 +89,10 @@ public:
 		return true;
 	}
 
-	void Add_Enemy(Type type, fPoint position, ColliderType layer);
-	void Move(fPoint* position, fPoint* speed_vector);
-	void j1Entities::Accelerate(fPoint* speed_vector, float x, float y);
+	void Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer);
+	void Move(fPoint& position, fPoint& speed_vector) const;
+	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 
-	struct Enemy
-	{
-		Animation* current_animation;
-		Animation idle_anim;
-		Animation moving_anim;
-		Animation alert_anim;
-		iRect collider;
-		fPoint position;
-		ColliderType currentLayer;
-		SDL_Rect enemyrect;
-		State state;
-		Type type;
-		fPoint speed_vect;
-		bool gravity;
-	};
 	p2List<Enemy*> Enemies;
 	bool on_collision;
 
@@ -98,9 +102,9 @@ private:
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
-	SDL_Texture* enemy_texture;
+	SDL_Texture* enemy_texture = nullptr;
 	Animation exclamation;
-	float parallax_speed;
+	float parallax_speed = 0.0f;
 
 };
 
