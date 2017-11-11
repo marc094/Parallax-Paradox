@@ -79,6 +79,8 @@ private:
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
+	pugi::xml_node larva_enemy_node;
+	pugi::xml_node larvablock_enemy_node;
 
 
 	float parallax_speed = 0.0f;

@@ -140,6 +140,6 @@ void j1Scene::ChangeScene(uint _level) {
 }
 
 void j1Scene::CheckEnd() {
-	if (App->player->GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 10)
+	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 10)
 		App->scene->ChangeScene(level+1);
 }

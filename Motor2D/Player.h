@@ -29,7 +29,9 @@ public:
 	void setJumping(bool jump) { isjumping = jump; }
 
 	void SwapLayer();
-		
+	
+	fPoint GetPosition() const { return position; }
+
 	uint GetCurrentLayer();
 
 private:

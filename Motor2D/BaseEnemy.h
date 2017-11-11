@@ -13,6 +13,8 @@ public:
 			GROUND,
 			BOXER,
 			AIR,
+			LARVA,
+			LARVA_BLOCK,
 		};
 
 		Animation alert_anim;

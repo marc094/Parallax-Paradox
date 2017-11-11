@@ -32,6 +32,8 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		pugi::xml_node doc_node = animations.child("animations");
 		ground_enemy_node = doc_node.child("Enemies").child("ground");
 		boxer_enemy_node = doc_node.child("Enemies").child("boxer");
+		larva_enemy_node = doc_node.child("Enemies").child("larva");
+		larvablock_enemy_node = doc_node.child("Enemies").child("larvablock");
 		player_node = doc_node.child("player");
 
 		exclamation.PushBack({ 0,36,3,8 });
@@ -46,11 +48,9 @@ bool j1Entities::Start()
 {	
 	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 	
-
-	Add_Enemy(BaseEnemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
-	Add_Enemy(BaseEnemy::BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
-
 	on_collision = false;
+
+	Add_Enemy(BaseEnemy::LARVA, { 450,900 }, COLLIDER_FRONT_LAYER);
 
 	player.Start();
 	return true;
@@ -101,7 +101,12 @@ void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType l
 	{
 		current_node = boxer_enemy_node;
 	}
+	else if (type == BaseEnemy::LARVA)
+	{
+		current_node = larva_enemy_node;
+	}
 
+	
 	for (pugi::xml_node animation : current_node.child("animationInfo").children()) {
 
 		Animation aux_anim;

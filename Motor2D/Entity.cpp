@@ -34,13 +34,16 @@ void Entity::Move() {
 	speed_vect.x = REDUCE_TO(speed_vect.x, 0, DECELERATION * 2);
 	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
 
+	state = IDLE;
+
 }
 
 void Entity::Accelerate( float x, float y) {
 	speed_vect.x += (x) / (1.0f / ACCELERATION);
 	speed_vect.y += (y) / (1.0f / ACCELERATION);
 
-	//speed_vector->x = CLAMP(speed_vector.x, -5, 5);
-	//speed_vector->y = CLAMP(speed_vector.y, -10, 10);
+	speed_vect.x = CLAMP(speed_vect.x, -5, 5);
+	speed_vect.y = CLAMP(speed_vect.y, -10, 10);
 
+	state = RUNNING;
 }

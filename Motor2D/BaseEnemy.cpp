@@ -18,13 +18,14 @@ BaseEnemy::~BaseEnemy()
 
 bool BaseEnemy::Update(float dt)
 {
+
 	//Check Collisions
 	iRect collider_rect = current_animation->GetCurrentFrame().rect;
 	collider_rect.x = position.x;
 	collider_rect.y = position.y;
-	iRect player_rect = App->player->player_rect;
-	player_rect.x = App->player->GetPosition().x;
-	player_rect.y = App->player->GetPosition().y;
+	iRect player_rect = App->entities->player.collider;
+	player_rect.x = App->entities->player.GetPosition().x;
+	player_rect.y = App->entities->player.GetPosition().y;
 
 
 	if (App->collision->DoCollide(collider_rect, player_rect))
