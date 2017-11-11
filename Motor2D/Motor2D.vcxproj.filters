@@ -131,6 +131,8 @@
     </ClInclude>
     <ClInclude Include="BaseEnemy.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
+    <ClInclude Include="Rect.h">
+      <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

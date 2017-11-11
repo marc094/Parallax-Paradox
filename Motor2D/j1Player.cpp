@@ -10,6 +10,7 @@
 #include "j1Window.h"
 #include "j1Scene.h"
 #include "j1Collision.h"
+#include "Rect.h"
 
 
 j1Player::j1Player()

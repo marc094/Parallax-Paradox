@@ -4,6 +4,7 @@
 #include "SDL/include/SDL_rect.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
+#include "Rect.h"
 
 struct AnimationFrame {
 	iRect rect;
