@@ -32,119 +32,81 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		pugi::xml_node doc_node = animations.child("animations");
 		ground_enemy_node = doc_node.child("Enemies").child("ground");
 		boxer_enemy_node = doc_node.child("Enemies").child("boxer");
+		larva_enemy_node = doc_node.child("Enemies").child("larva");
+		larvablock_enemy_node = doc_node.child("Enemies").child("larvablock");
 		player_node = doc_node.child("player");
 
 		exclamation.PushBack({ 0,36,3,8 });
 	}
+
+
+	player.Awake();
+
 	return ret;
 }
 bool j1Entities::Start()
 {	
-	enemy_texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
+	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 	
-
-	Add_Enemy(Enemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
-	Add_Enemy(Enemy::BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
-
 	on_collision = false;
+
+	Add_Enemy(BaseEnemy::LARVA, { 450,900 }, COLLIDER_FRONT_LAYER);
+
+	player.Start();
 	return true;
 }
 
+bool j1Entities::PreUpdate()
+{
+	player.PreUpdate();
+	return true;
+}
 bool j1Entities::Update(float dt)
 {
-	p2List_item<Enemy*>* current_enemy = Enemies.start;
+	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
 	while (current_enemy != NULL)
 	{
-		//Check Collisions
-		iRect collider_rect = current_enemy->data->current_animation->GetCurrentFrame().rect;
-		collider_rect.x = current_enemy->data->position.x;
-		collider_rect.y = current_enemy->data->position.y;
-		iRect player_rect = App->player->player_rect;
-		player_rect.x = App->player->GetPosition().x;
-		player_rect.y = App->player->GetPosition().y;
-
-
-		if (App->collision->DoCollide(collider_rect, player_rect))
-			App->Reload();
-
-		//Move
-		iRect alert_rect;
-		alert_rect.x = collider_rect.x - 50;
-		alert_rect.y = collider_rect.y - 50;
-		alert_rect.w = collider_rect.w + 100;
-		alert_rect.h = collider_rect.h + 100;
-
-		bool flipped = false;
-
-		if (App->collision->DoCollide(alert_rect, player_rect))
-		{
-			current_enemy->data->state = InteractiveEntity::ALERT;
-		}
-	
-
-		if (current_enemy->data->state == InteractiveEntity::ALERT)
-		{
-			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
-			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL_Rect());
-
-			if (player_rect.x < collider_rect.x)
-			{
-				flipped = true;
-			}
-
-			if (current_enemy->data->current_animation->Finished())
-			{
-				current_enemy->data->state = InteractiveEntity::IDLE;
-			}
-		}
-		else
-		{
-			current_enemy->data->alert_anim.Reset();
-			current_enemy->data->state = InteractiveEntity::IDLE;
-			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
-		}
-		
-		App->collision->Checkcollisions(current_enemy->data->currentLayer, collider_rect, current_enemy->data->position, &current_enemy->data->speed_vect);
-
-		Move(current_enemy->data->position, current_enemy->data->speed_vect);
-
-		//Gravity
-		Accelerate(current_enemy->data->speed_vect, 0, 0.5f);
-
-		//Blit
-		App->render->Blit(enemy_texture, current_enemy->data->position.x, current_enemy->data->position.y, &current_enemy->data->current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+		current_enemy->data->Update(dt);
 		current_enemy = current_enemy->next;
 	}
+
+	player.Update(dt);
 	return true;
 }
 bool j1Entities::CleanUp()
 {
-	App->tex->UnLoad(enemy_texture);
-	enemy_texture = nullptr;
+	player.CleanUp();
+	App->tex->UnLoad(texture);
+	texture = nullptr;
 	Enemies.clear();
 
 	return true;
 }
 
-void j1Entities::Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer)
+void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer)
 {
-	Enemy* aux = new Enemy();
+	BaseEnemy* aux = new BaseEnemy();
 	aux->position = position;
-	aux->state = InteractiveEntity::IDLE;
+	aux->state = Entity::IDLE;
 	aux->speed_vect = { 0,0 };
 	aux->currentLayer = layer;
 
 	pugi::xml_node current_node;
 
-	if (type == Enemy::GROUND)
+	if (type == BaseEnemy::GROUND)
 	{
 		current_node = ground_enemy_node;
 	}
-	else if (type == Enemy::BOXER)
+	else if (type == BaseEnemy::BOXER)
 	{
 		current_node = boxer_enemy_node;
 	}
+	else if (type == BaseEnemy::LARVA)
+	{
+		current_node = larva_enemy_node;
+	}
 
+	
 	for (pugi::xml_node animation : current_node.child("animationInfo").children()) {
 
 		Animation aux_anim;
@@ -185,7 +147,6 @@ void j1Entities::Move(fPoint& position, fPoint& speed_vector) const {
 
 	speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
 	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
-
 
 }
 

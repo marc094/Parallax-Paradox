@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <cstring>
 #include "j1Player.h"
+#include "j1Entities.h"
+#include "Entity.h"
+#include "Player.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -40,7 +43,7 @@ void j1Map::Draw()
 	Uint8 alpha = 255;
 	while (item_layer != NULL)
 	{
-		if (layer == App->player->GetCurrentLayer())
+		if (layer == App->entities->player.GetCurrentLayer())
 			alpha = 255;
 		else alpha = 128;
 		SDL_SetTextureAlphaMod(data.tilesets[0]->texture, alpha);

@@ -1,21 +1,23 @@
 #pragma once
-#include "InteractiveEntity.h"
+#include "Entity.h"
 class BaseEnemy :
-	public InteractiveEntity
+	public Entity
 {
 public:
 	BaseEnemy();
 	~BaseEnemy();
-	
+	bool Update(float dt);
+
 		enum Type
 		{
 			GROUND,
 			BOXER,
 			AIR,
+			LARVA,
+			LARVA_BLOCK,
 		};
 
 		Animation alert_anim;
-		fPoint position;
 		ColliderType currentLayer;
 		SDL_Rect enemyrect;
 		Type type;

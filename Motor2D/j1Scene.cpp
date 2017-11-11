@@ -9,6 +9,9 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Player.h"
+#include "j1Entities.h"
+#include "Entity.h"
+#include "Player.h"
 #include "j1Textures.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -63,24 +66,24 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 		//App->player->Accelerate(0, -1);
 		//App->render->camera.y -= 1;
-		App->player->SwapLayer();
+		App->entities->player.SwapLayer();
 	
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		//App->render->camera.y += 1;
-		App->player->Accelerate(0, 1);
+		App->entities->player.Accelerate(0, 1);
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		//App->render->camera.x -= 1;
-		App->player->Accelerate(-1);
+		App->entities->player.Accelerate(-1,0);
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		//App->render->camera.x += 1;
-		App->player->Accelerate(1);
+		App->entities->player.Accelerate(1,0);
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->player->isJumping())
 	{
-		App->player->setJumping(true);
-		App->player->Accelerate(0, -12);
+		App->entities->player.setJumping(true);
+		App->entities->player.Accelerate(0, -12);
 	}
 
 	//App->render->Blit(img, 0, 0);
@@ -137,6 +140,6 @@ void j1Scene::ChangeScene(uint _level) {
 }
 
 void j1Scene::CheckEnd() {
-	if (App->player->GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 10)
+	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 10)
 		App->scene->ChangeScene(level+1);
 }

@@ -6,63 +6,15 @@
 #include "Animation.h"
 #include "j1Map.h"
 #include "Rect.h"
-
+#include "Entity.h"
+#include "BaseEnemy.h"
+#include "Player.h"
 
 class j1Entities :
 	public j1Module
 {
 public:
 
-	
-
-	class Entity
-	{
-	public:
-
-		Animation* current_animation = nullptr;
-		Animation idle_anim;
-		fPoint position;
-
-	};
-	
-	struct InteractiveEntity:public Entity
-	{
-	public:
-
-		enum State
-		{
-			IDLE,
-			ALERT,
-		};
-
-		Animation moving_anim;
-		iRect collider;
-		State state;
-		fPoint speed_vect;
-		bool gravity;
-	};
-
-	struct Enemy:public InteractiveEntity
-	{
-		enum Type
-		{
-			GROUND,
-			BOXER,
-			AIR,
-		};	
-		
-		Animation alert_anim;
-		fPoint position;
-		ColliderType currentLayer;
-		SDL_Rect enemyrect;
-		Type type;
-		bool gravity;
-	};
-
-	struct Player :public InteractiveEntity
-	{
-
-	};
 
 	j1Entities();
 	~j1Entities();
@@ -82,10 +34,8 @@ public:
 
 
 	// Called each loop iteration
-	virtual bool PreUpdate()
-	{
-		return true;
-	}
+	virtual bool PreUpdate();
+
 
 	// Called each loop iteration
 	virtual bool Update(float dt);
@@ -111,12 +61,17 @@ public:
 		return true;
 	}
 
-	void Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer);
+	void Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer);
 	void Move(fPoint& position, fPoint& speed_vector) const;
 	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 
-	p2List<Enemy*> Enemies;
+	p2List<BaseEnemy*> Enemies;
+	Player player;
 	bool on_collision;
+
+	SDL_Texture* texture = nullptr;
+	Animation exclamation;
+	pugi::xml_node player_node;
 
 
 private:
@@ -124,9 +79,10 @@ private:
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
-	pugi::xml_node player_node;
-	SDL_Texture* enemy_texture = nullptr;
-	Animation exclamation;
+	pugi::xml_node larva_enemy_node;
+	pugi::xml_node larvablock_enemy_node;
+
+
 	float parallax_speed = 0.0f;
 
 };
