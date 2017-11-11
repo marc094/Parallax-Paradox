@@ -21,7 +21,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 	bool ret = true;
 	LOG("Loading Module Entities");
 
-	pugi::xml_parse_result result = enemy_animations.load_file(conf.child("animations").child_value());
+	pugi::xml_parse_result result = animations.load_file(conf.child("animations").child_value());
 
 	if (result == NULL) {
 		LOG("Could not load map xml file %s. pugi error: %s", conf.child("animations").child_value(), result.description());
@@ -29,9 +29,10 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 	}
 
 	if (ret) {
-		pugi::xml_node doc_node = enemy_animations.child("animations");
+		pugi::xml_node doc_node = animations.child("animations");
 		ground_enemy_node = doc_node.child("Enemies").child("ground");
 		boxer_enemy_node = doc_node.child("Enemies").child("boxer");
+		player_node = doc_node.child("player");
 
 		exclamation.PushBack({ 0,36,3,8 });
 	}
@@ -39,7 +40,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 }
 bool j1Entities::Start()
 {	
-	enemy_texture = App->tex->Load(enemy_animations.first_child().child("spritesheet").attribute("path").as_string());
+	enemy_texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 	
 
 	Add_Enemy(Enemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
@@ -77,11 +78,11 @@ bool j1Entities::Update(float dt)
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
-			current_enemy->data->state = ALERT;
+			current_enemy->data->state = InteractiveEntity::ALERT;
 		}
 	
 
-		if (current_enemy->data->state == ALERT)
+		if (current_enemy->data->state == InteractiveEntity::ALERT)
 		{
 			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
 			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL_Rect());
@@ -93,13 +94,13 @@ bool j1Entities::Update(float dt)
 
 			if (current_enemy->data->current_animation->Finished())
 			{
-				current_enemy->data->state = IDLE;
+				current_enemy->data->state = InteractiveEntity::IDLE;
 			}
 		}
 		else
 		{
 			current_enemy->data->alert_anim.Reset();
-			current_enemy->data->state = IDLE;
+			current_enemy->data->state = InteractiveEntity::IDLE;
 			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
 		}
 		
@@ -129,7 +130,7 @@ void j1Entities::Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer
 {
 	Enemy* aux = new Enemy();
 	aux->position = position;
-	aux->state = IDLE;
+	aux->state = InteractiveEntity::IDLE;
 	aux->speed_vect = { 0,0 };
 	aux->currentLayer = layer;
 

@@ -12,30 +12,35 @@ class j1Entities :
 {
 public:
 
-	enum State
-	{
-		IDLE,
-		ALERT,
-	};
+	
 
-	struct Entity
+	class Entity
 	{
 	public:
 
 		Animation* current_animation = nullptr;
 		Animation idle_anim;
 		fPoint position;
+
 	};
 	
 	struct InteractiveEntity:public Entity
 	{
 	public:
+
+		enum State
+		{
+			IDLE,
+			ALERT,
+		};
+
 		Animation moving_anim;
 		iRect collider;
 		State state;
 		fPoint speed_vect;
 		bool gravity;
 	};
+
 	struct Enemy:public InteractiveEntity
 	{
 		enum Type
@@ -53,6 +58,10 @@ public:
 		bool gravity;
 	};
 
+	struct Player :public InteractiveEntity
+	{
+
+	};
 
 	j1Entities();
 	~j1Entities();
@@ -110,10 +119,11 @@ public:
 
 
 private:
-	pugi::xml_document enemy_animations;
+	pugi::xml_document animations;
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
+	pugi::xml_node player_node;
 	SDL_Texture* enemy_texture = nullptr;
 	Animation exclamation;
 	float parallax_speed = 0.0f;
