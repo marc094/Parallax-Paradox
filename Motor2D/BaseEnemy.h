@@ -6,7 +6,8 @@ class BaseEnemy :
 public:
 	BaseEnemy();
 	~BaseEnemy();
-	
+	bool Update(float dt);
+
 		enum Type
 		{
 			GROUND,

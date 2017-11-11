@@ -68,7 +68,8 @@ public:
 
 	p2List<BaseEnemy*> Enemies;
 	bool on_collision;
-
+	SDL_Texture* enemy_texture = nullptr;
+	Animation exclamation;
 
 private:
 	pugi::xml_document animations;
@@ -76,8 +77,7 @@ private:
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
 	pugi::xml_node player_node;
-	SDL_Texture* enemy_texture = nullptr;
-	Animation exclamation;
+
 	float parallax_speed = 0.0f;
 
 };
