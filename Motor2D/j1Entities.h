@@ -8,6 +8,7 @@
 #include "Rect.h"
 #include "Entity.h"
 #include "BaseEnemy.h"
+#include "Player.h"
 
 class j1Entities :
 	public j1Module
@@ -33,10 +34,8 @@ public:
 
 
 	// Called each loop iteration
-	virtual bool PreUpdate()
-	{
-		return true;
-	}
+	virtual bool PreUpdate();
+
 
 	// Called each loop iteration
 	virtual bool Update(float dt);
@@ -67,16 +66,20 @@ public:
 	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 
 	p2List<BaseEnemy*> Enemies;
+	Player player;
 	bool on_collision;
-	SDL_Texture* enemy_texture = nullptr;
+
+	SDL_Texture* texture = nullptr;
 	Animation exclamation;
+	pugi::xml_node player_node;
+
 
 private:
 	pugi::xml_document animations;
 	pugi::xml_node ground_enemy_node;
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
-	pugi::xml_node player_node;
+
 
 	float parallax_speed = 0.0f;
 

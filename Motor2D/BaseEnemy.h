@@ -16,7 +16,6 @@ public:
 		};
 
 		Animation alert_anim;
-		fPoint position;
 		ColliderType currentLayer;
 		SDL_Rect enemyrect;
 		Type type;

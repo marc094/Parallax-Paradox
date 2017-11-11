@@ -36,20 +36,31 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 
 		exclamation.PushBack({ 0,36,3,8 });
 	}
+
+
+	player.Awake();
+
 	return ret;
 }
 bool j1Entities::Start()
 {	
-	enemy_texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
+	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 	
 
 	Add_Enemy(BaseEnemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
 	Add_Enemy(BaseEnemy::BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
 
 	on_collision = false;
+
+	player.Start();
 	return true;
 }
 
+bool j1Entities::PreUpdate()
+{
+	player.PreUpdate();
+	return true;
+}
 bool j1Entities::Update(float dt)
 {
 	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
@@ -58,12 +69,15 @@ bool j1Entities::Update(float dt)
 		current_enemy->data->Update(dt);
 		current_enemy = current_enemy->next;
 	}
+
+	player.Update(dt);
 	return true;
 }
 bool j1Entities::CleanUp()
 {
-	App->tex->UnLoad(enemy_texture);
-	enemy_texture = nullptr;
+	player.CleanUp();
+	App->tex->UnLoad(texture);
+	texture = nullptr;
 	Enemies.clear();
 
 	return true;

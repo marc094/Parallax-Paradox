@@ -17,16 +17,21 @@ public:
 	Entity();
 	~Entity();
 
-	Animation* current_animation = nullptr;
-	Animation idle_anim;
-	fPoint position;
 
 	enum State
 	{
 		IDLE,
-		ALERT,
+		JUMPING = 0x00000001,
+		FALLING = 0x00000010,
+		LANDING = 0x00000100,
+		RUNNING = 0x00001000,
+		CHANGING_LAYER = 0x00010000,
+		ALERT = 0x00100000,
 	};
 
+	Animation* current_animation = nullptr;
+	Animation idle_anim;
+	fPoint position;
 	Animation moving_anim;
 	iRect collider;
 	State state;
@@ -34,11 +39,11 @@ public:
 	bool gravity;
 
 
-
+	bool Awake(pugi::xml_node&);
 	bool Update(float dt);
 
-	void Move(fPoint& position, fPoint& speed_vector) const;
-	void Accelerate(fPoint& speed_vector, float x, float y) const;
+	void Move() ;
+	void Accelerate(float x,float y);
 
 
 };

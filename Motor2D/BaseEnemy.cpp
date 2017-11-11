@@ -48,7 +48,7 @@ bool BaseEnemy::Update(float dt)
 	if (state == Entity::ALERT)
 	{
 		current_animation = &alert_anim;
-		App->render->Blit(App->entities->enemy_texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
+		App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
 
 		if (player_rect.x < collider_rect.x)
 		{
@@ -69,13 +69,13 @@ bool BaseEnemy::Update(float dt)
 
 	App->collision->Checkcollisions(currentLayer, collider_rect, position, &speed_vect);
 
-	Move(position, speed_vect);
+	Move();
 
 	//Gravity
-	Accelerate(speed_vect, 0, 0.5f);
+	Accelerate(0, 0.5f);
 
 	//Blit
-	App->render->Blit(App->entities->enemy_texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
 	return true;
 }
