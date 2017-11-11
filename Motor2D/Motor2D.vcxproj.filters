@@ -49,10 +49,10 @@
     <ClCompile Include="j1PerfTimer.cpp">
       <Filter>Programacio 2 ===========</Filter>
     </ClCompile>
-    <ClCompile Include="InteractiveEntity.cpp">
+    <ClCompile Include="BaseEnemy.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="BaseEnemy.cpp">
+    <ClCompile Include="Entity.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -126,14 +126,14 @@
     <ClInclude Include="j1Timer.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
-    <ClInclude Include="InteractiveEntity.h">
-      <Filter>Desenvolupament  ========\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="BaseEnemy.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Programacio 2 ===========</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,63 +6,14 @@
 #include "Animation.h"
 #include "j1Map.h"
 #include "Rect.h"
-
+#include "Entity.h"
+#include "BaseEnemy.h"
 
 class j1Entities :
 	public j1Module
 {
 public:
 
-	
-
-	class Entity
-	{
-	public:
-
-		Animation* current_animation = nullptr;
-		Animation idle_anim;
-		fPoint position;
-
-	};
-	
-	struct InteractiveEntity:public Entity
-	{
-	public:
-
-		enum State
-		{
-			IDLE,
-			ALERT,
-		};
-
-		Animation moving_anim;
-		iRect collider;
-		State state;
-		fPoint speed_vect;
-		bool gravity;
-	};
-
-	struct Enemy:public InteractiveEntity
-	{
-		enum Type
-		{
-			GROUND,
-			BOXER,
-			AIR,
-		};	
-		
-		Animation alert_anim;
-		fPoint position;
-		ColliderType currentLayer;
-		SDL_Rect enemyrect;
-		Type type;
-		bool gravity;
-	};
-
-	struct Player :public InteractiveEntity
-	{
-
-	};
 
 	j1Entities();
 	~j1Entities();
@@ -111,11 +62,11 @@ public:
 		return true;
 	}
 
-	void Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer);
+	void Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer);
 	void Move(fPoint& position, fPoint& speed_vector) const;
 	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 
-	p2List<Enemy*> Enemies;
+	p2List<BaseEnemy*> Enemies;
 	bool on_collision;
 
 

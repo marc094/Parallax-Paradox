@@ -1,7 +1,7 @@
 #pragma once
-#include "InteractiveEntity.h"
+#include "Entity.h"
 class BaseEnemy :
-	public InteractiveEntity
+	public Entity
 {
 public:
 	BaseEnemy();

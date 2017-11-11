@@ -43,8 +43,8 @@ bool j1Entities::Start()
 	enemy_texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 	
 
-	Add_Enemy(Enemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
-	Add_Enemy(Enemy::BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
+	Add_Enemy(BaseEnemy::GROUND, { 1000,1005 }, COLLIDER_FRONT_LAYER);
+	Add_Enemy(BaseEnemy::BOXER, { 900,830 }, COLLIDER_BACK_LAYER);
 
 	on_collision = false;
 	return true;
@@ -52,7 +52,7 @@ bool j1Entities::Start()
 
 bool j1Entities::Update(float dt)
 {
-	p2List_item<Enemy*>* current_enemy = Enemies.start;
+	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
 	while (current_enemy != NULL)
 	{
 		//Check Collisions
@@ -78,11 +78,11 @@ bool j1Entities::Update(float dt)
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
-			current_enemy->data->state = InteractiveEntity::ALERT;
+			current_enemy->data->state = Entity::ALERT;
 		}
 	
 
-		if (current_enemy->data->state == InteractiveEntity::ALERT)
+		if (current_enemy->data->state == Entity::ALERT)
 		{
 			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
 			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL_Rect());
@@ -94,13 +94,13 @@ bool j1Entities::Update(float dt)
 
 			if (current_enemy->data->current_animation->Finished())
 			{
-				current_enemy->data->state = InteractiveEntity::IDLE;
+				current_enemy->data->state = Entity::IDLE;
 			}
 		}
 		else
 		{
 			current_enemy->data->alert_anim.Reset();
-			current_enemy->data->state = InteractiveEntity::IDLE;
+			current_enemy->data->state = Entity::IDLE;
 			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
 		}
 		
@@ -126,21 +126,21 @@ bool j1Entities::CleanUp()
 	return true;
 }
 
-void j1Entities::Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer)
+void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer)
 {
-	Enemy* aux = new Enemy();
+	BaseEnemy* aux = new BaseEnemy();
 	aux->position = position;
-	aux->state = InteractiveEntity::IDLE;
+	aux->state = Entity::IDLE;
 	aux->speed_vect = { 0,0 };
 	aux->currentLayer = layer;
 
 	pugi::xml_node current_node;
 
-	if (type == Enemy::GROUND)
+	if (type == BaseEnemy::GROUND)
 	{
 		current_node = ground_enemy_node;
 	}
-	else if (type == Enemy::BOXER)
+	else if (type == BaseEnemy::BOXER)
 	{
 		current_node = boxer_enemy_node;
 	}
