@@ -12,32 +12,44 @@ class j1Entities :
 {
 public:
 
-	struct Enemy
+	enum State
+	{
+		IDLE,
+		ALERT,
+	};
+
+	struct Entity
+	{
+	public:
+
+		Animation* current_animation = nullptr;
+		Animation idle_anim;
+		fPoint position;
+	};
+	
+	struct InteractiveEntity:public Entity
+	{
+	public:
+		Animation moving_anim;
+		iRect collider;
+		State state;
+		fPoint speed_vect;
+		bool gravity;
+	};
+	struct Enemy:public InteractiveEntity
 	{
 		enum Type
 		{
 			GROUND,
 			BOXER,
 			AIR,
-		};
-
-		enum State
-		{
-			IDLE,
-			ALERT,
-		};
-
-		Animation* current_animation = nullptr;
-		Animation idle_anim;
-		Animation moving_anim;
+		};	
+		
 		Animation alert_anim;
-		iRect collider;
 		fPoint position;
 		ColliderType currentLayer;
 		SDL_Rect enemyrect;
-		State state;
 		Type type;
-		fPoint speed_vect;
 		bool gravity;
 	};
 

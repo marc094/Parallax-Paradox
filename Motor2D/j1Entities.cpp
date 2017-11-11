@@ -77,11 +77,11 @@ bool j1Entities::Update(float dt)
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
-			current_enemy->data->state = Enemy::ALERT;
+			current_enemy->data->state = ALERT;
 		}
 	
 
-		if (current_enemy->data->state == Enemy::ALERT)
+		if (current_enemy->data->state == ALERT)
 		{
 			current_enemy->data->current_animation = &current_enemy->data->alert_anim;
 			App->render->Blit(enemy_texture, collider_rect.x + ((collider_rect.w - exclamation.GetCurrentFrame().rect.w) / 2) , collider_rect.y - 10, &exclamation.GetCurrentFrame().rect.toSDL_Rect());
@@ -93,13 +93,13 @@ bool j1Entities::Update(float dt)
 
 			if (current_enemy->data->current_animation->Finished())
 			{
-				current_enemy->data->state = Enemy::IDLE;
+				current_enemy->data->state = IDLE;
 			}
 		}
 		else
 		{
 			current_enemy->data->alert_anim.Reset();
-			current_enemy->data->state = Enemy::IDLE;
+			current_enemy->data->state = IDLE;
 			current_enemy->data->current_animation = &current_enemy->data->idle_anim;
 		}
 		
@@ -129,7 +129,7 @@ void j1Entities::Add_Enemy(Enemy::Type type, fPoint position, ColliderType layer
 {
 	Enemy* aux = new Enemy();
 	aux->position = position;
-	aux->state = Enemy::IDLE;
+	aux->state = IDLE;
 	aux->speed_vect = { 0,0 };
 	aux->currentLayer = layer;
 
