@@ -5,6 +5,7 @@
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 #include "j1Map.h"
+#include "Rect.h"
 
 
 class j1Entities :

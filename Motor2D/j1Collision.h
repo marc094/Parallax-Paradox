@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "SDL\include\SDL_rect.h"
 #include "p2Point.h"
+#include "Rect.h"
 
 enum ColliderType {
 	COLLIDER_PLAYER = 1,
