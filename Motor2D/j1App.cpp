@@ -13,7 +13,6 @@
 #include "j1App.h"
 #include "j1Entities.h"
 #include "j1Collision.h"
-#include "j1Player.h"
 #include "j1Pathfinding.h"
 
 // Constructor
@@ -33,7 +32,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	map = new j1Map();
 	entities = new j1Entities();
 	collision = new j1Collision();
-	player = new j1Player();
 	pathfinding = new j1PathFinding();
 
 	// Ordered for awake / Start / Update
@@ -46,7 +44,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(entities);
 	AddModule(collision);
-	AddModule(player);
 	AddModule(pathfinding);
 
 	// render last to swap buffer
@@ -456,7 +453,6 @@ bool j1App::ReloadNow() {
 
 	if(ret)
 		ret = tex->CleanUp() &
-			player->CleanUp() &
 			map->CleanUp() & 
 			scene->CleanUp() &
 			entities->CleanUp()&
@@ -464,7 +460,6 @@ bool j1App::ReloadNow() {
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
-			player->Awake(config.child(player->name.GetString())) &
 			map->Awake(config.child(map->name.GetString())) &
 			scene->Awake(config.child(scene->name.GetString())) &
 			entities->Awake(config.child(entities->name.GetString())) &
@@ -474,7 +469,6 @@ bool j1App::ReloadNow() {
 		ret = tex->Start() &
 			map->Start() &
 			scene->Start() &
-			player->Start()&
 			entities->Start()&
 			audio->Start();
 

@@ -142,6 +142,23 @@ void Player::SelectAnim(fPoint speed_vect)
 		current_animation = &idle_anim;
 }
 
+bool Player::Load(pugi::xml_node& data)
+{
+	position.x = data.child("position").attribute("x").as_int();
+	position.y = data.child("position").attribute("y").as_int();
+	speed_vect = { 0, 0 };
+	return true;
+}
+
+bool Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node pos = data.append_child("position");
+
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y;
+
+	return true;
+}
 
 void Player::SwapLayer() {
 	if (current_layer == COLLIDER_BACK_LAYER) {

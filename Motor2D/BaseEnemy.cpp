@@ -3,8 +3,7 @@
 #include "j1Render.h"
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "BaseEnemy.h"
-#include "j1Player.h"
+#include "j1Entities.h"
 
 
 BaseEnemy::BaseEnemy()

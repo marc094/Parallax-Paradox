@@ -4,7 +4,7 @@
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Textures.h"
-#include "j1Player.h"
+
 
 j1Entities::j1Entities() : j1Module()
 {
@@ -82,6 +82,19 @@ bool j1Entities::CleanUp()
 
 	return true;
 }
+bool j1Entities::Load(pugi::xml_node& data)
+{
+	player.Load(data);
+	return true;
+}
+
+bool j1Entities::Save(pugi::xml_node& data) const
+{
+	player.Save(data);
+
+	return true;
+}
+
 
 void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer)
 {

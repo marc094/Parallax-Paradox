@@ -3,7 +3,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "BaseEnemy.h"
-#include "j1Player.h"
+
 
 Entity::Entity()
 {

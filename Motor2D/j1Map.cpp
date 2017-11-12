@@ -7,7 +7,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <cstring>
-#include "j1Player.h"
 #include "j1Entities.h"
 #include "Entity.h"
 #include "Player.h"

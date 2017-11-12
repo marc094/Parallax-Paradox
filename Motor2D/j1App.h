@@ -17,7 +17,6 @@ class j1Scene;
 class j1Map;
 class j1Entities;
 class j1Collision;
-class j1Player;
 class j1PathFinding;
 
 class j1App
@@ -93,7 +92,6 @@ public:
 	j1Map*				map = nullptr;
 	j1Entities*			entities = nullptr;
 	j1Collision*		collision = nullptr;
-	j1Player*			player = nullptr;
 	j1PathFinding*		pathfinding = nullptr;
 
 	bool debug = false;

@@ -8,7 +8,6 @@
 #include "j1Window.h"
 #include "j1Map.h"
 #include "j1Scene.h"
-#include "j1Player.h"
 #include "j1Entities.h"
 #include "Entity.h"
 #include "Player.h"
@@ -80,7 +79,7 @@ bool j1Scene::Update(float dt)
 		//App->render->camera.x += 1;
 		App->entities->player.Accelerate(1,0);
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->player->isJumping())
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping())
 	{
 		App->entities->player.setJumping(true);
 		App->entities->player.Accelerate(0, -12);

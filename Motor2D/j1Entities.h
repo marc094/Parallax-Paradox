@@ -51,15 +51,12 @@ public:
 	virtual bool CleanUp();
 
 
-	virtual bool Load(pugi::xml_node&)
-	{
-		return true;
-	}
+	virtual bool Load(pugi::xml_node&);
 
-	virtual bool Save(pugi::xml_node&) const
-	{
-		return true;
-	}
+
+	virtual bool Save(pugi::xml_node&) const;
+	
+	
 
 	void Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer);
 	void Move(fPoint& position, fPoint& speed_vector) const;

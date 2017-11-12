@@ -32,6 +32,11 @@ public:
 	
 	fPoint GetPosition() const { return position; }
 
+	bool Load(pugi::xml_node& data);
+
+
+	bool Save(pugi::xml_node& data) const;
+
 	uint GetCurrentLayer();
 
 private:

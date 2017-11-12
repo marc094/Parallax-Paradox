@@ -6,10 +6,12 @@
 	<audio />
 	<map />
 	<scene />
-	<player>
-		<position x="449" y="639" />
-	</player>
+	<entities>
+		<position x="101.400024" y="962" />
+	</entities>
+	<collision />
+	<pathfinding />
 	<renderer>
-		<camera x="-449" y="-639" />
+		<camera x="410" y="-578" />
 	</renderer>
 </game_state>
