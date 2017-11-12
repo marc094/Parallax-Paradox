@@ -84,13 +84,13 @@
       <enemyInfo speed="1" gravity="true" />
       <animationInfo>
         <idle frames ="1" duration ="0" loop ="1">
-          <frame number="0" x="2" y ="116" w="30" h ="26"/>
+          <frame number="0" x="3" y ="129" w="45" h ="39"/>
         </idle>
         <walking frames="3" duration="0.08f" loop ="1">
-          <frame number="0" x="2" y ="116" w="30" h ="26"/>
+          <frame number="0" x="3" y ="129" w="45" h ="39"/>
         </walking>
         <alert frames="3" duration="0.08f" loop ="0">
-          <frame number="0" x="2" y ="116" w="30" h ="26"/>
+          <frame number="0" x="3" y ="129" w="45" h ="39"/>
         </alert>
       </animationInfo>
     </larva>

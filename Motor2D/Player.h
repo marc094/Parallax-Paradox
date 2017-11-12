@@ -51,6 +51,5 @@ private:
 	Animation landing_anim;
 	Animation changing_layers_anim;
 
-	ColliderType current_layer;
 };
 

@@ -36,6 +36,7 @@ public:
 	iRect collider;
 	State state;
 	fPoint speed_vect;
+	ColliderType current_layer;
 	bool gravity;
 
 

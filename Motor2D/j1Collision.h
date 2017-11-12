@@ -52,8 +52,9 @@ public:
 	virtual bool Save(pugi::xml_node&) const;
 	void Checkcollisions(ColliderType collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
-private:
 	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector) const;
+private:
+	
 	int scale;
 };
 #endif

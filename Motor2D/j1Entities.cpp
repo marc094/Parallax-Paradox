@@ -37,6 +37,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		player_node = doc_node.child("player");
 
 		exclamation.PushBack({ 0,36,3,8 });
+		larva_cube.PushBack({ 0,81,48,48});
 	}
 
 
@@ -50,7 +51,7 @@ bool j1Entities::Start()
 	
 	on_collision = false;
 
-	Add_Enemy(BaseEnemy::LARVA, { 450,900 }, COLLIDER_FRONT_LAYER);
+	Add_Enemy(BaseEnemy::LARVA, { 450,900 }, COLLIDER_BACK_LAYER);
 
 	player.Start();
 	return true;
@@ -102,7 +103,8 @@ void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType l
 	aux->position = position;
 	aux->state = Entity::IDLE;
 	aux->speed_vect = { 0,0 };
-	aux->currentLayer = layer;
+	aux->current_layer = layer;
+	aux->type = type;
 
 	pugi::xml_node current_node;
 

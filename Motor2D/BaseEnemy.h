@@ -18,9 +18,11 @@ public:
 		};
 
 		Animation alert_anim;
-		ColliderType currentLayer;
 		SDL_Rect enemyrect;
 		Type type;
 		bool gravity;
+
+private:
+	void LarvaBlockUpdate();
 };
 

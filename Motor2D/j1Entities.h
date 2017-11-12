@@ -68,6 +68,7 @@ public:
 
 	SDL_Texture* texture = nullptr;
 	Animation exclamation;
+	Animation larva_cube;
 	pugi::xml_node player_node;
 
 
