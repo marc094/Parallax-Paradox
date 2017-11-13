@@ -22,6 +22,8 @@ bool BaseEnemy::Update(float dt)
 	collider_rect.y = position.y;
 
 	bool flipped = false;
+	Uint8 alpha = 255;
+
 
 	if (App->entities->player.current_layer == current_layer)
 	{
@@ -77,8 +79,11 @@ bool BaseEnemy::Update(float dt)
 	}
 
 	//Blit
-	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
+	else alpha = 128;
+	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
+
+	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
 	if (type == LARVA)
 		LarvaBlockUpdate();
@@ -87,6 +92,7 @@ bool BaseEnemy::Update(float dt)
 
 	Move();
 
+	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 
 	//Gravity
@@ -107,13 +113,18 @@ void BaseEnemy::LarvaBlockUpdate()
 	iRect player_rect = App->entities->player.collider;
 	player_rect.x = App->entities->player.GetPosition().x;
 	player_rect.y = App->entities->player.GetPosition().y;
+	
+	uint alpha = 64;
 
 	App->collision->Checkcollisions(COLLIDER_FRONT_LAYER, cube, position, &speed_vect);	
 	if (App->entities->player.current_layer == COLLIDER_FRONT_LAYER)
 	{
+		alpha = 255;
 		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect);
 	}
 	
-
+	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
 	App->render->Blit(App->entities->texture, position.x, position.y, &App->entities->larva_cube.GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true);
+	SDL_SetTextureAlphaMod(App->entities->texture, 255);
+
 }
