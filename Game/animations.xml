@@ -27,7 +27,7 @@
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </landing>
       <walking frames="3" duration="0.08f" loop ="1">
-        <frame number="0" x="0" y ="0" w="12" h ="14"/>
+        <frame number="0" x="0" y ="0" w="13" h ="14"/>
         <frame number="1" x="32" y ="0" w="12" h ="14"/>
         <frame number="2" x="17" y ="0" w="12" h ="14"/>
       </walking>
@@ -41,7 +41,7 @@
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </changing>
       <idle frames="1" duration="0" loop ="1">
-        <frame number="0" x="0" y ="0" w="12" h ="14"/>
+        <frame number="0" x="0" y ="0" w="13" h ="14"/>
       </idle>
     </animationInfo>
   </player>
