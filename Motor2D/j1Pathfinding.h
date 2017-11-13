@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
+#include "j1Map.h"
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
@@ -43,6 +44,8 @@ public:
 
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
+
+	void LoadNodeMap(const MapData map_data);
 
 private:
 

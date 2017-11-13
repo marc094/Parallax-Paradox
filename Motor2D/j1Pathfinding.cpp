@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "j1Map.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH),width(0), height(0)
 {
@@ -238,3 +239,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	return -1;
 }
 
+void j1PathFinding::LoadNodeMap(const MapData map_data)
+{
+	for (uint x = 0; x < map_data.width; x++) {
+		for (uint y = map_data.height; y >= 0; y-- ) {
+			
+		}
+	}
+}
