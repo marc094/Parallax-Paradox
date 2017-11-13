@@ -111,9 +111,9 @@ void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collid
 				speed_vector.y = 0;
 			}
 		}
-		if (collider2.y < collider1.y + collider2.h && collider2.y + collider2.h > collider1.y)
+		if (collider2.y < collider1.y + collider1.h && collider2.y + collider2.h > collider1.y) //collider2 is in x-axis collision with collider1
 		{
-			if (collider2.x + speed_vector.x < collider1.x + collider1.w && collider2.x + collider2.w + speed_vector.x > collider1.x + collider1.w && speed_vector.x < 0)
+			if (collider2.x + speed_vector.x < collider1.x + collider1.w && collider2.x + speed_vector.x > collider1.x && speed_vector.x < 0)
 			{
 				speed_vector.x = 0;
 			}
