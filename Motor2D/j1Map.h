@@ -7,7 +7,7 @@
 #include "j1Module.h"
 #include "j1Collision.h"
 
-
+class SDL_Texture;
 
 struct MapLayer {
 	uint*			tiles = nullptr;
