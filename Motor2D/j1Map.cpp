@@ -42,7 +42,7 @@ void j1Map::Draw()
 	Uint8 alpha = 255;
 	while (item_layer != NULL)
 	{
-		if (layer == App->entities->player.GetCurrentLayer())
+		if (layer == App->entities->player.GetCurrentLayer() || layer == 2)
 			alpha = 255;
 		else alpha = 128;
 		SDL_SetTextureAlphaMod(data.tilesets[0]->texture, alpha);

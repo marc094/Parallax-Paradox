@@ -172,5 +172,5 @@ void Player::SwapLayer() {
 }
 
 uint Player::GetCurrentLayer() {
-	return (uint)current_layer - 2;
+	return (uint)current_layer;
 }

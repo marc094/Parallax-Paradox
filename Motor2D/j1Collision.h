@@ -7,10 +7,8 @@
 #include "Rect.h"
 
 enum ColliderType {
-	COLLIDER_PLAYER = 1,
 	COLLIDER_BACK_LAYER,
 	COLLIDER_FRONT_LAYER,
-	COLLIDER_ENEMY,
 	COLLIDER_NONE
 };
 struct Collider
