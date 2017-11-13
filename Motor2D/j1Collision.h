@@ -51,8 +51,10 @@ public:
 	void Checkcollisions(ColliderType collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
 	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector) const;
+	void BlitDebugColliders() const;
+
 private:
-	
+
 	int scale;
 };
 #endif

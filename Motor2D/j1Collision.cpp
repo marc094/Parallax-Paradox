@@ -4,6 +4,7 @@
 #include "j1Map.h"
 #include "j1Render.h"
 #include "j1Window.h"
+#include "j1Entities.h"
 
 j1Collision::j1Collision()
 {
@@ -37,6 +38,9 @@ bool j1Collision::Update(float dt) {
 }
 
 bool j1Collision::PostUpdate() {
+	if (App->debug) {
+		BlitDebugColliders();
+	}
 	return true;
 }
 
@@ -73,11 +77,6 @@ void j1Collision::Checkcollisions(const ColliderType collidertype, const iRect r
 				aux.w *= scale;
 				aux.h *= scale;
 
-				if (App->debug) {
-					App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
-					App->render->DrawQuad(player_rect.toSDL_Rect(), 255, 0, 0, 1.0f, 128);
-				}
-
 				aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed * scale) + (aux.x * scale);
 				aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed * scale) + (aux.y * scale);
 
@@ -85,13 +84,35 @@ void j1Collision::Checkcollisions(const ColliderType collidertype, const iRect r
 				player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
 
 				SetSpVecToCollisions(aux, player_rect, *speed_vector);
-				
-				i++;
+
 				checked = true;
+				i++;
 			}
 		}
 		j++;
 	}
+}
+
+void j1Collision::BlitDebugColliders() const
+{
+	for (uint j = 0; j < App->map->data.layers.count() && App->map->data.layers[j] != NULL; j++)
+	{
+		for (uint i = 0; i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL; i++)
+		{
+			iRect aux(App->map->data.layers[j]->layer_colliders[i]->rect);
+			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
+		}
+	}
+
+	
+	for (p2List_item <BaseEnemy*>* enemy = App->entities->Enemies.start; enemy != nullptr; enemy = enemy->next)
+	{
+		iRect aux(enemy->data->collider);
+		App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, App->map->data.layers[enemy->data->current_layer]->parallax_speed, 128);
+	}
+
+	iRect aux(iRect((int)App->entities->player.position.x, (int)App->entities->player.position.y, App->entities->player.collider.w, App->entities->player.collider.h));
+	App->render->DrawQuad(aux.toSDL_Rect(), 0, 0, 255, 1.0f, 128);
 
 }
 
