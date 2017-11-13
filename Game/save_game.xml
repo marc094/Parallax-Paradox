@@ -7,11 +7,11 @@
 	<map />
 	<scene />
 	<entities>
-		<position x="101.400024" y="962" />
+		<position x="560.599976" y="962.25" />
 	</entities>
 	<collision />
 	<pathfinding />
 	<renderer>
-		<camera x="410" y="-578" />
+		<camera x="-48" y="-578" />
 	</renderer>
 </game_state>

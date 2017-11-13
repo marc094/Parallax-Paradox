@@ -51,7 +51,7 @@ bool j1Entities::Start()
 	
 	on_collision = false;
 
-	Add_Enemy(BaseEnemy::LARVA, { 450,900 }, COLLIDER_BACK_LAYER);
+	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, COLLIDER_BACK_LAYER);
 
 	player.Start();
 	return true;
