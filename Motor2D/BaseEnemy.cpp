@@ -38,10 +38,10 @@ bool BaseEnemy::Update(float dt)
 		//Move
 
 		iRect alert_rect;
-		alert_rect.x = collider_rect.x - 50;
+		alert_rect.x = collider_rect.x - 200;
 		alert_rect.y = collider_rect.y - 50;
-		alert_rect.w = collider_rect.w + 100;
-		alert_rect.h = collider_rect.h + 100;
+		alert_rect.w = collider_rect.w + 400;
+		alert_rect.h = collider_rect.h + 50;
 
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
@@ -58,7 +58,10 @@ bool BaseEnemy::Update(float dt)
 			if (player_rect.x < collider_rect.x)
 			{
 				flipped = true;
+				Accelerate(-0.5f, 0);
 			}
+			else
+				Accelerate(0.5f, 0);
 
 			if (current_animation->Finished())
 			{
@@ -72,16 +75,6 @@ bool BaseEnemy::Update(float dt)
 			current_animation = &idle_anim;
 		}
 	}
-	App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
-
-	Move();
-
-
-	Accelerate(0.5f, 0);
-
-	//Gravity
-	if (gravity == true)
-	Accelerate(0, 0.5f);
 
 	//Blit
 	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
@@ -89,6 +82,18 @@ bool BaseEnemy::Update(float dt)
 
 	if (type == LARVA)
 		LarvaBlockUpdate();
+	else
+	App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
+
+	Move();
+
+
+
+	//Gravity
+	if (gravity == true)
+	Accelerate(0, 0.5f);
+
+
 
 	return true;
 }

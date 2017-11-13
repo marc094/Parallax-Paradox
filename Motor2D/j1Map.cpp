@@ -197,7 +197,7 @@ bool j1Map::Load(const char* file_name)
 		}
 	}
 
-	background = App->tex->Load(map_file.child("map").child("imagelayer").child("image").attribute("source").as_string());
+	background = App->tex->Load("background.png");
 
 	if(ret == true)
 	{
