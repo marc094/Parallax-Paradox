@@ -75,15 +75,15 @@ bool BaseEnemy::Update(float dt)
 			{
 				if (player_rect.x < collider_rect.x)
 				{
-				flipped = true;
-				Accelerate(-0.5f, 0);
+					flipped = true;
+					Accelerate(-0.5f, 0);
 				}
 				else
-				Accelerate(0.5f, 0);
+					Accelerate(0.5f, 0);
 			}
 
 			if  (type == AIR)
-			FollowPath();
+				FollowPath();
 
 			current_animation = &alert_anim;
 			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
@@ -106,11 +106,13 @@ bool BaseEnemy::Update(float dt)
 	}
 	else alpha = 128;
 
-	Move();
+	if (type != AIR)
+		Move();
 
 	//Gravity
 	if (gravity == true)
 		Accelerate(0, 0.5f);
+	else speed_vect.y = 0.0f;
 
 	//Blit
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
@@ -142,7 +144,6 @@ void BaseEnemy::LarvaBlockUpdate()
 		cube.x = position.x - 10;
 		cube.h = 12;
 	}
-
 	else
 		cube.x = position.x;
 
@@ -179,16 +180,18 @@ void BaseEnemy::GetPath()
 
 void BaseEnemy::FollowPath()
 {
-	iPoint path_point(App->map->MapToWorld(path[current_path_index]));
-	
-	fPoint displacement((float)path_point.x - position.x, (float)path_point.y - position.y);
+	if (path.Count() > 0) {
+		iPoint path_point(App->map->MapToWorld(path[current_path_index]));
 
-	Accelerate((displacement.x != 0.0f) ? displacement.x / fabs(displacement.x) : 0.0f, (displacement.y != 0.0f) ? displacement.y / fabs(displacement.y) : 0.0f);
-	//Accelerate(1, 1);
+		//fPoint displacement((float)path_point.x - position.x, (float)path_point.y - position.y);
 
-	Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x));
-	Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y));
+		//Accelerate((displacement.x != 0.0f) ? displacement.x / fabs(displacement.x) : 0.0f, (displacement.y != 0.0f) ? displacement.y / fabs(displacement.y) : 0.0f);
+		Accelerate(1, 1);
 
-	if (path_point == position.to_iPoint() && current_path_index < path.Count())
-		current_path_index++;
+		Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x));
+		Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y));
+
+		if (path_point == position.to_iPoint() && current_path_index < path.Count())
+			current_path_index++;
+	}
 }
