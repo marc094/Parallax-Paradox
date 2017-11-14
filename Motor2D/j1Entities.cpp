@@ -33,7 +33,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		ground_enemy_node = doc_node.child("Enemies").child("ground");
 		boxer_enemy_node = doc_node.child("Enemies").child("boxer");
 		larva_enemy_node = doc_node.child("Enemies").child("larva");
-		larvablock_enemy_node = doc_node.child("Enemies").child("larvablock");
+		air_enemy_node = doc_node.child("Enemies").child("air");
 		player_node = doc_node.child("player");
 
 		exclamation.PushBack({ 0,36,3,8 });
@@ -51,7 +51,7 @@ bool j1Entities::Start()
 	
 	on_collision = false;
 
-	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
+	Add_Enemy(BaseEnemy::AIR, { 410,900 }, BACK_LAYER);
 
 	player.Start();
 	return true;
@@ -119,6 +119,10 @@ void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer)
 	else if (type == BaseEnemy::LARVA)
 	{
 		current_node = larva_enemy_node;
+	}
+	else if (type == BaseEnemy::AIR)
+	{
+		current_node = air_enemy_node;
 	}
 
 	

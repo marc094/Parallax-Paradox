@@ -90,7 +90,7 @@ bool BaseEnemy::Update(float dt)
 
 	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
-	if (type == LARVA)
+	if (type == LARVA || type == AIR)
 		LarvaBlockUpdate();
 	else
 		App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);

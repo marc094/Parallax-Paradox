@@ -94,20 +94,20 @@
         </alert>
       </animationInfo>
     </larva>
-    <larvablock>
-      <enemyInfo speed="1" gravity="true" />
+    <air>
+      <enemyInfo speed="1" gravity="false" />
       <animationInfo>
         <idle frames ="1" duration ="0" loop ="1">
-          <frame number="0" x="0" y ="84" w="32" h ="32"/>
+          <frame number="0" x="168" y ="89" w="33" h ="25"/>
         </idle>
         <walking frames="3" duration="0.08f" loop ="1">
-          <frame number="0" x="0" y ="84" w="32" h ="32"/>
+          <frame number="0" x="168" y ="89" w="33" h ="25"/>
         </walking>
         <alert frames="3" duration="0.08f" loop ="0">
-          <frame number="0" x="0" y ="84" w="32" h ="32"/>
+          <frame number="0" x="168" y ="89" w="33" h ="25"/>
         </alert>
       </animationInfo>
-    </larvablock>
+    </air>
   </Enemies>
   <spritesheet path="Character sprites.png"/>
 </animations>
