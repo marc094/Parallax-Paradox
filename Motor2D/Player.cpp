@@ -124,17 +124,14 @@ void Player::SelectAnim(fPoint speed_vect)
 		current_animation = &jumping_anim;
 	else if (speed_vect.x != 0)
 	{
-
 		current_animation = &moving_anim;
 
 		if (speed_vect.x > 0)
 		{
 			flipped = false;
-
 		}
 		else if (speed_vect.x < 0)
 		{
-
 			flipped = true;
 		}
 	}

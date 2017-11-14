@@ -140,6 +140,18 @@ public:
 	p2Point<int> to_iPoint() {
 		return p2Point<int>((int)x, (int)y);
 	}
+
+	p2Point<float> to_fPoint() {
+		return p2Point<float>((float)x, (float)y);
+	}
+
+	//Different from operator ==
+	//Checks if the components are in a close range from eachother
+	//Conceived for float points
+	bool equals(const p2Point<float>& other) const
+	{
+		return (fabs(x - other.x) < 0.000001f && fabs(y - other.y) < 0.000001f);
+	}
 };
 
 typedef p2Point<int> iPoint;

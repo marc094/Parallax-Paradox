@@ -56,7 +56,7 @@ public:
 	void BlitDebugColliders() const;
 
 private:
-	bool checked;
-	int scale;
+
+	int scale = 0;
 };
 #endif

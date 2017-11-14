@@ -58,7 +58,7 @@ bool j1Collision::Save(pugi::xml_node&) const {
 
 void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint* speed_vector) 
 {
-	checked = false;
+	bool checked = false;
 	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; checked == false && map_layer != NULL; map_layer = map_layer->next)
 	{
 		if (map_layer->data->layer_colliders.start->data->collidertype == collidertype)
@@ -91,7 +91,7 @@ void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 
 void j1Collision::BlitDebugColliders() const
 {
-	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; checked == false && map_layer != NULL; map_layer = map_layer->next)
+	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; map_layer != NULL; map_layer = map_layer->next)
 	{
 		for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 		{
@@ -100,7 +100,6 @@ void j1Collision::BlitDebugColliders() const
 		}
 	}
 
-	
 	for (p2List_item <BaseEnemy*>* enemy = App->entities->Enemies.start; enemy != nullptr; enemy = enemy->next)
 	{
 		if (enemy->data->type == BaseEnemy::Type::LARVA)

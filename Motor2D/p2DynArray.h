@@ -244,6 +244,19 @@ public:
 			SWAP(*start++, *end--);
 	}
 
+	p2DynArray<VALUE>& operator =(const p2DynArray<VALUE>& original)
+	{
+		p2DynArray<VALUE> ret;
+		ret.mem_capacity = original.mem_capacity;
+		ret.num_elements = original.num_elements;
+		ret.Alloc(ret.mem_capacity);
+
+		for (unsigned int i = 0; i < original.num_elements; i++)
+			ret[i] = original[i];
+
+		return ret;
+	}
+
 private:
 
 	// Private Utils

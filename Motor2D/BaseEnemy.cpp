@@ -25,7 +25,6 @@ bool BaseEnemy::Update(float dt)
 	bool flipped = false;
 	Uint8 alpha = 255;
 
-
 	if (App->entities->player.current_layer == current_layer)
 	{
 		//Check Collisions
@@ -55,13 +54,19 @@ bool BaseEnemy::Update(float dt)
 
 		if (state == Entity::ALERT)
 		{
-			if (type == AIR && App->entities->player.current_layer == BACK_LAYER) {
-				if (App->pathfinding->CreatePath(position.to_iPoint(), App->entities->player.position.to_iPoint(), current_layer) != -1) //Needs loop to track path
-					path = *App->pathfinding->GetLastPath();
+			accumulated_updates++;
+			if (type == AIR && App->entities->player.current_layer == BACK_LAYER && accumulated_updates * update_to_frame_ratio >= 1.0f || current_path_index >= path.Count())
+			{
+				accumulated_updates = 0;
+				GetPath();
 			}
+
+			FollowPath();
+
 			current_animation = &alert_anim;
 			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
 
+			
 			if (player_rect.x < collider_rect.x)
 			{
 				flipped = true;
@@ -129,4 +134,24 @@ void BaseEnemy::LarvaBlockUpdate()
 	App->render->Blit(App->entities->texture, position.x, position.y, &App->entities->larva_cube.GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
+}
+
+void BaseEnemy::GetPath()
+{
+	current_path_index = 0;
+	if (App->pathfinding->CreatePath(position.to_iPoint(), App->entities->player.position.to_iPoint(), current_layer) != -1) //Needs loop to track path
+		path = *App->pathfinding->GetLastPath();
+}
+
+void BaseEnemy::FollowPath()
+{
+	if (path[current_path_index].equals(position))
+		current_path_index++;
+
+	fPoint displacement((float)path[current_path_index].x - position.x, (float)path[current_path_index].y - position.y);
+	if (displacement.x == 0)
+		displacement.x = 0.000000000000000000000000000001;
+	if (displacement.y == 0)
+		displacement.y = 0.000000000000000000000000000001;
+	Accelerate(displacement.x / fabs(displacement.x) * 0.5f, displacement.y / fabs(displacement.y) * 0.5f);
 }
