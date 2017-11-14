@@ -131,7 +131,7 @@ void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collid
 		{
 			if (collider2.y + speed_vector.y < collider1.y + collider1.h && collider2.y + speed_vector.y > collider1.y && speed_vector.y < 0)
 			{
-				speed_vector.y = 0;
+   				speed_vector.y = 0;
 			}
 			else if (collider2.y + collider2.h + speed_vector.y > collider1.y && speed_vector.y >= 0)
 			{

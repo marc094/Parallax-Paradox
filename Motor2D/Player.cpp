@@ -62,13 +62,16 @@ bool Player::Start()
 	current_layer = FRONT_LAYER;
 
 	current_animation = &idle_anim;
+
+	collider = current_animation->GetCurrentFrame().rect;
+
 	return true;
 }
 
 bool Player::PreUpdate()
 {
 	AnimationFrame frame = current_animation->GetCurrentFrame();
-	collider = frame.rect;
+
 	return true;
 }
 
@@ -98,7 +101,7 @@ bool Player::Update(float dt)
 	if (position.y > 1400)
 		App->Reload();
 
-	App->render->Blit(App->entities->texture, position.x, position.y, &collider.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 	return true;
 }
 

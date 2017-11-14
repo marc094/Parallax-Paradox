@@ -69,6 +69,7 @@ public:
 	SDL_Texture* texture = nullptr;
 	Animation exclamation;
 	Animation larva_cube;
+	Animation air_cube;
 	pugi::xml_node player_node;
 
 
@@ -78,7 +79,7 @@ private:
 	pugi::xml_node flying_enemy_node;
 	pugi::xml_node boxer_enemy_node;
 	pugi::xml_node larva_enemy_node;
-	pugi::xml_node larvablock_enemy_node;
+	pugi::xml_node air_enemy_node;
 
 
 	float parallax_speed = 0.0f;
