@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+
 class BaseEnemy :
 	public Entity
 {
@@ -20,6 +21,7 @@ public:
 		Animation alert_anim;
 		SDL_Rect enemyrect;
 		Type type;
+		p2DynArray<iPoint> path;
 		bool gravity;
 
 private:

@@ -28,10 +28,10 @@ public:
 	bool CleanUp();
 
 	// Sets up the walkability map
-	void SetMap(uint width, uint height, uchar* data);
+	void SetMap(uint width, uint height, const LayerID layer, uint* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination);
+	int CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;
@@ -40,10 +40,10 @@ public:
 	bool CheckBoundaries(const iPoint& pos) const;
 
 	// Utility: returns true is the tile is walkable
-	bool IsWalkable(const iPoint& pos) const;
+	bool IsWalkable(const iPoint& pos, const LayerID layer) const;
 
 	// Utility: return the walkability value of a tile
-	uchar GetTileAt(const iPoint& pos) const;
+	uchar GetTileAt(const iPoint& pos, const LayerID layer) const;
 
 	void LoadNodeMap(const MapData map_data);
 
@@ -53,7 +53,7 @@ private:
 	uint width;
 	uint height;
 	// all map walkability values [0..255]
-	uchar* map;
+	p2List<uint*> maps;
 	// we store the created path here
 	p2DynArray<iPoint> last_path;
 };
@@ -99,6 +99,7 @@ struct PathList
 	// -----------
 	// The list itself, note they are not pointers!
 	p2List<PathNode> list;
+	LayerID layer = LAYER_AMOUNT;
 };
 
 

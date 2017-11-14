@@ -4,6 +4,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1Entities.h"
+#include "j1Pathfinding.h"
 
 
 BaseEnemy::BaseEnemy()
@@ -54,6 +55,10 @@ bool BaseEnemy::Update(float dt)
 
 		if (state == Entity::ALERT)
 		{
+			if (type == AIR && App->entities->player.current_layer == BACK_LAYER) {
+				if (App->pathfinding->CreatePath(position.to_iPoint(), App->entities->player.position.to_iPoint(), current_layer) != -1) //Needs loop to track path
+					path = *App->pathfinding->GetLastPath();
+			}
 			current_animation = &alert_anim;
 			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
 
@@ -88,18 +93,15 @@ bool BaseEnemy::Update(float dt)
 	if (type == LARVA)
 		LarvaBlockUpdate();
 	else
-	App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
+		App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
 
 	Move();
 
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
-
 	//Gravity
 	if (gravity == true)
-	Accelerate(0, 0.5f);
-
-
+		Accelerate(0, 0.5f);
 
 	return true;
 }
@@ -116,8 +118,8 @@ void BaseEnemy::LarvaBlockUpdate()
 	
 	uint alpha = 64;
 
-	App->collision->Checkcollisions(COLLIDER_FRONT_LAYER, cube, position, &speed_vect);	
-	if (App->entities->player.current_layer == COLLIDER_FRONT_LAYER)
+	App->collision->Checkcollisions(FRONT_LAYER, cube, position, &speed_vect);	
+	if (App->entities->player.current_layer == FRONT_LAYER)
 	{
 		alpha = 255;
 		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect);

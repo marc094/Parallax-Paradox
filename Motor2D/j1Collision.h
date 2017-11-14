@@ -6,15 +6,17 @@
 #include "p2Point.h"
 #include "Rect.h"
 
-enum ColliderType {
-	COLLIDER_BACK_LAYER,
-	COLLIDER_FRONT_LAYER,
-	COLLIDER_NONE
+enum LayerID {
+	BACK_LAYER,
+	FRONT_LAYER,
+	DECORATION_LAYER,
+	LAYER_AMOUNT
 };
+
 struct Collider
 {
 	iRect rect;
-	ColliderType collidertype;
+	LayerID collidertype;
 
 };
 
@@ -48,7 +50,7 @@ public:
 	virtual bool Load(pugi::xml_node&);
 
 	virtual bool Save(pugi::xml_node&) const;
-	void Checkcollisions(ColliderType collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector) const;
+	void Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
 	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector) const;
 	void BlitDebugColliders() const;

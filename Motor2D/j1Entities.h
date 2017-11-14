@@ -58,7 +58,7 @@ public:
 	
 	
 
-	void Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer);
+	void Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer);
 	void Move(fPoint& position, fPoint& speed_vector) const;
 	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 

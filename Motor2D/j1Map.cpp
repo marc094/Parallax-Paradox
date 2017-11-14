@@ -10,6 +10,12 @@
 #include "j1Entities.h"
 #include "Entity.h"
 #include "Player.h"
+#include "j1Pathfinding.h"
+
+LayerID& operator++(LayerID& v) {
+	((uint&)v = (uint&)v + 1);	//XD//
+	return v;
+}
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -38,11 +44,11 @@ void j1Map::Draw()
 		return;
 	App->render->Blit(background, 0, 0,0,0.7f);
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
-	uint layer = 0;
+	LayerID layer = BACK_LAYER;
 	Uint8 alpha = 255;
 	while (item_layer != NULL)
 	{
-		if (layer == App->entities->player.GetCurrentLayer() || layer == 2)
+		if (layer == App->entities->player.GetCurrentLayer() || layer == DECORATION_LAYER)
 			alpha = 255;
 		else alpha = 128;
 		SDL_SetTextureAlphaMod(data.tilesets[0]->texture, alpha);
@@ -57,7 +63,7 @@ void j1Map::Draw()
 				tile++;
 			}
 		}
-		layer++;
+		++layer;
 		item_layer = item_layer->next;
 	}
 
@@ -169,6 +175,7 @@ bool j1Map::Load(const char* file_name)
 	
 	// Load layer info ----------------------------------------------
 	pugi::xml_node node_layer;
+	uint i = 0;
 	for (node_layer = map_file.child("map").child("layer"); node_layer && ret; node_layer = node_layer.next_sibling("layer"))
 	{
 		MapLayer* layer = new MapLayer();
@@ -176,6 +183,7 @@ bool j1Map::Load(const char* file_name)
 		if (ret == true)
 		{
 			ret = LoadLayer(node_layer, layer);
+			App->pathfinding->SetMap(data.width, data.height, (LayerID)i++, layer->tiles);
 		}
 
 		data.layers.add(layer);
@@ -366,7 +374,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	bool ret = true;
 	pugi::xml_node data_node = node.child("data");
 	pugi::xml_node properties = node.child("properties");
-	ColliderType type;
+	LayerID type;
 
 	for (pugi::xml_node object : properties.children()) {
 		if (!strcmp(object.attribute("name").as_string(), "Speed"))
@@ -376,13 +384,13 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		else if (!strcmp(object.attribute("name").as_string(), "Collider"))
 		{
 			if (!strcmp(object.attribute("value").as_string(), "Back wall"))
-				type = COLLIDER_BACK_LAYER;
+				type = BACK_LAYER;
 
 			else if (!strcmp(object.attribute("value").as_string(), "Front wall"))
-				type = COLLIDER_FRONT_LAYER;
+				type = FRONT_LAYER;
 
 			else if (!strcmp(object.attribute("value").as_string(), "None"))
-				type = COLLIDER_NONE;
+				type = DECORATION_LAYER;
 		}
 	}
 	
@@ -447,7 +455,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		for (pugi::xml_node tile : data_node.children()) {
 			uint tile_id = tile.first_attribute().as_uint(0);
 			layer->tiles[tile_index] = tile_id;
-			if (tile_id != 0 && type != COLLIDER_NONE)
+			if (tile_id != 0 && type != DECORATION_LAYER)
 			{
 				Collider* aux = new Collider;
 				iRect rect;

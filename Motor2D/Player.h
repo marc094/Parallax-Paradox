@@ -37,7 +37,7 @@ public:
 
 	bool Save(pugi::xml_node& data) const;
 
-	uint GetCurrentLayer();
+	LayerID GetCurrentLayer();
 
 private:
 	uint		jump_height;

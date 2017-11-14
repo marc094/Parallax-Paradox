@@ -59,7 +59,7 @@ bool Player::Start()
 	position = App->map->GetInitialPlayerPos();
 
 
-	current_layer = COLLIDER_FRONT_LAYER;
+	current_layer = FRONT_LAYER;
 
 	current_animation = &idle_anim;
 	return true;
@@ -161,16 +161,16 @@ bool Player::Save(pugi::xml_node& data) const
 }
 
 void Player::SwapLayer() {
-	if (current_layer == COLLIDER_BACK_LAYER) {
-		current_layer = COLLIDER_FRONT_LAYER;
+	if (current_layer == BACK_LAYER) {
+		current_layer = FRONT_LAYER;
 		//scale = 1.0f;
 	}
 	else {
-		current_layer = COLLIDER_BACK_LAYER;
+		current_layer = BACK_LAYER;
 		//scale = 0.7f;
 	}
 }
 
-uint Player::GetCurrentLayer() {
-	return (uint)current_layer;
+LayerID Player::GetCurrentLayer() {
+	return current_layer;
 }

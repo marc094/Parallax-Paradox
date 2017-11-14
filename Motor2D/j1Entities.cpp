@@ -51,7 +51,7 @@ bool j1Entities::Start()
 	
 	on_collision = false;
 
-	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, COLLIDER_BACK_LAYER);
+	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
 
 	player.Start();
 	return true;
@@ -97,7 +97,7 @@ bool j1Entities::Save(pugi::xml_node& data) const
 }
 
 
-void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, ColliderType layer)
+void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer)
 {
 	BaseEnemy* aux = new BaseEnemy();
 	aux->position = position;

@@ -136,6 +136,10 @@ public:
 		};
 		return (p);
 	}
+
+	p2Point<int> to_iPoint() {
+		return p2Point<int>((int)x, (int)y);
+	}
 };
 
 typedef p2Point<int> iPoint;

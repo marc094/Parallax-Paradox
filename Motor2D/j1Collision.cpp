@@ -56,16 +56,14 @@ bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
-void j1Collision::Checkcollisions(const ColliderType collidertype, const iRect rect_frame, const fPoint position, fPoint* speed_vector) const
+void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint* speed_vector) const
 {
-	uint j = 0;
 	bool checked = false;
-	while (checked == false && j < App->map->data.layers.count() && App->map->data.layers[j] != NULL)
+	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; checked == false && map_layer != NULL; map_layer = map_layer->next)
 	{
-		if (App->map->data.layers[j]->layer_colliders[0]->collidertype == collidertype)
+		if (map_layer->data->layer_colliders.start->data->collidertype == collidertype)
 		{
-			uint i = 0;
-			while (i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL)
+			for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 			{
 				iRect player_rect = rect_frame;
 				player_rect.x = position.x * scale;
@@ -73,12 +71,12 @@ void j1Collision::Checkcollisions(const ColliderType collidertype, const iRect r
 				player_rect.w *= scale;
 				player_rect.h *= scale;
 
-				iRect aux = App->map->data.layers[j]->layer_colliders[i]->rect * scale;
+				iRect aux = collider->data->rect * scale;
 				aux.w *= scale;
 				aux.h *= scale;
 
-				aux.x = (int)(App->render->camera.x * App->map->data.layers[j]->parallax_speed * scale) + (aux.x * scale);
-				aux.y = (int)(App->render->camera.y * App->map->data.layers[j]->parallax_speed * scale) + (aux.y * scale);
+				aux.x = (int)(App->render->camera.x * map_layer->data->parallax_speed * scale) + (aux.x * scale);
+				aux.y = (int)(App->render->camera.y * map_layer->data->parallax_speed * scale) + (aux.y * scale);
 
 				player_rect.x = (int)(App->render->camera.x * scale) + (player_rect.x * scale);
 				player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
@@ -86,32 +84,41 @@ void j1Collision::Checkcollisions(const ColliderType collidertype, const iRect r
 				SetSpVecToCollisions(aux, player_rect, *speed_vector);
 
 				checked = true;
-				i++;
 			}
 		}
-		j++;
 	}
 }
 
 void j1Collision::BlitDebugColliders() const
 {
-	for (uint j = 0; j < App->map->data.layers.count() && App->map->data.layers[j] != NULL; j++)
+	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; checked == false && map_layer != NULL; map_layer = map_layer->next)
 	{
-		for (uint i = 0; i < App->map->data.layers[j]->layer_colliders.count() && App->map->data.layers[j]->layer_colliders[i] != NULL; i++)
+		for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 		{
-			iRect aux(App->map->data.layers[j]->layer_colliders[i]->rect);
-			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, App->map->data.layers[j]->parallax_speed, 128);
+			iRect aux(collider->data->rect);
+			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, map_layer->data->parallax_speed, 128);
 		}
 	}
 
 	
 	for (p2List_item <BaseEnemy*>* enemy = App->entities->Enemies.start; enemy != nullptr; enemy = enemy->next)
 	{
-		iRect aux(enemy->data->collider);
-		App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, App->map->data.layers[enemy->data->current_layer]->parallax_speed, 128);
+		if (enemy->data->type == BaseEnemy::Type::LARVA)
+		{
+			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
+			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed, 128);
+
+			iRect aux_cube = App->entities->larva_cube.frames[App->entities->larva_cube.getFrameIndex()].rect;
+			aux_cube = iRect((int)enemy->data->position.x, (int)enemy->data->position.y, aux_cube.w, aux_cube.h);
+			App->render->DrawQuad(aux_cube.toSDL_Rect(), 0, 255, 0, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed, 128);
+		}
+		else {
+			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
+			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, App->map->data.layers[enemy->data->current_layer]->parallax_speed, 128);
+		}
 	}
 
-	iRect aux(iRect((int)App->entities->player.position.x, (int)App->entities->player.position.y, App->entities->player.collider.w, App->entities->player.collider.h));
+	iRect aux((int)App->entities->player.position.x, (int)App->entities->player.position.y, App->entities->player.collider.w, App->entities->player.collider.h);
 	App->render->DrawQuad(aux.toSDL_Rect(), 0, 0, 255, 1.0f, 128);
 
 }
