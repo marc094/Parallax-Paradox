@@ -56,9 +56,9 @@ bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
-void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint* speed_vector) const
+void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint* speed_vector) 
 {
-	bool checked = false;
+	checked = false;
 	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; checked == false && map_layer != NULL; map_layer = map_layer->next)
 	{
 		if (map_layer->data->layer_colliders.start->data->collidertype == collidertype)

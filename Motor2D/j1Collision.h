@@ -50,13 +50,13 @@ public:
 	virtual bool Load(pugi::xml_node&);
 
 	virtual bool Save(pugi::xml_node&) const;
-	void Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector) const;
+	void Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector);
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
 	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector) const;
 	void BlitDebugColliders() const;
 
 private:
-
+	bool checked;
 	int scale;
 };
 #endif
