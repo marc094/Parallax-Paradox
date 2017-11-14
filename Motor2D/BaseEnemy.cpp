@@ -108,9 +108,28 @@ bool BaseEnemy::Update(float dt)
 
 void BaseEnemy::LarvaBlockUpdate()
 {
-	iRect cube = App->entities->larva_cube.GetCurrentFrame().rect;
-	cube.x = position.x;
+	Animation* current_block = &App->entities->larva_cube;
+	if (type == AIR)
+	{
+		current_block = &App->entities->air_cube;
+	}
+	
+
+	iRect cube = current_block->GetCurrentFrame().rect;
+	if (type == AIR)
+	{
+		cube.x = position.x - 5;
+		cube.w = 46;
+		cube.h = 8;
+	}
+
+	else
+		cube.x = position.x;
+
+
 	cube.y = position.y;
+	
+
 
 	iRect player_rect = App->entities->player.collider;
 	player_rect.x = App->entities->player.GetPosition().x;
@@ -126,7 +145,7 @@ void BaseEnemy::LarvaBlockUpdate()
 	}
 	
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
-	App->render->Blit(App->entities->texture, position.x, position.y, &App->entities->larva_cube.GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true);
+	App->render->Blit(App->entities->texture, cube.x, cube.y, &current_block->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 }

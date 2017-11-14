@@ -38,6 +38,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 
 		exclamation.PushBack({ 0,36,3,8 });
 		larva_cube.PushBack({ 0,81,48,48});
+		air_cube.PushBack({ 120,88,46,23 });
 	}
 
 
