@@ -36,7 +36,7 @@
 #define MAX( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
 #define CLAMP( value, min, max ) ( MAX( MIN( value, max ), min ) )
-#define REDUCE_TO( value, dest, step ) ( (value > dest) ? (value - dest < step) ? dest : value - step : (value < dest) ? (dest - value < step) ? dest : value + step : dest ) //Don't even ask about this
+#define INTERPOLATE_TO( value, dest, step ) ( (value > dest) ? (value - dest < step) ? dest : value - step : (value < dest) ? (dest - value < step) ? dest : value + step : dest ) //Don't even ask about this
 
 typedef unsigned int uint;
 typedef unsigned __int32 uint32;
@@ -66,6 +66,21 @@ inline const char* const PATH(const char* folder, const char* file)
 	static char path[MID_STR];
 	sprintf_s(path, MID_STR, "%s/%s", folder, file);
 	return path;
+}
+
+// Interpolates between two values at a cerain rate (step)
+template<class TYPE>
+void Interpolate(TYPE& val, TYPE target, TYPE step)
+{
+	if (val > target)
+		if (val - target < step)
+			val = target;
+		else val = val - step;
+	else if (val < target)
+		if (target - val < step)
+			val = target;
+		else val = val + step;
+	else val = target;
 }
 
 #endif

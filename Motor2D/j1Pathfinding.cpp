@@ -4,7 +4,7 @@
 #include "j1PathFinding.h"
 #include "j1Map.h"
 
-j1PathFinding::j1PathFinding() : j1Module(), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
+j1PathFinding::j1PathFinding() : j1Module(), last_path(nullptr), width(0), height(0)
 {
 	name.create("pathfinding");
 	maps.clear();
@@ -24,9 +24,7 @@ j1PathFinding::~j1PathFinding()
 bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
-
-	last_path.Clear();
-
+	
 	for (p2List_item<uint*>* map = maps.start; map != nullptr; map = map->next)
 		RELEASE_ARRAY(map->data);
 	maps.clear();
@@ -56,7 +54,7 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer) const
 {
 	uchar t = GetTileAt(pos, layer);
-	return t != 0;//INVALID_WALK_CODE && t > 0;
+	return t == 0;//INVALID_WALK_CODE && t > 0;
 }
 
 // Utility: return the walkability value of a tile
@@ -71,7 +69,7 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos, const LayerID layer) const
 // To request all tiles involved in the last generated path
 const p2DynArray<iPoint>* j1PathFinding::GetLastPath() const
 {
-	return &last_path;
+	return last_path;
 }
 
 // PathList ------------------------------------------------------------------------
@@ -176,7 +174,7 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path)
 {
 	// TODO 1: if origin or destination are not walkable, return -1
 	if (!(IsWalkable(origin, layer) || !IsWalkable(destination, layer)))
@@ -192,6 +190,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 	node.pos = origin;
 	open.list.add(node);
 
+	last_path = path;
+
 	while (open.list.count() > 0)
 	{
 		// TODO 3: Move the lowest score cell from open list to the closed list
@@ -204,18 +204,14 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 		// Use the Pathnode::parent and Flip() the path when you are finish
 		if (curr_node->data.pos == destination)
 		{
-			int steps = 0;
-			last_path.Clear();
+			last_path->Clear();
 			while (curr_node->data.parent != nullptr) {
-				last_path.PushBack(curr_node->data.pos);
-				steps++;
+				last_path->PushBack(curr_node->data.pos);
 				curr_node = closed.Find(curr_node->data.parent->pos);
 			}
-			last_path.PushBack(curr_node->data.pos);
-			steps++;
-
-			last_path.Flip();
-			return steps;
+			//last_path->PushBack(curr_node->data.pos);
+			last_path->Flip();
+			return last_path->Count();
 		}
 
 		// TODO 5: Fill a list of all adjancent nodes

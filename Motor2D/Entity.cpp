@@ -31,8 +31,8 @@ void Entity::Move() {
 	position.y += speed_vect.y;
 
 
-	speed_vect.x = REDUCE_TO(speed_vect.x, 0, DECELERATION * 2);
-	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
+	speed_vect.x = INTERPOLATE_TO(speed_vect.x, 0, DECELERATION * 2);
+	//speed_vector.y = INTERPOLATE_TO(speed_vector.y, 0, DECELERATION);
 
 	state = IDLE;
 

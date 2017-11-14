@@ -43,10 +43,8 @@ public:
 	bool Awake(pugi::xml_node&);
 	bool Update(float dt);
 
-	void Move() ;
+	void Move();
 	void Accelerate(float x,float y);
-
-
 };
 
 

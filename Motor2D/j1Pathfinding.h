@@ -31,7 +31,7 @@ public:
 	void SetMap(uint width, uint height, const LayerID layer, uint* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer);
+	int CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path);
 
 	// To request all tiles involved in the last generated path
 	const p2DynArray<iPoint>* GetLastPath() const;
@@ -55,7 +55,7 @@ private:
 	// all map walkability values [0..255]
 	p2List<uint*> maps;
 	// we store the created path here
-	p2DynArray<iPoint> last_path;
+	p2DynArray<iPoint>* last_path = nullptr;
 };
 
 // forward declaration

@@ -165,8 +165,8 @@ void j1Entities::Move(fPoint& position, fPoint& speed_vector) const {
 	position.y += speed_vector.y;
 
 
-	speed_vector.x = REDUCE_TO(speed_vector.x, 0, DECELERATION * 2);
-	//speed_vector.y = REDUCE_TO(speed_vector.y, 0, DECELERATION);
+	speed_vector.x = INTERPOLATE_TO(speed_vector.x, 0, DECELERATION * 2);
+	//speed_vector.y = INTERPOLATE_TO(speed_vector.y, 0, DECELERATION);
 
 }
 

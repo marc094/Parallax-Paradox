@@ -42,7 +42,7 @@ public:
 	// Math ------------------------------------------------
 	p2Point operator -(const p2Point &v) const
 	{
-		p2Vector2 r;
+		p2Point r;
 
 		r.x = x - v.x;
 		r.y = y - v.y;
@@ -52,7 +52,7 @@ public:
 
 	p2Point operator + (const p2Point &v) const
 	{
-		p2Vector2 r;
+		p2Point r;
 
 		r.x = x + v.x;
 		r.y = y + v.y;
@@ -151,6 +151,11 @@ public:
 	bool equals(const p2Point<float>& other) const
 	{
 		return (fabs(x - other.x) < 0.000001f && fabs(y - other.y) < 0.000001f);
+	}
+
+	bool close_to(const p2Point<float>& other, float radius) const
+	{
+		return (fabs(x - other.x) < radius && fabs(y - other.y) < radius);
 	}
 };
 

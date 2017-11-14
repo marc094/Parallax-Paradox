@@ -21,7 +21,6 @@ public:
 		Animation alert_anim;
 		SDL_Rect enemyrect;
 		Type type = Type::GROUND;
-		p2DynArray<iPoint> path;
 		bool gravity = false;
 
 		float				update_to_frame_ratio = 0.1f;
@@ -32,5 +31,7 @@ private:
 	void LarvaBlockUpdate();
 	void GetPath();
 	void FollowPath();
+
+	p2DynArray<iPoint> path;
 };
 

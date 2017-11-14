@@ -246,15 +246,15 @@ public:
 
 	p2DynArray<VALUE>& operator =(const p2DynArray<VALUE>& original)
 	{
-		p2DynArray<VALUE> ret;
-		ret.mem_capacity = original.mem_capacity;
-		ret.num_elements = original.num_elements;
-		ret.Alloc(ret.mem_capacity);
+		mem_capacity = original.mem_capacity;
+		num_elements = original.num_elements;
+		/*Alloc(mem_capacity);
 
 		for (unsigned int i = 0; i < original.num_elements; i++)
-			ret[i] = original[i];
+			(*this)[i] = original[i];*/
+		memcpy(data, original.data, mem_capacity);
 
-		return ret;
+		return *this;
 	}
 
 private:
