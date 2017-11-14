@@ -46,6 +46,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 
 	return ret;
 }
+
 bool j1Entities::Start()
 {	
 	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
@@ -101,12 +102,13 @@ bool j1Entities::Save(pugi::xml_node& data) const
 }
 
 
-void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer)
+BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer)
 {
 	BaseEnemy* aux = new BaseEnemy();
 	aux->position = position;
 	aux->state = Entity::IDLE;
-	aux->speed_vect = { 0,0 };
+	aux->speed_vect = fPoint( 0.0f, 0.0f );
+	aux->max_speed = fPoint( 5.0f, 10.f );
 	aux->current_layer = layer;
 	aux->type = type;
 
@@ -127,6 +129,7 @@ void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer)
 	else if (type == BaseEnemy::AIR)
 	{
 		current_node = air_enemy_node;
+		aux->max_speed = fPoint(1.0f, 0.5f);
 	}
 
 	
@@ -159,6 +162,7 @@ void j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer)
 	aux->collider = aux->current_animation->GetCurrentFrame().rect;
 
 	Enemies.add(aux);
+	return aux;
 }
 
 void j1Entities::Move(fPoint& position, fPoint& speed_vector) const {

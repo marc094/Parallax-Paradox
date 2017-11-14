@@ -82,9 +82,8 @@ void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 				player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
 
 				SetSpVecToCollisions(aux, player_rect, *speed_vector);
-
-				checked = true;
 			}
+			checked = true;
 		}
 	}
 }

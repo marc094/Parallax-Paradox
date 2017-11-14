@@ -14,11 +14,8 @@ class j1Entities :
 	public j1Module
 {
 public:
-
-
 	j1Entities();
 	~j1Entities();
-
 
 	void Init()
 	{
@@ -58,7 +55,7 @@ public:
 	
 	
 
-	void Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer);
+	BaseEnemy* Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer);
 	void Move(fPoint& position, fPoint& speed_vector) const;
 	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 

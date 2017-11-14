@@ -58,12 +58,13 @@ bool Player::Start()
 
 	position = App->map->GetInitialPlayerPos();
 
-
 	current_layer = FRONT_LAYER;
 
 	current_animation = &idle_anim;
 
 	collider = current_animation->GetCurrentFrame().rect;
+
+	max_speed = fPoint(5.0f, 10.0f);
 
 	return true;
 }
@@ -107,7 +108,6 @@ bool Player::Update(float dt)
 
 bool Player::CleanUp()
 {
-
 	animation_list.clear();
 	idle_anim.Reset();
 	jumping_anim.Reset();
