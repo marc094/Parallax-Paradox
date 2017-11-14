@@ -38,7 +38,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 
 		exclamation.PushBack({ 0,36,3,8 });
 		larva_cube.PushBack({ 0,81,48,48});
-		air_cube.PushBack({ 120,88,46,23 });
+		air_cube.PushBack({ 100,81,69,34 });
 	}
 
 
@@ -52,7 +52,10 @@ bool j1Entities::Start()
 	
 	on_collision = false;
 
-	Add_Enemy(BaseEnemy::AIR, { 410,900 }, BACK_LAYER);
+	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
+	Add_Enemy(BaseEnemy::LARVA, { 150,272 }, BACK_LAYER);
+	Add_Enemy(BaseEnemy::AIR, { 670,680}, BACK_LAYER);
+	Add_Enemy(BaseEnemy::AIR, { 1600,400}, BACK_LAYER);
 
 	player.Start();
 	return true;

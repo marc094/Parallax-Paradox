@@ -39,11 +39,22 @@ bool BaseEnemy::Update(float dt)
 
 		//Move
 
+		
 		iRect alert_rect;
-		alert_rect.x = collider_rect.x - 200;
-		alert_rect.y = collider_rect.y - 200;
-		alert_rect.w = collider_rect.w + 400;
-		alert_rect.h = collider_rect.h + 400;
+		if (type == LARVA)
+		{
+			alert_rect.x = collider_rect.x - 200;
+			alert_rect.y = collider_rect.y - 100;
+			alert_rect.w = collider_rect.w + 400;
+			alert_rect.h = collider_rect.h + 200;
+		}
+		else if (type == AIR)
+		{
+			alert_rect.x = collider_rect.x - 300;
+			alert_rect.y = collider_rect.y - 200;
+			alert_rect.w = collider_rect.w + 600;
+			alert_rect.h = collider_rect.h + 300;
+		}
 
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
@@ -60,20 +71,25 @@ bool BaseEnemy::Update(float dt)
 				accumulated_updates = 0;
 				GetPath();
 			}
+			else
+			{
+				if (player_rect.x < collider_rect.x)
+				{
+				flipped = true;
+				Accelerate(-0.5f, 0);
+				}
+				else
+				Accelerate(0.5f, 0);
+			}
 
+			if  (type == AIR)
 			FollowPath();
 
 			current_animation = &alert_anim;
 			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
 
 			
-			/*if (player_rect.x < collider_rect.x)
-			{
-				flipped = true;
-				Accelerate(-0.5f, 0);
-			}
-			else
-				Accelerate(0.5f, 0);*/
+	
 
 			if (current_animation->Finished())
 			{
@@ -123,9 +139,8 @@ void BaseEnemy::LarvaBlockUpdate()
 	iRect cube = current_block->GetCurrentFrame().rect;
 	if (type == AIR)
 	{
-		cube.x = position.x - 5;
-		cube.w = 46;
-		cube.h = 8;
+		cube.x = position.x - 10;
+		cube.h = 12;
 	}
 
 	else

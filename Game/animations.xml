@@ -98,13 +98,13 @@
       <enemyInfo speed="1" gravity="false" />
       <animationInfo>
         <idle frames ="1" duration ="0" loop ="1">
-          <frame number="0" x="168" y ="89" w="33" h ="25"/>
+          <frame number="0" x="172" y ="82" w="49" h ="38"/>
         </idle>
         <walking frames="3" duration="0.08f" loop ="1">
-          <frame number="0" x="168" y ="89" w="33" h ="25"/>
+          <frame number="0" x="172" y ="82" w="49" h ="38"/>
         </walking>
         <alert frames="3" duration="0.08f" loop ="0">
-          <frame number="0" x="168" y ="89" w="33" h ="25"/>
+          <frame number="0" x="172" y ="82" w="49" h ="38"/>
         </alert>
       </animationInfo>
     </air>
