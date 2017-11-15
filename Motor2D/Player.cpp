@@ -61,7 +61,7 @@ bool Player::Start()
 	current_layer = FRONT_LAYER;
 	current_animation = &idle_anim;
 	collider = current_animation->GetCurrentFrame(0.0f).rect;
-	max_speed = fPoint(DECELERATION * 5.0f, GRAVITY * 10.0f);
+	max_speed = fPoint(MAX_SPEED_X, MAX_SPEED_Y);
 	god_mode = false;
 	is_jumping = false;
 	return true;

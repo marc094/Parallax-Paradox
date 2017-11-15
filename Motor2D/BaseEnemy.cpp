@@ -73,13 +73,14 @@ bool BaseEnemy::Update(float dt)
 		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
 			if (state != RUNNING)
-			state = Entity::ALERT;
+				state = Entity::ALERT;
 
 			iRect exclamation_frame_rect = App->entities->exclamation.GetCurrentFrame(dt).rect;
 			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - exclamation_frame_rect.w) / 2), collider_rect.y - 10, &exclamation_frame_rect.toSDL_Rect());
 
 		}
-
+		else
+			state = IDLE;
 
 		if (state == Entity::ALERT)
 		{
