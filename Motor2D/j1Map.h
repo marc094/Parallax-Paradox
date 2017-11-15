@@ -153,17 +153,17 @@ private:
 
 public:
 
-	MapData data;
-	int		gravity;
+	MapData				data;
+	int					gravity;
 
 private:
 
 	pugi::xml_document	map_file;
 	p2SString			folder;
-	bool				map_loaded;
+	bool				map_loaded = false;
 	fPoint				initial_player_pos;
 	fPoint				final_pos;
-	SDL_Texture*		background;
+	SDL_Texture*		background = nullptr;
 };
 
 #endif // __j1MAP_H__

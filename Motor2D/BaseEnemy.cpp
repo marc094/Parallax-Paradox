@@ -176,7 +176,7 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 	
 	uint alpha = 64;
 
-	App->collision->Checkcollisions(FRONT_LAYER, cube, position, speed_vect);	
+	App->collision->Checkcollisions(FRONT_LAYER, cube, position, speed_vect);
 	if (App->entities->player.current_layer == FRONT_LAYER)
 	{
 		alpha = 255;
