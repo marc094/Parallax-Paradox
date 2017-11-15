@@ -85,6 +85,7 @@ bool j1Scene::Update(float dt)
 
 		App->entities->player.Accelerate(0, -12);
 	}
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
 	{
 		App->entities->player.Accelerate(0, -1);
 	}
