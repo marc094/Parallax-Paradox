@@ -52,11 +52,12 @@ bool j1Entities::Start()
 	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 	
 	on_collision = false;
-
-	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
-	Add_Enemy(BaseEnemy::LARVA, { 150,272 }, BACK_LAYER);
-	Add_Enemy(BaseEnemy::AIR, { 670,680}, BACK_LAYER);
-	Add_Enemy(BaseEnemy::AIR, { 1600,400}, BACK_LAYER);
+	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
+	while (current_enemy != NULL)
+	{
+		current_enemy->data->Start();
+		current_enemy = current_enemy->next;
+	}
 
 	player.Start();
 	return true;

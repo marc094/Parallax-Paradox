@@ -15,12 +15,16 @@ BaseEnemy::BaseEnemy() : path(0)
 BaseEnemy::~BaseEnemy()
 {
 }
-
+bool BaseEnemy::Start()
+{
+	enemyrect = current_animation->GetCurrentFrame().rect;
+	return true;
+}
 bool BaseEnemy::Update(float dt)
 {
-	iRect collider_rect = current_animation->GetCurrentFrame().rect;
-	collider_rect.x = position.x;
-	collider_rect.y = position.y;
+
+	enemyrect.x = position.x;
+	enemyrect.y = position.y;
 
 	bool flipped = false;
 	Uint8 alpha = 255;
@@ -34,7 +38,7 @@ bool BaseEnemy::Update(float dt)
 		player_rect.y = App->entities->player.GetPosition().y;
 
 
-		if (App->collision->DoCollide(collider_rect, player_rect) && !App->entities->player.god_mode)
+		if (App->collision->DoCollide(enemyrect, player_rect) && !App->entities->player.god_mode)
 			App->Reload();
 
 		//Move
@@ -43,29 +47,51 @@ bool BaseEnemy::Update(float dt)
 		iRect alert_rect;
 		if (type == LARVA)
 		{
-			alert_rect.x = collider_rect.x - 200;
-			alert_rect.y = collider_rect.y - 100;
-			alert_rect.w = collider_rect.w + 400;
-			alert_rect.h = collider_rect.h + 200;
+			alert_rect.x = enemyrect.x - 200;
+			alert_rect.y = enemyrect.y - 100;
+			alert_rect.w = enemyrect.w + 400;
+			alert_rect.h = enemyrect.h + 200;
 		}
 		else if (type == AIR)
 		{
-			alert_rect.x = collider_rect.x - 350;
-			alert_rect.y = collider_rect.y - 200;
-			alert_rect.w = collider_rect.w + 650;
-			alert_rect.h = collider_rect.h + 300;
+			alert_rect.x = enemyrect.x - 350;
+			alert_rect.y = enemyrect.y - 200;
+			alert_rect.w = enemyrect.w + 650;
+			alert_rect.h = enemyrect.h + 300;
+		}
+		else
+		{
+			alert_rect.x = enemyrect.x - 100;
+			alert_rect.y = enemyrect.y - 50;
+			alert_rect.w = enemyrect.w + 200;
+			alert_rect.h = enemyrect.h + 100;
 		}
 
 
 		if (App->collision->DoCollide(alert_rect, player_rect))
 		{
+			if (state != RUNNING)
 			state = Entity::ALERT;
+
+			App->render->Blit(App->entities->texture, enemyrect.x + ((enemyrect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), enemyrect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
 		}
 
 
 		if (state == Entity::ALERT)
 		{
 			accumulated_updates++;
+			
+
+			current_animation = &alert_anim;
+		
+
+			if (current_animation->Finished())
+			{
+				state = Entity::RUNNING;
+			}
+		}
+		else if (state == Entity::RUNNING)
+		{
 			if (type == AIR && App->entities->player.current_layer == BACK_LAYER/* && (accumulated_updates * update_to_frame_ratio >= 1.0f || current_path_index >= path.Count())*/)
 			{
 				accumulated_updates = 0;
@@ -73,7 +99,7 @@ bool BaseEnemy::Update(float dt)
 			}
 			else
 			{
-				if (player_rect.x < collider_rect.x)
+				if (player_rect.x < enemyrect.x)
 				{
 					flipped = true;
 					Accelerate(-0.5f, 0);
@@ -84,17 +110,6 @@ bool BaseEnemy::Update(float dt)
 
 			if  (type == AIR)
 				FollowPath();
-
-			current_animation = &alert_anim;
-			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
-
-			
-	
-
-			if (current_animation->Finished())
-			{
-				state = Entity::IDLE;
-			}
 		}
 		else
 		{
@@ -120,7 +135,7 @@ bool BaseEnemy::Update(float dt)
 	if (type == LARVA || type == AIR)
 		LarvaBlockUpdate();
 	else
-		App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
+		App->collision->Checkcollisions(current_layer, enemyrect, position, &speed_vect);
 
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 

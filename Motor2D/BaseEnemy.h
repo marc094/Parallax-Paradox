@@ -7,6 +7,7 @@ class BaseEnemy :
 public:
 	BaseEnemy();
 	~BaseEnemy();
+	bool Start();
 	bool Update(float dt);
 
 		enum Type
@@ -19,7 +20,7 @@ public:
 		};
 
 		Animation alert_anim;
-		SDL_Rect enemyrect;
+		iRect enemyrect;
 		Type type = Type::GROUND;
 		bool gravity = false;
 

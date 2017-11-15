@@ -44,6 +44,18 @@ bool j1Scene::Start()
 	if (level > max_level)
 		level = 1;
 	App->map->Load(xml_file_name[level-1].GetString());
+
+	if (level == 1)
+	{
+		App->entities->Add_Enemy(BaseEnemy::GROUND, { 1427,588 }, FRONT_LAYER);
+	}
+	if (level == 2)
+	{
+		App->entities->Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
+		App->entities->Add_Enemy(BaseEnemy::LARVA, { 150,272 }, BACK_LAYER);
+		App->entities->Add_Enemy(BaseEnemy::AIR, { 670,680 }, BACK_LAYER);
+		App->entities->Add_Enemy(BaseEnemy::AIR, { 1600,400 }, BACK_LAYER);
+	}
 	return true;
 }
 
