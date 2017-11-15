@@ -64,6 +64,7 @@ bool Player::Start()
 	max_speed = fPoint(MAX_SPEED_X, MAX_SPEED_Y);
 	god_mode = false;
 	is_jumping = false;
+	grounded = false;
 	return true;
 }
 

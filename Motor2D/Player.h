@@ -21,7 +21,7 @@ public:
 
 	bool isJumping() const { return is_jumping; }
 
-	void setJumping(bool jump) { is_jumping = jump; }
+	void setJumping(bool jump) { is_jumping = jump; grounded = !jump; }
 
 	void SwapLayer();
 	

@@ -180,7 +180,10 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 	if (App->entities->player.current_layer == FRONT_LAYER)
 	{
 		alpha = 255;
-		//App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, App->entities->player.grounded);
+		bool p_grounded = false;
+		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, p_grounded);
+
+		App->entities->player.grounded = p_grounded | App->entities->player.grounded;
 	}
 	
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
