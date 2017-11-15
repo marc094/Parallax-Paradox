@@ -107,5 +107,5 @@
       </animationInfo>
     </air>
   </Enemies>
-  <spritesheet path="Character sprites.png"/>
+  <spritesheet path="textures/Character sprites.png"/>
 </animations>
