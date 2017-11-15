@@ -82,9 +82,9 @@ bool BaseEnemy::Update(float dt)
 		else
 			state = IDLE;
 
+		//accumulated_updates++;
 		if (state == Entity::ALERT)
 		{
-			//accumulated_updates++;
 			current_animation = &alert_anim;
 		
 			if (current_animation->Finished())
