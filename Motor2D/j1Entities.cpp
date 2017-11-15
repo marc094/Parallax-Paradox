@@ -103,7 +103,7 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 	aux->position = position;
 	aux->state = Entity::IDLE;
 	aux->speed_vect = fPoint( 0.0f, 0.0f );
-	aux->max_speed = fPoint( MAX_SPEED_X, MAX_SPEED_Y);
+	aux->max_speed = fPoint( ENEMY_MAX_SPEED_X, ENEMY_MAX_SPEED_Y);
 	aux->current_layer = layer;
 	aux->type = type;
 

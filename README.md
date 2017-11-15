@@ -25,6 +25,7 @@ CURRENTLY WORKING IN:
 -Create a Entites UML
 -Collider detection by culling
 
+
 FEATURES TO IMPROVE:
 
 -Enemy parallax/speed 
@@ -34,6 +35,16 @@ FEATURES TO IMPROVE:
 -Platform enemies go back to the initial position after a given time not being in alert
 -Spawn enemies from TMX file
 
+
+NEW CONTENT FOR THE NEXT PATCHES:
+
+-Audio Fx
+-Background music
+-Intro scene 
+-UI 
+-Controls image
+-Transition animation
+-Decoration in parallax
 
 
 MIT License

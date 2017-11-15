@@ -14,6 +14,8 @@
 #define JUMP_FORCE 55.0f
 #define MAX_SPEED_X 4.0f
 #define MAX_SPEED_Y 8.0f
+#define ENEMY_MAX_SPEED_X 1.5f
+#define ENEMY_MAX_SPEED_Y 3.0f
 
 class Entity 
 {
