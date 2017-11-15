@@ -50,9 +50,9 @@ bool BaseEnemy::Update(float dt)
 		}
 		else if (type == AIR)
 		{
-			alert_rect.x = collider_rect.x - 300;
+			alert_rect.x = collider_rect.x - 350;
 			alert_rect.y = collider_rect.y - 200;
-			alert_rect.w = collider_rect.w + 600;
+			alert_rect.w = collider_rect.w + 650;
 			alert_rect.h = collider_rect.h + 300;
 		}
 
@@ -106,8 +106,6 @@ bool BaseEnemy::Update(float dt)
 	}
 	else alpha = 128;
 
-	if (type != AIR)
-		Move();
 
 	//Gravity
 	if (gravity == true)
@@ -125,6 +123,9 @@ bool BaseEnemy::Update(float dt)
 		App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
 
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
+
+	if (type != AIR)
+		Move();
 
 	return true;
 }

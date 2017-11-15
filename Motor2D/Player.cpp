@@ -113,7 +113,7 @@ bool Player::Update(float dt)
 	if (god_mode)
 	{
 		aura_angle++;
-		App->render->Blit(App->entities->texture, position.x + collider.w - god_mode_aura.GetCurrentFrame().rect.w, position.y + collider.h - god_mode_aura.GetCurrentFrame().rect.h, &god_mode_aura.GetCurrentFrame().rect.toSDL_Rect(),1.0f,aura_angle);
+		App->render->Blit(App->entities->texture, position.x + (collider.w/2) - (god_mode_aura.GetCurrentFrame().rect.w/2), position.y + (collider.h/2) - (god_mode_aura.GetCurrentFrame().rect.h/2), &god_mode_aura.GetCurrentFrame().rect.toSDL_Rect(),1.0f,aura_angle);
 	}
 
 
