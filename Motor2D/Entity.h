@@ -12,6 +12,8 @@
 #define DECELERATION 5.0f
 #define GRAVITY 2.0f
 #define JUMP_FORCE 20.0f
+#define MAX_SPEED_X 1
+#define MAX_SPEED_y 1
 
 class Entity 
 {

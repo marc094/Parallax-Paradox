@@ -51,10 +51,12 @@ bool j1Entities::Start()
 {	
 	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
 
-	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
-	Add_Enemy(BaseEnemy::LARVA, { 150,272 }, BACK_LAYER);
-	Add_Enemy(BaseEnemy::AIR, { 670,680}, BACK_LAYER);
-	Add_Enemy(BaseEnemy::AIR, { 1600,400}, BACK_LAYER);
+	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
+	while (current_enemy != NULL)
+	{
+		current_enemy->data->Start();
+		current_enemy = current_enemy->next;
+	}
 
 	player.Start();
 	return true;
@@ -101,7 +103,7 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 	aux->position = position;
 	aux->state = Entity::IDLE;
 	aux->speed_vect = fPoint( 0.0f, 0.0f );
-	aux->max_speed = fPoint( 5.0f, 10.f );
+	aux->max_speed = fPoint( MAX_SPEED_X, MAX_SPEED_Y);
 	aux->current_layer = layer;
 	aux->type = type;
 

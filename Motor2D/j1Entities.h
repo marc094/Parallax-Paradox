@@ -16,13 +16,13 @@ class j1Entities :
 public:
 	j1Entities();
 	~j1Entities();
-	
+
 	// Called before render is available
 	bool Awake(pugi::xml_node&) override;
 
 	// Called before the first frame
 	bool Start() override;
-	
+
 	// Called each loop iteration
 	bool Update(float dt) override;
 
@@ -32,8 +32,7 @@ public:
 	bool Load(pugi::xml_node&) override;
 
 	bool Save(pugi::xml_node&) const override;
-	
-	
+
 	BaseEnemy* Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer);
 
 	p2List<BaseEnemy*> Enemies;
