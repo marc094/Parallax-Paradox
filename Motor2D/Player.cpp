@@ -71,7 +71,7 @@ bool Player::Update(float dt)
 {
 	SelectAnim(speed_vect);
 
-	grounded = App->collision->Checkcollisions(current_layer, collider, position, speed_vect);
+	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect);
 
 	if (grounded == true && is_jumping == true)
 	{
@@ -94,9 +94,9 @@ bool Player::Update(float dt)
 
 	if (god_mode)
 	{
-		aura_angle += dt;
+		aura_angle += 90.0f * dt;
 		iRect frame_rect = god_mode_aura.GetCurrentFrame(dt).rect;
-		App->render->Blit(App->entities->texture, position.x + (collider.w/2) - (frame_rect.w/2), position.y + (collider.h/2) - (frame_rect.h/2), &frame_rect.toSDL_Rect(),1.0f,aura_angle);
+		App->render->Blit(App->entities->texture, position.x + (collider.w/2) - (frame_rect.w/2), position.y + (collider.h/2) - (frame_rect.h/2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
 	}
 
 	return true;

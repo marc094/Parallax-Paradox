@@ -117,7 +117,7 @@ bool BaseEnemy::Update(float dt)
 		}
 		else
 		{
-			speed_vect = { 0.0f, 0.0f };
+			//speed_vect = { 0.0f, 0.0f };
 			alert_anim.Reset();
 			moving_anim.Reset();
 			state = Entity::IDLE;
@@ -125,6 +125,11 @@ bool BaseEnemy::Update(float dt)
 		}
 	}
 	else alpha = 128;
+
+	//Blit
+	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
+	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 	if (type == LARVA || type == AIR)
 		LarvaBlockUpdate(dt);
@@ -138,11 +143,6 @@ bool BaseEnemy::Update(float dt)
 	if (gravity == true)
 		Accelerate(0, GRAVITY, dt);
 	else speed_vect.y = 0.0f;
-
-	//Blit
-	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
-	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
-	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 	return true;
 }
@@ -180,7 +180,7 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 	if (App->entities->player.current_layer == FRONT_LAYER)
 	{
 		alpha = 255;
-		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, grounded);
+		//App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, App->entities->player.grounded);
 	}
 	
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
