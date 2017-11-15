@@ -9,26 +9,26 @@ public:
 	~BaseEnemy();
 	bool Update(float dt);
 
-		enum Type
-		{
-			GROUND,
-			BOXER,
-			AIR,
-			LARVA,
-			LARVA_BLOCK,
-		};
+	enum Type
+	{
+		GROUND,
+		BOXER,
+		AIR,
+		LARVA,
+		LARVA_BLOCK,
+	};
 
-		Animation alert_anim;
-		SDL_Rect enemyrect;
-		Type type = Type::GROUND;
-		bool gravity = false;
+	Animation alert_anim;
+	SDL_Rect enemyrect;
+	Type type = Type::GROUND;
+	bool gravity = false;
 
-		float				update_to_frame_ratio = 0.1f;
-		unsigned int		accumulated_updates = 0;
-		unsigned int		current_path_index = 0;
+	float				update_to_frame_ratio = 0.1f;
+	unsigned int		accumulated_updates = 0;
+	unsigned int		current_path_index = 0;
 
 private:
-	void LarvaBlockUpdate();
+	void LarvaBlockUpdate(float dt);
 	void GetPath();
 	void FollowPath();
 

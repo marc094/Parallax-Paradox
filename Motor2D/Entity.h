@@ -8,8 +8,10 @@
 #include "j1Map.h"
 #include "Rect.h"
 
-#define ACCELERATION 0.5f
-#define DECELERATION 0.1f
+#define ACCELERATION 5.0f
+#define DECELERATION 5.0f
+#define GRAVITY 2.0f
+#define JUMP_FORCE 20.0f
 
 class Entity 
 {
@@ -38,14 +40,21 @@ public:
 	fPoint speed_vect;
 	fPoint max_speed;
 	LayerID current_layer;
-	bool gravity;
+	bool gravity, grounded = true;
 
 
-	bool Awake(pugi::xml_node&);
-	bool Update(float dt);
+	virtual bool Awake(pugi::xml_node&)
+	{
+		return true;
+	}
 
-	void Move();
-	void Accelerate(float x,float y);
+	virtual bool Update(float dt)
+	{
+		return true;
+	}
+
+	virtual void Move(float delta_time);
+	void Accelerate(float x,float y, float delta_time);
 };
 
 

@@ -57,26 +57,13 @@ bool Player::Awake()
 
 bool Player::Start()
 {
-
 	position = App->map->GetInitialPlayerPos();
-
 	current_layer = FRONT_LAYER;
-
 	current_animation = &idle_anim;
-
-	collider = current_animation->GetCurrentFrame().rect;
-
-	max_speed = fPoint(5.0f, 10.0f);
-
+	collider = current_animation->GetCurrentFrame(0.0f).rect;
+	max_speed = fPoint(DECELERATION * 5.0f, GRAVITY * 10.0f);
 	god_mode = false;
-
-	return true;
-}
-
-bool Player::PreUpdate()
-{
-	AnimationFrame frame = current_animation->GetCurrentFrame();
-
+	is_jumping = false;
 	return true;
 }
 
@@ -84,24 +71,18 @@ bool Player::Update(float dt)
 {
 	SelectAnim(speed_vect);
 
+	grounded = App->collision->Checkcollisions(current_layer, collider, position, speed_vect);
 
-	App->collision->Checkcollisions(current_layer, collider, position, &speed_vect);
-	if (speed_vect.y == 0)
+	if (grounded == true && is_jumping == true)
 	{
-		speed_vect.y = 0;
-		isjumping = false;
+		is_jumping = false;
 		jumping_anim.Reset();
 	}
 
-	Move();
-
+	Move(dt);
 
 	//Gravity
-
-	Accelerate(0, 0.5f);
-	
-
-
+	Accelerate(0, GRAVITY, dt);
 
 	App->render->camera.x = -position.x *scale + App->render->camera.w / 2;
 	App->render->camera.y = -position.y *scale + App->render->camera.h / 2;
@@ -109,13 +90,14 @@ bool Player::Update(float dt)
 	if (position.y > 1400)
 		App->Reload();
 
-	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+
 	if (god_mode)
 	{
-		aura_angle++;
-		App->render->Blit(App->entities->texture, position.x + collider.w - god_mode_aura.GetCurrentFrame().rect.w, position.y + collider.h - god_mode_aura.GetCurrentFrame().rect.h, &god_mode_aura.GetCurrentFrame().rect.toSDL_Rect(),1.0f,aura_angle);
+		aura_angle += dt;
+		iRect frame_rect = god_mode_aura.GetCurrentFrame(dt).rect;
+		App->render->Blit(App->entities->texture, position.x + collider.w - frame_rect.w, position.y + collider.h - frame_rect.h, &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
 	}
-
 
 	return true;
 }
@@ -131,13 +113,14 @@ bool Player::CleanUp()
 	changing_layers_anim.Reset();
 	current_animation = nullptr;
 
-	position = { 0.0f,0.0f };
-	speed_vect = { 0.0f,0.0f };
+	position = { 0.0f, 0.0f };
+	speed_vect = { 0.0f, 0.0f };
 	return true;
 }
+
 void Player::SelectAnim(fPoint speed_vect)
 {
-	if (isjumping == true)
+	if (is_jumping == true)
 		current_animation = &jumping_anim;
 	else if (speed_vect.x != 0)
 	{

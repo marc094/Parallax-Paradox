@@ -16,10 +16,6 @@ j1Collision::~j1Collision()
 {
 }
 
-void j1Collision::Init() {
-
-}
-
 bool j1Collision::Awake(pugi::xml_node&) {
 	scale = App->win->GetScale();
 	return true;
@@ -56,36 +52,38 @@ bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
-void j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint* speed_vector) 
+bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint& speed_vector) const
 {
-	bool checked = false;
-	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; checked == false && map_layer != NULL; map_layer = map_layer->next)
+	bool grounded = false;
+	p2List_item<MapLayer*>* map_layer = nullptr;
+	for (map_layer = App->map->data.layers.start; map_layer != NULL; map_layer = map_layer->next)
 	{
 		if (map_layer->data->layer_colliders.start->data->collidertype == collidertype)
-		{
-			for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
-			{
-				iRect player_rect = rect_frame;
-				player_rect.x = position.x * scale;
-				player_rect.y = position.y * scale;
-				player_rect.w *= scale;
-				player_rect.h *= scale;
-
-				iRect aux = collider->data->rect * scale;
-				aux.w *= scale;
-				aux.h *= scale;
-
-				aux.x = (int)(App->render->camera.x * map_layer->data->parallax_speed * scale) + (aux.x * scale);
-				aux.y = (int)(App->render->camera.y * map_layer->data->parallax_speed * scale) + (aux.y * scale);
-
-				player_rect.x = (int)(App->render->camera.x * scale) + (player_rect.x * scale);
-				player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
-
-				SetSpVecToCollisions(aux, player_rect, *speed_vector);
-			}
-			checked = true;
-		}
+			break;
 	}
+
+	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
+	{
+		iRect player_rect = rect_frame;
+		player_rect.x = position.x * scale;
+		player_rect.y = position.y * scale;
+		player_rect.w *= scale;
+		player_rect.h *= scale;
+
+		iRect aux = collider->data->rect * scale;
+		aux.w *= scale;
+		aux.h *= scale;
+
+		aux.x = (int)(App->render->camera.x * map_layer->data->parallax_speed * scale) + (aux.x * scale);
+		aux.y = (int)(App->render->camera.y * map_layer->data->parallax_speed * scale) + (aux.y * scale);
+
+		player_rect.x = (int)(App->render->camera.x * scale) + (player_rect.x * scale);
+		player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
+
+		SetSpVecToCollisions(aux, player_rect, speed_vector, grounded);
+	}
+
+	return grounded;
 }
 
 void j1Collision::BlitDebugColliders() const
@@ -121,7 +119,7 @@ void j1Collision::BlitDebugColliders() const
 
 }
 
-void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collider2, fPoint &speed_vector) const
+void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collider2, fPoint &speed_vector, bool& grounded) const
 {
 	if (collider2.x + collider2.w + speed_vector.x > collider1.x && collider2.x + speed_vector.x < collider1.x + collider1.w
 		&& collider2.y + collider2.h + speed_vector.y > collider1.y && collider2.y + speed_vector.y < collider1.y + collider1.h) //there's contact
@@ -130,11 +128,12 @@ void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collid
 		{
 			if (collider2.y + speed_vector.y < collider1.y + collider1.h && collider2.y + speed_vector.y > collider1.y && speed_vector.y < 0)
 			{
-   				speed_vector.y = 0;
+				speed_vector.y = 0;
 			}
 			else if (collider2.y + collider2.h + speed_vector.y > collider1.y && speed_vector.y >= 0)
 			{
 				speed_vector.y = 0;
+				grounded = true;
 			}
 		}
 		if (collider2.y < collider1.y + collider1.h && collider2.y + collider2.h > collider1.y) //collider2 is in x-axis collision with collider1

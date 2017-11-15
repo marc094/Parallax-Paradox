@@ -40,9 +40,9 @@ public:
 		last_frame++;
 	}
 
-	AnimationFrame& GetCurrentFrame()
+	AnimationFrame& GetCurrentFrame(float delta_time)
 	{
-		current_frame = current_frame + speed;
+		current_frame = current_frame + speed * delta_time;
 		if(current_frame >= last_frame)
 		{
 			current_frame = (loop) ? 0.0f : last_frame - 1;

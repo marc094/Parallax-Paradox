@@ -12,21 +12,16 @@ public:
 	bool Start();
 	// Called each loop iteration
 
-	bool PreUpdate();
-
 	bool Update(float dt);
-
-	// Called each loop iteration
-	bool PostUpdate();
 
 	// Called before quitting
 	bool CleanUp();
 
 	void SelectAnim(fPoint speed_vect);
 
-	bool isJumping() const { return isjumping; }
+	bool isJumping() const { return is_jumping; }
 
-	void setJumping(bool jump) { isjumping = jump; }
+	void setJumping(bool jump) { is_jumping = jump; }
 
 	void SwapLayer();
 	
@@ -34,18 +29,17 @@ public:
 
 	bool Load(pugi::xml_node& data);
 
-
 	bool Save(pugi::xml_node& data) const;
 
 	LayerID GetCurrentLayer();
 
-	bool god_mode;
+	bool god_mode = false;
+
 private:
-	uint		jump_height;
 	float		scale = 1.0f;
-	bool		flipped;
-	bool isjumping;
-	uint aura_angle;
+	bool		flipped = false;
+	bool		is_jumping = false;
+	float		aura_angle = 0.0f;
 
 	p2List<Animation> animation_list;
 	Animation jumping_anim;

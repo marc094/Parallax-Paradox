@@ -18,7 +18,7 @@ BaseEnemy::~BaseEnemy()
 
 bool BaseEnemy::Update(float dt)
 {
-	iRect collider_rect = current_animation->GetCurrentFrame().rect;
+	iRect collider_rect = current_animation->GetCurrentFrame(dt).rect;
 	collider_rect.x = position.x;
 	collider_rect.y = position.y;
 
@@ -39,7 +39,6 @@ bool BaseEnemy::Update(float dt)
 
 		//Move
 
-		
 		iRect alert_rect;
 		if (type == LARVA)
 		{
@@ -65,10 +64,10 @@ bool BaseEnemy::Update(float dt)
 
 		if (state == Entity::ALERT)
 		{
-			accumulated_updates++;
+			//accumulated_updates++;
 			if (type == AIR && App->entities->player.current_layer == BACK_LAYER/* && (accumulated_updates * update_to_frame_ratio >= 1.0f || current_path_index >= path.Count())*/)
 			{
-				accumulated_updates = 0;
+				//accumulated_updates = 0;
 				GetPath();
 			}
 			else
@@ -76,20 +75,18 @@ bool BaseEnemy::Update(float dt)
 				if (player_rect.x < collider_rect.x)
 				{
 					flipped = true;
-					Accelerate(-0.5f, 0);
+					Accelerate(-ACCELERATION, 0, dt);
 				}
 				else
-					Accelerate(0.5f, 0);
+					Accelerate(ACCELERATION, 0, dt);
 			}
 
 			if  (type == AIR)
 				FollowPath();
 
 			current_animation = &alert_anim;
-			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - App->entities->exclamation.GetCurrentFrame().rect.w) / 2), collider_rect.y - 10, &App->entities->exclamation.GetCurrentFrame().rect.toSDL_Rect());
-
-			
-	
+			iRect exclamation_frame_rect = App->entities->exclamation.GetCurrentFrame(dt).rect;
+			App->render->Blit(App->entities->texture, collider_rect.x + ((collider_rect.w - exclamation_frame_rect.w) / 2), collider_rect.y - 10, &exclamation_frame_rect.toSDL_Rect());
 
 			if (current_animation->Finished())
 			{
@@ -107,29 +104,29 @@ bool BaseEnemy::Update(float dt)
 	else alpha = 128;
 
 	if (type != AIR)
-		Move();
+		Move(dt);
 
 	//Gravity
 	if (gravity == true)
-		Accelerate(0, 0.5f);
+		Accelerate(0, GRAVITY, dt);
 	else speed_vect.y = 0.0f;
 
 	//Blit
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
 
-	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
 	if (type == LARVA || type == AIR)
-		LarvaBlockUpdate();
+		LarvaBlockUpdate(dt);
 	else
-		App->collision->Checkcollisions(current_layer, collider_rect, position, &speed_vect);
+		App->collision->Checkcollisions(current_layer, collider_rect, position, speed_vect);
 
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 	return true;
 }
 
-void BaseEnemy::LarvaBlockUpdate()
+void BaseEnemy::LarvaBlockUpdate(float dt)
 {
 	Animation* current_block = &App->entities->larva_cube;
 	if (type == AIR)
@@ -138,7 +135,7 @@ void BaseEnemy::LarvaBlockUpdate()
 	}
 	
 
-	iRect cube = current_block->GetCurrentFrame().rect;
+	iRect cube = current_block->GetCurrentFrame(dt).rect;
 	if (type == AIR)
 	{
 		cube.x = position.x - 10;
@@ -158,15 +155,15 @@ void BaseEnemy::LarvaBlockUpdate()
 	
 	uint alpha = 64;
 
-	App->collision->Checkcollisions(FRONT_LAYER, cube, position, &speed_vect);	
+	App->collision->Checkcollisions(FRONT_LAYER, cube, position, speed_vect);	
 	if (App->entities->player.current_layer == FRONT_LAYER)
 	{
 		alpha = 255;
-		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect);
+		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, grounded);
 	}
 	
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
-	App->render->Blit(App->entities->texture, cube.x, cube.y, &current_block->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true);
+	App->render->Blit(App->entities->texture, cube.x, cube.y, &current_block->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 }
@@ -186,7 +183,7 @@ void BaseEnemy::FollowPath()
 		//fPoint displacement((float)path_point.x - position.x, (float)path_point.y - position.y);
 
 		//Accelerate((displacement.x != 0.0f) ? displacement.x / fabs(displacement.x) : 0.0f, (displacement.y != 0.0f) ? displacement.y / fabs(displacement.y) : 0.0f);
-		Accelerate(1, 1);
+		Accelerate(ACCELERATION, ACCELERATION, 1.0f);
 
 		Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x));
 		Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y));

@@ -26,37 +26,35 @@ class j1Collision :
 public:
 	j1Collision();
 	~j1Collision();
-
-	void Init();
-
+	
 	// Called before render is available
-	virtual bool Awake(pugi::xml_node&);
+	bool Awake(pugi::xml_node&) override;
 
 	// Called before the first frame
-	virtual bool Start();
+	bool Start() override;
 
 	// Called each loop iteration
-	virtual bool PreUpdate();
+	bool PreUpdate() override;
 
 	// Called each loop iteration
-	virtual bool Update(float dt);
+	bool Update(float dt) override;
 
 	// Called each loop iteration
-	virtual bool PostUpdate();
+	bool PostUpdate() override;
 
 	// Called before quitting
-	virtual bool CleanUp();
+	bool CleanUp() override;
 
-	virtual bool Load(pugi::xml_node&);
+	bool Load(pugi::xml_node&) override;
 
-	virtual bool Save(pugi::xml_node&) const;
-	void Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint* speed_vector);
+	bool Save(pugi::xml_node&) const override;
+
+	bool Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint& speed_vector) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
-	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector) const;
+	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector, bool& grounded) const;
 	void BlitDebugColliders() const;
 
 private:
-
 	int scale = 0;
 };
 #endif

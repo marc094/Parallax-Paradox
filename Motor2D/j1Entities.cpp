@@ -50,8 +50,6 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 bool j1Entities::Start()
 {	
 	texture = App->tex->Load(animations.first_child().child("spritesheet").attribute("path").as_string());
-	
-	on_collision = false;
 
 	Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
 	Add_Enemy(BaseEnemy::LARVA, { 150,272 }, BACK_LAYER);
@@ -62,11 +60,6 @@ bool j1Entities::Start()
 	return true;
 }
 
-bool j1Entities::PreUpdate()
-{
-	player.PreUpdate();
-	return true;
-}
 bool j1Entities::Update(float dt)
 {
 	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
@@ -159,29 +152,8 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 
 	aux->gravity = current_node.child("enemyInfo").attribute("gravity").as_bool();
 	aux->current_animation = &aux->idle_anim;
-	aux->collider = aux->current_animation->GetCurrentFrame().rect;
+	aux->collider = aux->current_animation->GetCurrentFrame(0.0f).rect;
 
 	Enemies.add(aux);
 	return aux;
-}
-
-void j1Entities::Move(fPoint& position, fPoint& speed_vector) const {
-
-
-	position.x += speed_vector.x;
-	position.y += speed_vector.y;
-
-
-	speed_vector.x = INTERPOLATE_TO(speed_vector.x, 0, DECELERATION * 2);
-	//speed_vector.y = INTERPOLATE_TO(speed_vector.y, 0, DECELERATION);
-
-}
-
-void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const {
-	speed_vector.x += (x) / (1.0f / ACCELERATION);
-	speed_vector.y += (y) / (1.0f / ACCELERATION);
-
-	//speed_vector->x = CLAMP(speed_vector.x, -5, 5);
-	//speed_vector->y = CLAMP(speed_vector.y, -10, 10);
-
 }

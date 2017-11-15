@@ -16,52 +16,28 @@ class j1Entities :
 public:
 	j1Entities();
 	~j1Entities();
-
-	void Init()
-	{
-		active = true;
-	}
-
+	
 	// Called before render is available
-	virtual bool Awake(pugi::xml_node&);
-
+	bool Awake(pugi::xml_node&) override;
 
 	// Called before the first frame
-	virtual bool Start();
-
-
+	bool Start() override;
+	
 	// Called each loop iteration
-	virtual bool PreUpdate();
-
-
-	// Called each loop iteration
-	virtual bool Update(float dt);
-
-
-	// Called each loop iteration
-	virtual bool PostUpdate()
-	{
-		return true;
-	}
+	bool Update(float dt) override;
 
 	// Called before quitting
-	virtual bool CleanUp();
+	bool CleanUp() override;
 
+	bool Load(pugi::xml_node&) override;
 
-	virtual bool Load(pugi::xml_node&);
-
-
-	virtual bool Save(pugi::xml_node&) const;
+	bool Save(pugi::xml_node&) const override;
 	
 	
-
 	BaseEnemy* Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer);
-	void Move(fPoint& position, fPoint& speed_vector) const;
-	void j1Entities::Accelerate(fPoint& speed_vector, float x, float y) const;
 
 	p2List<BaseEnemy*> Enemies;
 	Player player;
-	bool on_collision;
 
 	SDL_Texture* texture = nullptr;
 	Animation exclamation;
@@ -77,10 +53,5 @@ private:
 	pugi::xml_node boxer_enemy_node;
 	pugi::xml_node larva_enemy_node;
 	pugi::xml_node air_enemy_node;
-
-
-	float parallax_speed = 0.0f;
-
 };
-
 #endif
