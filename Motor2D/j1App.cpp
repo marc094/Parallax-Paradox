@@ -225,6 +225,16 @@ void j1App::FinishUpdate()
 	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
 
+uint32 j1App::GetFramerateCap() const
+{
+	return framerate_cap;
+}
+
+void j1App::SetFramerateCap(uint32 cap)
+{
+	framerate_cap = cap;
+}
+
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {

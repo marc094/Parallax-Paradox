@@ -55,6 +55,9 @@ public:
 	void Reload();
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
+	uint32 GetFramerateCap() const;
+	void SetFramerateCap(uint32 cap);
+
 private:
 
 	// Load config file

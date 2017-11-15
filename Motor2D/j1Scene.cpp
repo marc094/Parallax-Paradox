@@ -105,7 +105,14 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		App->entities->player.god_mode = !App->entities->player.god_mode;
-	
+
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (App->GetFramerateCap() == 60)
+			App->SetFramerateCap(30);
+		else App->SetFramerateCap(60);
+	}
+
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
