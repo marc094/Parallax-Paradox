@@ -39,17 +39,20 @@ public:
 
 	LayerID GetCurrentLayer();
 
+	bool god_mode;
 private:
 	uint		jump_height;
 	float		scale = 1.0f;
 	bool		flipped;
 	bool isjumping;
+	uint aura_angle;
 
 	p2List<Animation> animation_list;
 	Animation jumping_anim;
 	Animation falling_anim;
 	Animation landing_anim;
 	Animation changing_layers_anim;
+	Animation god_mode_aura;
 
 };
 

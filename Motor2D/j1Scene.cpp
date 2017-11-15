@@ -79,12 +79,19 @@ bool j1Scene::Update(float dt)
 		//App->render->camera.x += 1;
 		App->entities->player.Accelerate(1,0);
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping())
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping() && !App->entities->player.god_mode)
 	{
 		App->entities->player.setJumping(true);
+
 		App->entities->player.Accelerate(0, -12);
 	}
+	{
+		App->entities->player.Accelerate(0, -1);
+	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		App->entities->player.god_mode = !App->entities->player.god_mode;
+	
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 

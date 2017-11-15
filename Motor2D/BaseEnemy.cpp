@@ -34,7 +34,7 @@ bool BaseEnemy::Update(float dt)
 		player_rect.y = App->entities->player.GetPosition().y;
 
 
-		if (App->collision->DoCollide(collider_rect, player_rect))
+		if (App->collision->DoCollide(collider_rect, player_rect) && !App->entities->player.god_mode)
 			App->Reload();
 
 		//Move

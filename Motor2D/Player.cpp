@@ -21,6 +21,8 @@ bool Player::Awake()
 
 	speed_vect = { 0, 0 };
 
+	god_mode_aura.PushBack({ 79,45,30,30 });
+
 	for (pugi::xml_node animation : doc_node.children()) {
 
 		Animation aux/* = new Animation()*/;
@@ -66,6 +68,8 @@ bool Player::Start()
 
 	max_speed = fPoint(5.0f, 10.0f);
 
+	god_mode = false;
+
 	return true;
 }
 
@@ -93,7 +97,10 @@ bool Player::Update(float dt)
 
 
 	//Gravity
+
 	Accelerate(0, 0.5f);
+	
+
 
 
 	App->render->camera.x = -position.x *scale + App->render->camera.w / 2;
@@ -103,6 +110,13 @@ bool Player::Update(float dt)
 		App->Reload();
 
 	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame().rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	if (god_mode)
+	{
+		aura_angle++;
+		App->render->Blit(App->entities->texture, position.x + collider.w - god_mode_aura.GetCurrentFrame().rect.w, position.y + collider.h - god_mode_aura.GetCurrentFrame().rect.h, &god_mode_aura.GetCurrentFrame().rect.toSDL_Rect(),1.0f,aura_angle);
+	}
+
+
 	return true;
 }
 
