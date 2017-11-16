@@ -52,7 +52,7 @@ bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
-bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint& speed_vector) const
+bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint& speed_vector, float delta_time) const
 {
 	bool grounded = false;
 	p2List_item<MapLayer*>* map_layer = nullptr;
@@ -80,7 +80,7 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 		player_rect.x = (int)(App->render->camera.x * scale) + (player_rect.x * scale);
 		player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
 
-		SetSpVecToCollisions(aux, player_rect, speed_vector, grounded);
+		SetSpVecToCollisions(aux, player_rect, speed_vector, grounded, delta_time);
 	}
 
 	return grounded;
@@ -119,18 +119,19 @@ void j1Collision::BlitDebugColliders() const
 
 }
 
-void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collider2, fPoint &speed_vector, bool& grounded) const
+void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collider2, fPoint &speed_vector, bool& grounded, float delta_time) const
 {
-	if (collider2.x + collider2.w + speed_vector.x > collider1.x && collider2.x + speed_vector.x < collider1.x + collider1.w
-		&& collider2.y + collider2.h + speed_vector.y > collider1.y && collider2.y + speed_vector.y < collider1.y + collider1.h) //there's contact
+	fPoint delta_applied_spd_vec = speed_vector * delta_time;
+	if (collider2.x + collider2.w + delta_applied_spd_vec.x > collider1.x && collider2.x + delta_applied_spd_vec.x < collider1.x + collider1.w
+		&& collider2.y + collider2.h + delta_applied_spd_vec.y > collider1.y && collider2.y + delta_applied_spd_vec.y < collider1.y + collider1.h) //there's contact
 	{
 		if (collider2.x < collider1.x + collider1.w && collider2.x + collider2.w > collider1.x) //collider2 is in x-axis collision with collider1
 		{
-			if (collider2.y + speed_vector.y < collider1.y + collider1.h && collider2.y + speed_vector.y > collider1.y && speed_vector.y < 0)
+			if (collider2.y + delta_applied_spd_vec.y < collider1.y + collider1.h && collider2.y + delta_applied_spd_vec.y > collider1.y && delta_applied_spd_vec.y < 0)
 			{
 				speed_vector.y = 0;
 			}
-			else if (collider2.y + collider2.h + speed_vector.y > collider1.y && speed_vector.y >= 0)
+			else if (collider2.y + collider2.h + delta_applied_spd_vec.y > collider1.y && delta_applied_spd_vec.y >= 0)
 			{
 				speed_vector.y = 0;
 				grounded = true;
@@ -138,11 +139,11 @@ void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collid
 		}
 		if (collider2.y < collider1.y + collider1.h && collider2.y + collider2.h > collider1.y) //collider2 is in x-axis collision with collider1
 		{
-			if (collider2.x + speed_vector.x < collider1.x + collider1.w && collider2.x + speed_vector.x > collider1.x && speed_vector.x < 0)
+			if (collider2.x + delta_applied_spd_vec.x < collider1.x + collider1.w && collider2.x + delta_applied_spd_vec.x > collider1.x && delta_applied_spd_vec.x < 0)
 			{
 				speed_vector.x = 0;
 			}
-			else if (collider2.x + collider2.w + speed_vector.x > collider1.x && speed_vector.x >= 0)
+			else if (collider2.x + collider2.w + delta_applied_spd_vec.x > collider1.x && delta_applied_spd_vec.x >= 0)
 			{
 				speed_vector.x = 0;
 			}

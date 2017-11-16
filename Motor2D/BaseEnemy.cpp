@@ -134,7 +134,7 @@ bool BaseEnemy::Update(float dt)
 	if (type == LARVA || type == AIR)
 		LarvaBlockUpdate(dt);
 	else
-		App->collision->Checkcollisions(current_layer, enemyrect, position, speed_vect);
+		App->collision->Checkcollisions(current_layer, enemyrect, position, speed_vect, dt);
 
 	if (type != AIR)
 		Move(dt);
@@ -176,12 +176,12 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 	
 	uint alpha = 64;
 
-	App->collision->Checkcollisions(FRONT_LAYER, cube, position, speed_vect);
+	App->collision->Checkcollisions(FRONT_LAYER, cube, position, speed_vect, dt);
 	if (App->entities->player.current_layer == FRONT_LAYER)
 	{
 		alpha = 255;
 		bool p_grounded = false;
-		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, p_grounded);
+		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, p_grounded, dt);
 
 		App->entities->player.grounded = p_grounded | App->entities->player.grounded;
 	}

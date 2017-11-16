@@ -72,7 +72,7 @@ bool Player::Update(float dt)
 {
 	SelectAnim(speed_vect);
 
-	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect);
+	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
 	if (grounded == true && is_jumping == true)
 	{

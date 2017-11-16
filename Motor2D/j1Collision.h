@@ -49,9 +49,9 @@ public:
 
 	bool Save(pugi::xml_node&) const override;
 
-	bool Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint& speed_vector) const;
+	bool Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint& speed_vector, float delta_time) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
-	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector, bool& grounded) const;
+	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector, bool& grounded, float delta_time) const;
 	void BlitDebugColliders() const;
 
 private:

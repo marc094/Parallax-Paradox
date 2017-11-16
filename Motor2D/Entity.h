@@ -8,14 +8,14 @@
 #include "j1Map.h"
 #include "Rect.h"
 
-#define ACCELERATION 7.5f
-#define DECELERATION 15.0f
-#define GRAVITY 2.2f
-#define JUMP_FORCE 55.0f
-#define MAX_SPEED_X 4.0f
-#define MAX_SPEED_Y 8.0f
-#define ENEMY_MAX_SPEED_X 1.5f
-#define ENEMY_MAX_SPEED_Y 3.0f
+#define ACCELERATION 7.5f * 60
+#define DECELERATION 15.0f * 60
+#define GRAVITY 2.2f * 1.6f
+#define JUMP_FORCE 55.0f * 60
+#define MAX_SPEED_X 4.0f * 60
+#define MAX_SPEED_Y 8.0f * 60
+#define ENEMY_MAX_SPEED_X 1.5f * 60
+#define ENEMY_MAX_SPEED_Y 3.0f * 60
 
 class Entity 
 {
