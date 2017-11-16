@@ -47,7 +47,7 @@ bool j1Scene::Start()
 
 	if (level == 1)
 	{
-		App->entities->Add_Enemy(BaseEnemy::GROUND, { 1427,588 }, FRONT_LAYER);
+		App->entities->Add_Enemy(BaseEnemy::GROUND, { 1427,600 }, FRONT_LAYER);
 	}
 	if (level == 2)
 	{
