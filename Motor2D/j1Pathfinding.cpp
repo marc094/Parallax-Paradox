@@ -149,6 +149,26 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 	if(App->pathfinding->IsWalkable(cell, layer))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
+	// nort-east
+	cell.create(pos.x + 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell, layer))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// nort-west
+	cell.create(pos.x - 1, pos.y + 1);
+	if (App->pathfinding->IsWalkable(cell, layer))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// south-east
+	cell.create(pos.x + 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell, layer))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// south-west
+	cell.create(pos.x - 1, pos.y - 1);
+	if (App->pathfinding->IsWalkable(cell, layer))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
 	return list_to_fill.list.count();
 }
 
@@ -165,7 +185,7 @@ int PathNode::Score() const
 // ----------------------------------------------------------------------------------
 int PathNode::CalculateF(const iPoint& destination)
 {
-	g = parent->g + 1;
+	g = parent->g + ((pos.x != parent->pos.x && pos.y != parent->pos.y) ? 14 : 10);
 	h = pos.DistanceTo(destination);
 
 	return g + h;
@@ -236,7 +256,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 				neighbour_node->data.CalculateF(destination);
 				open.list.add(neighbour_node->data);
 			} else {
-				int new_g = neighbour_node->data.parent->g + 1;
+				int new_g = neighbour_node->data.parent->g + ((neighbour_node->data.pos.x != neighbour_node->data.parent->pos.x && neighbour_node->data.pos.y != neighbour_node->data.parent->pos.y) ? 14 : 10);
 				if (new_g < node_open->data.g)
 				{
 					node_open->data.g = new_g;

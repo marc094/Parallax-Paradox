@@ -196,7 +196,19 @@ void BaseEnemy::GetPath()
 {
 	current_path_index = 0;
 	iPoint player_dims(App->entities->player.collider.w / 2, App->entities->player.collider.h / 2);
-	App->pathfinding->CreatePath(App->map->WorldToMap(position.to_iPoint()), App->map->WorldToMap(player_dims) + App->map->WorldToMap(App->entities->player.position.to_iPoint()), FRONT_LAYER, &path); //Needs loop to track path
+	App->pathfinding->CreatePath(App->map->WorldToMap(position.to_iPoint()), App->map->WorldToMap(player_dims) + App->map->WorldToMap(App->entities->player.position.to_iPoint()), FRONT_LAYER, &path);
+
+	if (App->debug == true) {
+		for (uint i = 0; i < path.Count(); i++) {
+			iPoint pos = App->map->MapToWorld(path[i]);
+			iRect aux_rect;
+			aux_rect.x = pos.x;
+			aux_rect.y = pos.y;
+			aux_rect.w = aux_rect.h = 16;
+			App->render->DrawQuad(aux_rect.toSDL_Rect(), 255, 255, 0);
+		}
+	}
+
 }
 
 void BaseEnemy::FollowPath()
