@@ -79,7 +79,7 @@ bool j1Entities::CleanUp()
 	player.CleanUp();
 	App->tex->UnLoad(texture);
 	texture = nullptr;
-	Enemies.clear();
+	Enemies.clearPointers();
 
 	return true;
 }

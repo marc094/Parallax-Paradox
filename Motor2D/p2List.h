@@ -152,6 +152,23 @@ public:
 	}
 
 	/**
+	* Clears all the pointers and then calls clear() to clear all the list items
+	*/
+	void clearPointers()
+	{
+		p2List_item<tdata>*   p_data;
+		p_data = start;
+
+		while (p_data != NULL)
+		{
+			RELEASE(p_data->data);
+			p_data = p_data->next;
+		}
+
+		clear();
+	}
+
+	/**
 	* read / write operator access directly to a position in the list
 	*/
 	tdata& operator  [](const unsigned int index)

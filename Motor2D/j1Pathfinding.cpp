@@ -7,7 +7,7 @@
 j1PathFinding::j1PathFinding() : j1Module(), last_path(nullptr), width(0), height(0)
 {
 	name.create("pathfinding");
-	maps.clear();
+	maps.clearPointers();
 	for (uint i = 0; i < LayerID::LAYER_AMOUNT; i++)
 		maps.add(new uint());
 }

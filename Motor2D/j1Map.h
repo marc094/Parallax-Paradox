@@ -30,6 +30,7 @@ struct MapLayer {
 			item = item->next;
 		}
 		layer_colliders.clear();
+		layer_colliders.clearPointers();
 	}
 
 };
