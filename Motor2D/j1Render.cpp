@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "Brofiler\Brofiler.h"
 
 #define VSYNC true
 
@@ -69,7 +70,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::Magenta);
 	return true;
 }
 

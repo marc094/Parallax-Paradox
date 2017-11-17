@@ -11,6 +11,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "j1Pathfinding.h"
+#include "Brofiler\Brofiler.h"
 
 LayerID& operator++(LayerID& v) {
 	((uint&)v = (uint&)v + 1);	//XD//
@@ -40,6 +41,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::SlateBlue);
 	if(map_loaded == false)
 		return;
 	App->render->Blit(background, 0, 0,0,0.7f);

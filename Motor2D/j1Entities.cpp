@@ -4,6 +4,7 @@
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Textures.h"
+#include "Brofiler\Brofiler.h"
 
 
 j1Entities::j1Entities() : j1Module()
@@ -64,6 +65,7 @@ bool j1Entities::Start()
 
 bool j1Entities::Update(float dt)
 {
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::IndianRed);
 	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
 	while (current_enemy != NULL)
 	{
