@@ -20,7 +20,6 @@ public:
 	};
 
 	Animation alert_anim;
-	iRect enemyrect;
 	Type type = Type::GROUND;
 	bool gravity = false;
 

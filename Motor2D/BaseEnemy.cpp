@@ -17,7 +17,7 @@ BaseEnemy::~BaseEnemy()
 }
 bool BaseEnemy::Start()
 {
-	enemyrect = current_animation->GetCurrentFrame(0.0f).rect;
+	collider = current_animation->GetCurrentFrame(0.0f).rect;
 	return true;
 }
 bool BaseEnemy::Update(float dt)
@@ -26,8 +26,8 @@ bool BaseEnemy::Update(float dt)
 	collider_rect.x = (int)position.x;
 	collider_rect.y = (int)position.y;
 
-	enemyrect.x = (int)position.x;
-	enemyrect.y = (int)position.y;
+	collider.x = (int)position.x;
+	collider.y = (int)position.y;
 
 	bool flipped = false;
 	Uint8 alpha = 255;
@@ -41,7 +41,7 @@ bool BaseEnemy::Update(float dt)
 		player_rect.y = (int)App->entities->player.GetPosition().y;
 
 
-		if (App->collision->DoCollide(enemyrect, player_rect) && !App->entities->player.god_mode)
+		if (App->collision->DoCollide(collider, player_rect) && !App->entities->player.god_mode)
 			App->Reload();
 
 		//Move
@@ -49,24 +49,24 @@ bool BaseEnemy::Update(float dt)
 		iRect alert_rect;
 		if (type == LARVA)
 		{
-			alert_rect.x = enemyrect.x - 200;
-			alert_rect.y = enemyrect.y - 100;
-			alert_rect.w = enemyrect.w + 400;
-			alert_rect.h = enemyrect.h + 200;
+			alert_rect.x = collider.x - 200;
+			alert_rect.y = collider.y - 100;
+			alert_rect.w = collider.w + 400;
+			alert_rect.h = collider.h + 200;
 		}
 		else if (type == AIR)
 		{
-			alert_rect.x = enemyrect.x - 350;
-			alert_rect.y = enemyrect.y - 200;
-			alert_rect.w = enemyrect.w + 650;
-			alert_rect.h = enemyrect.h + 300;
+			alert_rect.x = collider.x - 350;
+			alert_rect.y = collider.y - 200;
+			alert_rect.w = collider.w + 650;
+			alert_rect.h = collider.h + 300;
 		}
 		else
 		{
-			alert_rect.x = enemyrect.x - 100;
-			alert_rect.y = enemyrect.y - 50;
-			alert_rect.w = enemyrect.w + 200;
-			alert_rect.h = enemyrect.h + 100;
+			alert_rect.x = collider.x - 100;
+			alert_rect.y = collider.y - 50;
+			alert_rect.w = collider.w + 200;
+			alert_rect.h = collider.h + 100;
 		}
 
 
@@ -101,7 +101,7 @@ bool BaseEnemy::Update(float dt)
 			}
 			else
 			{
-				if (player_rect.x < enemyrect.x)
+				if (player_rect.x < collider.x)
 				{
 					flipped = true;
 					Accelerate(-ACCELERATION, 0, dt);
@@ -134,7 +134,7 @@ bool BaseEnemy::Update(float dt)
 	if (type == LARVA || type == AIR)
 		LarvaBlockUpdate(dt);
 	else
-		App->collision->Checkcollisions(current_layer, enemyrect, position, speed_vect, dt);
+		App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
 	if (type != AIR)
 		Move(dt);
