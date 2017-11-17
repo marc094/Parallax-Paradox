@@ -58,15 +58,15 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 	p2List_item<MapLayer*>* map_layer = nullptr;
 	for (map_layer = App->map->data.layers.start; map_layer != NULL; map_layer = map_layer->next)
 	{
-		if (map_layer->data->layer_colliders.start->data->collidertype == collidertype)
+		if (map_layer->data->layer == collidertype)
 			break;
 	}
 
 	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 	{
 		iRect player_rect = rect_frame;
-		player_rect.x = position.x * scale;
-		player_rect.y = position.y * scale;
+		player_rect.x = (int)position.x * scale;
+		player_rect.y = (int)position.y * scale;
 		player_rect.w *= scale;
 		player_rect.h *= scale;
 
@@ -90,6 +90,9 @@ void j1Collision::BlitDebugColliders() const
 {
 	for (p2List_item<MapLayer*>* map_layer = App->map->data.layers.start; map_layer != NULL; map_layer = map_layer->next)
 	{
+		if (map_layer->data->layer != App->entities->player.current_layer)
+			continue;
+
 		for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 		{
 			iRect aux(collider->data->rect);
@@ -99,6 +102,9 @@ void j1Collision::BlitDebugColliders() const
 
 	for (p2List_item <BaseEnemy*>* enemy = App->entities->Enemies.start; enemy != nullptr; enemy = enemy->next)
 	{
+		if (enemy->data->current_layer != App->entities->player.current_layer)
+			continue;
+
 		if (enemy->data->type == BaseEnemy::Type::LARVA)
 		{
 			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
@@ -151,34 +157,10 @@ void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collid
 	}
 }
 
-bool j1Collision::DoCollide(const iRect collider1, const iRect collider2) const
+bool j1Collision::DoCollide(iRect collider1, iRect collider2) const
 {
-	bool ret = false;
-	if (collider2.x + collider2.w   > collider1.x && collider2.x  < collider1.x + collider1.w
-		&& collider2.y + collider2.h > collider1.y && collider2.y < collider1.y + collider1.h) //there's contact
-	{
-		if (collider2.x < collider1.x + collider1.w && collider2.x + collider2.w > collider1.x) //collider2 is in x-axis collision with collider1
-		{
-			if (collider2.y < collider1.y + collider1.h && collider2.y > collider1.y)
-			{
-				ret = true;
-			}
-			else if (collider2.y + collider2.h  > collider1.y )
-			{
-				ret = true;
-			}
-		}
-		if (collider2.y < collider1.y + collider2.h && collider2.y + collider2.h > collider1.y)
-		{
-			if (collider2.x < collider1.x + collider1.w && collider2.x + collider2.w > collider1.x + collider1.w)
-			{
-				ret = true;
-			}
-			else if (collider2.x + collider2.w > collider1.x)
-			{
-				ret = true;
-			}
-		}
-	}
-	return ret;
+	SDL_Rect result;
+	if ((bool)SDL_IntersectRect(&collider1.toSDL_Rect(), &collider2.toSDL_Rect(), &result))
+		return true;
+	return false;
 }

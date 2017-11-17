@@ -406,6 +406,10 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	pugi::xml_node properties = node.child("properties");
 	LayerID type;
 
+	if (data_node.root() == NULL) {
+		return false;
+	}
+
 	for (pugi::xml_node object : properties.children()) {
 		if (!strcmp(object.attribute("name").as_string(), "Speed"))
 		{
@@ -423,10 +427,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				type = DECORATION_LAYER;
 		}
 	}
-	
-	if (data_node.root() == NULL) {
-		return false;
-	}
 
 	layer->name = node.attribute("name").as_string();
 	layer->width = node.attribute("width").as_uint(0);
@@ -435,6 +435,8 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	if (layer->width == 0 || layer->height == 0) {
 		return false;
 	}
+
+	layer->layer = type;
 	layer->size = layer->height * layer->width;
 	layer->tiles = (uint*)malloc(layer->size * sizeof(uint));
 	
@@ -474,7 +476,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 					rect.x = ((rect.w) * (tile_index % data.width));
 					rect.y = ((rect.h) * (tile_index / data.width));
 					aux->rect = rect;
-					aux->collidertype = type;
 					layer->layer_colliders.add(aux);
 				}
 			}
@@ -494,7 +495,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 				rect.x = ((rect.w) * (tile_index % data.width));
 				rect.y = ((rect.h) * (tile_index / data.width));
 				aux->rect = rect;
-				aux->collidertype = type;
 				layer->layer_colliders.add(aux);
 			}
 			tile_index++;

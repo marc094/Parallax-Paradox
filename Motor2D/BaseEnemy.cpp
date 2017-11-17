@@ -23,11 +23,11 @@ bool BaseEnemy::Start()
 bool BaseEnemy::Update(float dt)
 {
 	iRect collider_rect = current_animation->GetCurrentFrame(dt).rect;
-	collider_rect.x = position.x;
-	collider_rect.y = position.y;
+	collider_rect.x = (int)position.x;
+	collider_rect.y = (int)position.y;
 
-	enemyrect.x = position.x;
-	enemyrect.y = position.y;
+	enemyrect.x = (int)position.x;
+	enemyrect.y = (int)position.y;
 
 	bool flipped = false;
 	Uint8 alpha = 255;
@@ -37,8 +37,8 @@ bool BaseEnemy::Update(float dt)
 		//Check Collisions
 
 		iRect player_rect = App->entities->player.collider;
-		player_rect.x = App->entities->player.GetPosition().x;
-		player_rect.y = App->entities->player.GetPosition().y;
+		player_rect.x = (int)App->entities->player.GetPosition().x;
+		player_rect.y = (int)App->entities->player.GetPosition().y;
 
 
 		if (App->collision->DoCollide(enemyrect, player_rect) && !App->entities->player.god_mode)
@@ -82,7 +82,7 @@ bool BaseEnemy::Update(float dt)
 		else
 			state = IDLE;
 
-		//accumulated_updates++;
+		accumulated_updates++;
 		if (state == Entity::ALERT)
 		{
 			current_animation = &alert_anim;
@@ -94,9 +94,9 @@ bool BaseEnemy::Update(float dt)
 		}
 		else if (state == Entity::RUNNING)
 		{
-			if (type == AIR && App->entities->player.current_layer == BACK_LAYER/* && (accumulated_updates * update_to_frame_ratio >= 1.0f || current_path_index >= path.Count())*/)
+			if (type == AIR && App->entities->player.current_layer == BACK_LAYER && accumulated_updates * update_to_frame_ratio >= 1.0f /*|| current_path_index >= path.Count())*/)
 			{
-				//accumulated_updates = 0;
+				accumulated_updates = 0;
 				GetPath();
 			}
 			else
@@ -128,7 +128,7 @@ bool BaseEnemy::Update(float dt)
 
 	//Blit
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
-	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 	if (type == LARVA || type == AIR)
@@ -159,20 +159,20 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 	iRect cube = current_block->GetCurrentFrame(dt).rect;
 	if (type == AIR)
 	{
-		cube.x = position.x - 10;
+		cube.x = (int)position.x - 10;
 		cube.h = 12;
 	}
 	else
-		cube.x = position.x;
+		cube.x = (int)position.x;
 
 
-	cube.y = position.y;
+	cube.y = (int)position.y;
 	
 
 
 	iRect player_rect = App->entities->player.collider;
-	player_rect.x = App->entities->player.GetPosition().x;
-	player_rect.y = App->entities->player.GetPosition().y;
+	player_rect.x = (int)App->entities->player.GetPosition().x;
+	player_rect.y = (int)App->entities->player.GetPosition().y;
 	
 	uint alpha = 64;
 

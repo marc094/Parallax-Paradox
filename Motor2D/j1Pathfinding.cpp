@@ -271,9 +271,18 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 
 void j1PathFinding::LoadNodeMap(const MapData map_data)
 {
-	for (int x = 0; x < map_data.width; x++) {
-		for (int y = map_data.height; y >= 0; y-- ) {
-			
+	for (uint i = 0; i < LayerID::LAYER_AMOUNT; i++){
+		uint prev_id = 0, curr_id = 0;
+		for (int x = 0; x < map_data.width; x++) {
+			for (int y = map_data.height; y >= 0; y--) {
+				prev_id = curr_id;
+				curr_id = map_data.layers[i]->tiles[(y * map_data.width) + x];
+
+				if (prev_id != 0 && curr_id == 0)
+				{
+
+				}
+			}
 		}
 	}
 }

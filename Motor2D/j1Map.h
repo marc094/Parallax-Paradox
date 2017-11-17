@@ -7,7 +7,7 @@
 #include "j1Module.h"
 #include "j1Collision.h"
 
-class SDL_Texture;
+struct SDL_Texture;
 
 struct MapLayer {
 	uint*			tiles = nullptr;
@@ -16,6 +16,7 @@ struct MapLayer {
 	uint			height = 0;
 	uint			size = 0;
 	float			parallax_speed = 1.0f;
+	LayerID			layer;
 
 	p2List<Collider*>   layer_colliders;
 

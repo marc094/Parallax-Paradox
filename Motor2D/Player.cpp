@@ -85,19 +85,19 @@ bool Player::Update(float dt)
 	//Gravity
 	Accelerate(0, GRAVITY, dt);
 
-	App->render->camera.x = -position.x *scale + App->render->camera.w / 2;
-	App->render->camera.y = -position.y *scale + App->render->camera.h / 2;
+	App->render->camera.x = (int)(-position.x *scale + App->render->camera.w / 2);
+	App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
 
 	if (position.y > 1400)
 		App->Reload();
 
-	App->render->Blit(App->entities->texture, position.x, position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
 	if (god_mode)
 	{
 		aura_angle += 90.0f * dt;
 		iRect frame_rect = god_mode_aura.GetCurrentFrame(dt).rect;
-		App->render->Blit(App->entities->texture, position.x + (collider.w/2) - (frame_rect.w/2), position.y + (collider.h/2) - (frame_rect.h/2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
+		App->render->Blit(App->entities->texture, (int)position.x + (collider.w/2) - (frame_rect.w/2), (int)position.y + (collider.h/2) - (frame_rect.h/2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
 	}
 
 	return true;
@@ -142,8 +142,8 @@ void Player::SelectAnim(fPoint speed_vect)
 
 bool Player::Load(pugi::xml_node& data)
 {
-	position.x = data.child("position").attribute("x").as_int();
-	position.y = data.child("position").attribute("y").as_int();
+	position.x = data.child("position").attribute("x").as_float();
+	position.y = data.child("position").attribute("y").as_float();
 	speed_vect = { 0, 0 };
 	return true;
 }

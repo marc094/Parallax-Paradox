@@ -16,8 +16,6 @@ enum LayerID {
 struct Collider
 {
 	iRect rect;
-	LayerID collidertype;
-
 };
 
 class j1Collision :

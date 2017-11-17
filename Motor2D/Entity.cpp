@@ -19,8 +19,6 @@ void Entity::Move(float delta_time) {
 	position.y += speed_vect.y * delta_time;
 
 	Interpolate(speed_vect.x, 0.0f, DECELERATION * delta_time);
-
-	state = IDLE;
 }
 
 void Entity::Accelerate( float x, float y, float delta_time) {
@@ -29,6 +27,4 @@ void Entity::Accelerate( float x, float y, float delta_time) {
 
 	speed_vect.x = CLAMP(speed_vect.x, -max_speed.x, max_speed.x);
 	speed_vect.y = CLAMP(speed_vect.y, -max_speed.y, max_speed.y);
-
-	state = RUNNING;
 }

@@ -43,5 +43,6 @@ struct Rect {
 	~Rect() {}
 };
 typedef Rect<int> iRect;
+typedef Rect<float> fRect;
 
 #endif
