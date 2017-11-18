@@ -39,8 +39,11 @@ public:
 private:
 	uint level;
 	uint max_level;
-
+	uint current_song;
+	uint level1_song;
+	uint level2_song;
 	p2DynArray<p2SString> xml_file_name;
+	bool playing;
 };
 
 #endif // __j1SCENE_H__
