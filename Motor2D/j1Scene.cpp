@@ -35,8 +35,7 @@ bool j1Scene::Awake(pugi::xml_node& data)
 		xml_file_name.PushBack(level.attribute("name").as_string());
 	}
 	
-	level1_song = App->audio->LoadFx("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg");
-	level2_song = App->audio->LoadFx("audio/music/Onett_Theme_Remastered_EarthBound.ogg");
+
 
 	return ret;
 }
@@ -55,7 +54,7 @@ bool j1Scene::Start()
 	{
 		App->entities->Add_Enemy(BaseEnemy::GROUND, { 1427,600 }, FRONT_LAYER);
 		current_song = level1_song;
-
+		
 	}
 	else if (level == 2)
 	{
@@ -69,11 +68,10 @@ bool j1Scene::Start()
 	{
 
 		if (level == 1)
-			current_song = level1_song;
+			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg");
 		else if (level == 2)
-			current_song = level2_song;
+			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg");
 
-		App->audio->PlayFx(current_song);
 		playing = true;
 	}
 
