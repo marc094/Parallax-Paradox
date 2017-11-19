@@ -51,7 +51,7 @@ void j1PathFinding::SetMap(const MapLayer* layer_data)
 	this->height = layer_data->height;
 
 	maps.At(layer_data->layer)->data.Clear();
-	maps.At(layer_data->layer)->data.Insert(layer_data->tiles, width * height, 0);
+	maps.At(layer_data->layer)->data.Insert(layer_data->tiles, (width + 1) * (height + 1), 0);
 }
 
 
@@ -62,7 +62,7 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 	LayerID l_layer = layer_data->layer;
 
 	maps_ground.At(l_layer)->data.Clear();
-	maps_ground.At(l_layer)->data.Insert(new uint[width * height], width * height, 0);
+	maps_ground.At(l_layer)->data.Insert(new uint[(width + 1) * (height + 1)], (width + 1) * (height + 1), 0);
 
 	uint prev_id = 0, curr_id = 0;
 
@@ -252,7 +252,7 @@ int PathNode::CalculateF(const iPoint& destination)
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path, bool ground)
 {
 	// TODO 1: if origin or destination are not walkable, return -1
-	if (!(IsWalkable(origin, layer, ground) || !IsWalkable(destination, layer, ground)))
+	if (!IsWalkable(origin, layer, ground) && !IsWalkable(destination, layer, ground))
 		return -1;
 
 	// TODO 2: Create two lists: open, closed
@@ -303,6 +303,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 		{
 			iPoint neighbour_pos = neighbour_node->data.pos;
 			if (closed.Find(neighbour_pos) != nullptr)
+				continue;
+			if (neighbour_pos.DistanceNoSqrt(origin) > MAX_DISTANCE_ASTAR)
 				continue;
 
 			p2List_item<PathNode>* node_open = open.Find(neighbour_pos);

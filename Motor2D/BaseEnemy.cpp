@@ -208,22 +208,20 @@ void BaseEnemy::GetPath()
 
 void BaseEnemy::FollowPath()
 {
-	if (path.Count() > 0) {
+	int path_length = path.Count();
+	if (path_length > 0 && current_path_index < path_length) {
 		iPoint path_point(App->map->MapToWorld(path[current_path_index]));
 
-		//fPoint displacement((float)path_point.x - position.x, (float)path_point.y - position.y);
-
-		//Accelerate((displacement.x != 0.0f) ? displacement.x / fabs(displacement.x) : 0.0f, (displacement.y != 0.0f) ? displacement.y / fabs(displacement.y) : 0.0f);
 		Accelerate(ACCELERATION, ACCELERATION, 1.0f);
 
 		Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x));
 		Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y));
 
-		if (path_point == position.to_iPoint() && current_path_index < path.Count())
+		if (path_point == position.to_iPoint())
 			current_path_index++;
 
 		if (App->debug == true) {
-			for (uint i = 0; i < path.Count(); i++) {
+			for (uint i = 0; i < path_length; i++) {
 				iPoint pos = App->map->MapToWorld(path[i]);
 				iRect aux_rect;
 				aux_rect.x = pos.x;

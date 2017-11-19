@@ -80,6 +80,12 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 		player_rect.x = (int)(App->render->camera.x * scale) + (player_rect.x * scale);
 		player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
 
+		iPoint p1, p2;
+		p1 = iPoint(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);
+		p2 = iPoint(aux.x + aux.w / 2, aux.y + aux.h / 2);
+		if (p1.DistanceNoSqrt(p2) > MAX_DISTANCE_COLLIDER_CULLING)
+			continue;
+
 		SetSpVecToCollisions(aux, player_rect, speed_vector, grounded, delta_time);
 	}
 
