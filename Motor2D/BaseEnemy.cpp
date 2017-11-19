@@ -99,7 +99,7 @@ bool BaseEnemy::Update(float dt)
 				accumulated_updates = 0;
 				GetPath();
 			}
-			else if(type == GROUND && App->entities->player.current_layer == current_layer /*&& accumulated_updates * update_to_frame_ratio >= 1.0f*/)
+			else if(type == GROUND && App->entities->player.current_layer == current_layer && accumulated_updates * update_to_frame_ratio >= 1.0f)
 			{
 				accumulated_updates = 0;
 				GetPath();
@@ -134,14 +134,18 @@ bool BaseEnemy::Update(float dt)
 
 	//Blit
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	AnimationFrame aux(current_animation->GetCurrentFrame(dt));
+	iRect frame = aux.rect;
+	iPoint pivot = aux.pivot;
+	frame = frame - pivot;
+
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &frame.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 	if (type == LARVA || type == AIR)
 		LarvaBlockUpdate(dt);
 	else
 		App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
-
 
 	if (type != AIR)
 		Move(dt);
@@ -169,13 +173,9 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 		cube.x = (int)position.x - 10;
 		cube.h = 12;
 	}
-	else
-		cube.x = (int)position.x;
-
+	else cube.x = (int)position.x;
 
 	cube.y = (int)position.y;
-	
-
 
 	iRect player_rect = App->entities->player.collider;
 	player_rect.x = (int)App->entities->player.GetPosition().x;

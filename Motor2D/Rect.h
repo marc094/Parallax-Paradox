@@ -38,6 +38,11 @@ struct Rect {
 		return r;
 	}
 
+	Rect operator -(const p2Point<TYPE>& n) const {
+		Rect<TYPE> r(x - n.x, y - n.y, w, h);
+		return r;
+	}
+
 	Rect() {}
 	Rect(TYPE x, TYPE y, TYPE w, TYPE h) : x(x), y(y), w(w), h(h) {}
 	~Rect() {}
