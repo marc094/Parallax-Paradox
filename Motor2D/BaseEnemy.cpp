@@ -134,10 +134,8 @@ bool BaseEnemy::Update(float dt)
 
 	//Blit
 	SDL_SetTextureAlphaMod(App->entities->texture, alpha);
-	AnimationFrame aux(current_animation->GetCurrentFrame(dt));
-	iRect frame = aux.rect;
-	iPoint pivot = aux.pivot;
-	frame = frame - pivot;
+
+	iRect frame = current_animation->GetCurrentFrame(dt).result_rect;
 
 	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &frame.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);

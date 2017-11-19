@@ -9,6 +9,7 @@
 struct AnimationFrame {
 	iRect rect;
 	iPoint pivot;
+	iRect result_rect;
 };
 
 class Animation
@@ -36,7 +37,8 @@ public:
 
 	void PushBack(const SDL_Rect& rect, const iPoint& pivot = { 0, 0 })
 	{
-		frames.PushBack({ iRect(rect), pivot });
+		iRect new_rect = rect;
+		frames.PushBack({ new_rect, pivot, new_rect - pivot });
 		last_frame++;
 	}
 
@@ -79,7 +81,7 @@ public:
 		last_frame = anim.last_frame;
 
 		for (uint i = 0; i < anim.frames.Count(); i++)
-			frames.PushBack({ iRect(anim.frames[i].rect), anim.frames[i].pivot });
+			frames.PushBack({ anim.frames[i].rect, anim.frames[i].pivot, anim.frames[i].result_rect });
 
 		return *this;
 	}
