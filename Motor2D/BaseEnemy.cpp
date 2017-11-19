@@ -145,7 +145,9 @@ bool BaseEnemy::Update(float dt)
 	else
 		App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
-	Move(dt);
+	if (type != AIR && type != GROUND)
+		Move(dt);
+	if (type == GROUND) position.y += speed_vect.y * dt;
 	Break(dt);
 
 	//Gravity
@@ -210,10 +212,10 @@ void BaseEnemy::FollowPath(float delta_time)
 	if (path_length > 0 && current_path_index < path_length) {
 		iPoint path_point(App->map->MapToWorld(path[current_path_index]));
 
-		//Accelerate(1.0f, 1.0f, 1.0f);
+		Accelerate(ACCELERATION, ACCELERATION, delta_time);
 
-		Interpolate(position.x, (float)path_point.x, fabs(1 * delta_time));
-		Interpolate(position.y, (float)path_point.y, fabs(1 * delta_time));
+		Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x * delta_time));
+		Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y * delta_time));
 
 		if (path_point == position.to_iPoint())
 			current_path_index++;
