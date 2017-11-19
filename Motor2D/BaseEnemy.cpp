@@ -117,7 +117,7 @@ bool BaseEnemy::Update(float dt)
 			}
 
 			if  (type == AIR || type == GROUND)
-				FollowPath();
+				FollowPath(dt);
 
 			current_animation = &moving_anim;
 		}
@@ -147,6 +147,8 @@ bool BaseEnemy::Update(float dt)
 
 	if (type != AIR)
 		Move(dt);
+	if (type != AIR && type != GROUND)
+		Break(dt);
 
 	//Gravity
 	if (gravity == true)
@@ -204,16 +206,16 @@ void BaseEnemy::GetPath()
 	App->pathfinding->CreatePath(App->map->WorldToMap(position.to_iPoint()), App->map->WorldToMap(player_dims + App->entities->player.position.to_iPoint()), FRONT_LAYER, &path, (type == GROUND));
 }
 
-void BaseEnemy::FollowPath()
+void BaseEnemy::FollowPath(float delta_time)
 {
 	int path_length = path.Count();
 	if (path_length > 0 && current_path_index < path_length) {
 		iPoint path_point(App->map->MapToWorld(path[current_path_index]));
 
-		Accelerate(ACCELERATION, ACCELERATION, 1.0f);
+		//Accelerate(1.0f, 1.0f, 1.0f);
 
-		Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x));
-		Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y));
+		Interpolate(position.x, (float)path_point.x, fabs(1 * delta_time));
+		Interpolate(position.y, (float)path_point.y, fabs(1 * delta_time));
 
 		if (path_point == position.to_iPoint())
 			current_path_index++;

@@ -53,11 +53,10 @@ bool j1Scene::Start()
 
 	if (!playing)
 	{
-
 		if (level == 1)
-			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg");
+			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
 		else if (level == 2)
-			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg");
+			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
 
 		playing = true;
 	}
@@ -174,6 +173,6 @@ void j1Scene::ChangeScene(uint _level) {
 }
 
 void j1Scene::CheckEnd() {
-	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 10)
-		App->scene->ChangeScene(level+1);
+	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 30)
+		App->scene->ChangeScene(level + 1);
 }

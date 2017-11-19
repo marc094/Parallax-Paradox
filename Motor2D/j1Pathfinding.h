@@ -50,6 +50,10 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAtGround(const iPoint& pos, const LayerID layer) const;
 
+	bool Update(float dt) override;
+
+	void DebugBlitMap();
+
 private:
 
 	// size of the map

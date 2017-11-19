@@ -120,7 +120,7 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 	if (type == BaseEnemy::GROUND)
 	{
 		current_node = ground_enemy_node;
-		aux->max_speed = fPoint(1.0f, 1.0f);
+		//aux->max_speed = fPoint(60.0f, 60.0f);
 	}
 	else if (type == BaseEnemy::BOXER)
 	{

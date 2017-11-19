@@ -81,6 +81,7 @@ bool Player::Update(float dt)
 	}
 
 	Move(dt);
+	Break(dt);
 
 	//Gravity
 	Accelerate(0, GRAVITY, dt);

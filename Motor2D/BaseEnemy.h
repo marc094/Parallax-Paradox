@@ -30,7 +30,7 @@ public:
 private:
 	void LarvaBlockUpdate(float dt);
 	void GetPath();
-	void FollowPath();
+	void FollowPath(float delta_time);
 
 	p2DynArray<iPoint> path;
 };

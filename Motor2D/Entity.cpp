@@ -14,10 +14,11 @@ Entity::~Entity()
 }
 
 void Entity::Move(float delta_time) {
-
 	position.x += speed_vect.x * delta_time;
 	position.y += speed_vect.y * delta_time;
+}
 
+void Entity::Break(float delta_time) {
 	Interpolate(speed_vect.x, 0.0f, DECELERATION * delta_time);
 }
 

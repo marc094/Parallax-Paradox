@@ -58,6 +58,7 @@ public:
 	}
 
 	virtual void Move(float delta_time);
+	virtual void Break(float delta_time);
 	void Accelerate(float x,float y, float delta_time);
 };
 

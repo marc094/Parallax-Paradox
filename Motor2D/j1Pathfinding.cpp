@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1PathFinding.h"
 #include "j1Map.h"
+#include "j1Render.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), last_path(nullptr), width(0), height(0)
 {
@@ -76,8 +77,8 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 			{
 				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 0, 1);
 			}
-			else if (CheckBoundaries(iPoint(x + 1, y - 1)) && CheckBoundaries(iPoint(x - 1, y - 1))
-				&& (layer_data->tiles[((y - 1) * l_width) + x + 1] != 0 || layer_data->tiles[((y - 1) * l_width) + x - 1] != 0))
+			else if (prev_id == 0 && curr_id == 0 && CheckBoundaries(iPoint(x + 1, y - 1)) && CheckBoundaries(iPoint(x - 1, y - 1))
+				&& (layer_data->tiles[((y) * l_width) + x + 1] != 0 || layer_data->tiles[((y) * l_width) + x - 1] != 0))
 			{
 				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 0, 1);
 			}
@@ -85,6 +86,13 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 1, 1);
 		}
 	}
+}
+
+bool j1PathFinding::Update(float dt)
+{
+	if (App->debug == true)
+		DebugBlitMap();
+	return true;
 }
 
 // Utility: return true if pos is inside the map boundaries
@@ -204,26 +212,27 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, bool ground) const
 	if(App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// nort-east
-	cell.create(pos.x + 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell, layer, ground))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	if (!ground) {
+		// nort-east
+		cell.create(pos.x + 1, pos.y + 1);
+		if (App->pathfinding->IsWalkable(cell, layer, ground))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// nort-west
-	cell.create(pos.x - 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell, layer, ground))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		// nort-west
+		cell.create(pos.x - 1, pos.y + 1);
+		if (App->pathfinding->IsWalkable(cell, layer, ground))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// south-east
-	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell, layer, ground))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		// south-east
+		cell.create(pos.x + 1, pos.y - 1);
+		if (App->pathfinding->IsWalkable(cell, layer, ground))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// south-west
-	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell, layer, ground))
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
+		// south-west
+		cell.create(pos.x - 1, pos.y - 1);
+		if (App->pathfinding->IsWalkable(cell, layer, ground))
+			list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	}
 	return list_to_fill.list.count();
 }
 
@@ -324,4 +333,19 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 		open.list.del(current_item);
 	}
 	return -1;
+}
+
+void j1PathFinding::DebugBlitMap()
+{
+	p2List_item<p2DynArray<uint>>* ground_map = maps_ground.At(FRONT_LAYER);
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			if (ground_map->data[(y * width) + x] != 1)
+			{
+				iPoint pos(x, y);
+				pos = App->map->MapToWorld(pos);
+				App->render->DrawQuad(iRect(pos.x, pos.y, 16, 16).toSDL_Rect(), 255, 128, 128, 1.0f, 128);
+			}
+		}
+	}
 }
