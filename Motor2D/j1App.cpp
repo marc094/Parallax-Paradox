@@ -465,10 +465,10 @@ bool j1App::ReloadNow() {
 	if (ret)
 		ret = tex->CleanUp() &
 		//pathfinding->CleanUp() &
-		map->CleanUp() & 
+		map->CleanUp() &
 		scene->CleanUp() &
-		entities->CleanUp()&
-		audio->CleanUp();
+		entities->CleanUp();/* &
+		audio->CleanUp();*/
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
