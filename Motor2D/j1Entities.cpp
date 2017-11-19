@@ -133,7 +133,7 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 	else if (type == BaseEnemy::AIR)
 	{
 		current_node = air_enemy_node;
-		aux->max_speed = fPoint(1.0f, 0.5f);
+		//aux->max_speed = fPoint(1.0f, 0.5f);
 	}
 
 	
