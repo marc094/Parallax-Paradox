@@ -39,8 +39,8 @@ public:
 private:
 	uint level;
 	uint max_level;
-
 	p2DynArray<p2SString> xml_file_name;
+	bool playing;
 };
 
 #endif // __j1SCENE_H__

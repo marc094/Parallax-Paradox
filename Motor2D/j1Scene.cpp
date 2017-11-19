@@ -34,6 +34,8 @@ bool j1Scene::Awake(pugi::xml_node& data)
 		max_level++;
 		xml_file_name.PushBack(level.attribute("name").as_string());
 	}
+	
+
 
 	return ret;
 }
@@ -41,21 +43,26 @@ bool j1Scene::Awake(pugi::xml_node& data)
 // Called before the first frame
 bool j1Scene::Start()
 {
+
+	
+
 	if (level > max_level)
 		level = 1;
 	App->map->Load(xml_file_name[level-1].GetString());
 
-	if (level == 1)
+
+	if (!playing)
 	{
-		App->entities->Add_Enemy(BaseEnemy::GROUND, { 1427,600 }, FRONT_LAYER);
+
+		if (level == 1)
+			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg");
+		else if (level == 2)
+			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg");
+
+		playing = true;
 	}
-	if (level == 2)
-	{
-		App->entities->Add_Enemy(BaseEnemy::LARVA, { 410,900 }, BACK_LAYER);
-		App->entities->Add_Enemy(BaseEnemy::LARVA, { 150,272 }, BACK_LAYER);
-		App->entities->Add_Enemy(BaseEnemy::AIR, { 670,680 }, BACK_LAYER);
-		App->entities->Add_Enemy(BaseEnemy::AIR, { 1600,400 }, BACK_LAYER);
-	}
+
+
 	return true;
 }
 
@@ -162,7 +169,7 @@ bool j1Scene::CleanUp()
 
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
-
+	playing = false;
 	App->Reload();
 }
 

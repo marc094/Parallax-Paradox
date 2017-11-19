@@ -116,7 +116,7 @@ void j1Collision::BlitDebugColliders() const
 		}
 		else {
 			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
-			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, App->map->data.layers[enemy->data->current_layer]->parallax_speed, 128);
+			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, 1/*App->map->data.layers[enemy->data->current_layer]->parallax_speed*/, 128);
 		}
 	}
 

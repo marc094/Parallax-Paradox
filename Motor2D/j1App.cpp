@@ -462,27 +462,25 @@ bool j1App::ReloadNow() {
 		organization.create(app_config.child("organization").child_value());
 	}
 
-	if(ret)
+	if (ret)
 		ret = tex->CleanUp() &
-			//pathfinding->CleanUp() &
-			map->CleanUp() & 
-			scene->CleanUp() &
-			entities->CleanUp()&
-			audio->CleanUp();
+		//pathfinding->CleanUp() &
+		map->CleanUp() & 
+		scene->CleanUp() &
+		entities->CleanUp()&
+		audio->CleanUp();
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
-			map->Awake(config.child(map->name.GetString())) &
-			scene->Awake(config.child(scene->name.GetString())) &
-			entities->Awake(config.child(entities->name.GetString())) &
-			audio->Awake(config.child(audio->name.GetString()));
+		map->Awake(config.child(map->name.GetString())) &
+		scene->Awake(config.child(scene->name.GetString())) &
+		entities->Awake(config.child(entities->name.GetString()));
 
 	if (ret)
 		ret = tex->Start() &
-			map->Start() &
-			scene->Start() &
-			entities->Start()&
-			audio->Start();
+		map->Start() &
+		scene->Start() &
+		entities->Start();
 
 	return ret;
 }

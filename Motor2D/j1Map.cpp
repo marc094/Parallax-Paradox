@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <cstring>
 #include "j1Entities.h"
-#include "Entity.h"
+#include "BaseEnemy.h"
 #include "Player.h"
 #include "j1Pathfinding.h"
 #include "Brofiler\Brofiler.h"
@@ -234,6 +234,22 @@ bool j1Map::Load(const char* file_name)
 			{
 				final_pos.x = object.attribute("x").as_float();
 				final_pos.y = object.attribute("y").as_float();
+			}
+			else if (!strcmp(object.attribute("name").as_string(),"Enemy"))
+			{
+				float x = object.attribute("x").as_float();
+				float y = object.attribute("y").as_float();
+				int type;
+				int layer;
+				for (pugi::xml_node object2 : object.child("properties"))
+				{
+					if (!strcmp(object2.attribute("name").as_string(), "Layer"))
+						layer = object2.attribute("value").as_int();
+					else if (!strcmp(object2.attribute("name").as_string(), "Type"))
+						type = object2.attribute("value").as_int();
+				}
+		
+				App->entities->Add_Enemy(static_cast<BaseEnemy::Type>(type), { x,y }, static_cast<LayerID>(layer));
 			}
 		}
 	}
