@@ -148,7 +148,8 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 		for (pugi::xml_node frames : animation.children())
 		{
 			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("w").as_int(), frames.attribute("h").as_int() };
-			aux_anim.PushBack(aux_rect);
+			iPoint pivot(frames.attribute("pivot_x").as_int(), frames.attribute("pivot_y").as_int());
+			aux_anim.PushBack(aux_rect, pivot);
 		}
 
 		if (!strcmp(aux_anim.name, "idle"))

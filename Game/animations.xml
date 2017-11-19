@@ -85,7 +85,7 @@
           <frame number="0" x="3" y ="129" w="45" h ="39"/>
         </idle>
         <walking frames="3" duration="5.0f" loop ="1">
-          <frame number="0" x="3" y ="129" w="45" h ="39"/>
+          <frame number="0" x="3" y ="129" w="45" h ="39" pivot_x="" pivot_y=""/>
         </walking>
         <alert frames="3" duration="5.0f" loop ="0">
           <frame number="0" x="3" y ="129" w="45" h ="39"/>
