@@ -108,7 +108,7 @@ bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer, bool grou
 	if (ground == true)
 		return (GetTileAtGround(pos, layer) == 0);
 	else
-		return true;// (GetTileAt(pos, layer) == 0);
+		return true;
 }
 
 // Utility: return the walkability value of a tile
@@ -260,13 +260,9 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path, bool ground)
 {
-	// TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin, layer, ground) && !IsWalkable(destination, layer, ground))
 		return -1;
 
-	// TODO 2: Create two lists: open, closed
-	// Add the origin tile to open
-	// Iterate while we have tiles in the open list
 	PathList open, closed;
 	open.layer = layer;
 	closed.layer = layer;
@@ -278,14 +274,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 
 	while (open.list.count() > 0)
 	{
-		// TODO 3: Move the lowest score cell from open list to the closed list
 		p2List_item<PathNode>* current_item = open.GetNodeLowestScore();
 		p2List_item<PathNode>* curr_node = closed.list.add(current_item->data);
 
-
-		// TODO 4: If we just added the destination, we are done!
-		// Backtrack to create the final path
-		// Use the Pathnode::parent and Flip() the path when you are finish
 		if (curr_node->data.pos == destination)
 		{
 			last_path->Clear();
@@ -293,21 +284,14 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 				last_path->PushBack(curr_node->data.pos);
 				curr_node = closed.Find(curr_node->data.parent->pos);
 			}
-			//last_path->PushBack(curr_node->data.pos);
 			last_path->Flip();
 			return last_path->Count();
 		}
 
-		// TODO 5: Fill a list of all adjancent nodes
 		PathList neighbours;
 		neighbours.layer = layer;
 		curr_node->data.FindWalkableAdjacents(neighbours, ground);
 
-		// TODO 6: Iterate adjancent nodes:
-		// ignore nodes in the closed list
-		// If it is NOT found, calculate its F and add it to the open list
-		// If it is already in the open list, check if it is a better path (compare G)
-		// If it is a better path, Update the parent
 		for (p2List_item<PathNode>* neighbour_node = neighbours.list.start; neighbour_node != nullptr; neighbour_node = neighbour_node->next)
 		{
 			iPoint neighbour_pos = neighbour_node->data.pos;

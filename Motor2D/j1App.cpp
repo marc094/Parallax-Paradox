@@ -176,7 +176,6 @@ void j1App::PrepareUpdate()
 	frame_count++;
 	last_sec_frame_count++;
 
-	// TODO 4: Calculate the dt: differential time since last frame
 	delta_time = frame_time.Read();
 	dt = delta_time / 1000.0f;
 	frame_time.Start();
@@ -214,13 +213,11 @@ void j1App::FinishUpdate()
 		avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);
 	App->win->SetTitle(title);
 
-	// TODO 2: Use SDL_Delay to make sure you get your capped framerate
 	delay_time.Start();
 	int delay_ms = (1000 / framerate_cap) - last_frame_ms;
 	if (delay_ms > 0)
 		SDL_Delay(delay_ms);
 
-	// TODO 3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
 	uint wait_ms = delay_time.Read();
 	LOG("Expected frame delay: %d, Actual frame delay: %d", delay_ms, wait_ms);
 }
@@ -273,9 +270,6 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		// TODO 5: send dt as an argument to all updates
-		// you will need to update module parent class
-		// and all modules that use update
 		ret = pModule->Update(dt);
 	}
 
