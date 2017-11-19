@@ -145,10 +145,8 @@ bool BaseEnemy::Update(float dt)
 	else
 		App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
-	if (type != AIR)
-		Move(dt);
-	if (type != AIR && type != GROUND)
-		Break(dt);
+	Move(dt);
+	Break(dt);
 
 	//Gravity
 	if (gravity == true)
