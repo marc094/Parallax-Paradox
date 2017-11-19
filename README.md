@@ -1,6 +1,6 @@
 # Parallax-Paradox
 
-PARALLAX PARADOX patch 1.5
+PARALLAX PARADOX v0.5.1
 by Pol Carrera and Marc Moreno
 
 Github link: https://github.com/marc094/Parallax-Paradox
@@ -11,40 +11,18 @@ Arrow right: movement right
 Arrow up: swap layers
 Space: Jump
 
-F1: Start from the very first level 
-F2: Start from the beginning of the current level
-F5: Save the current state 
-F6: Load the previous state (even across levels)
-F9: To view colliders / logic
-F10: God Mode
-F11: Enable/Disable? FPS cap to 30
+Debug features:
+F1 Start from the very first level 
+F2 Start from the beginning of the current level
+F5 Save the current state 
+F6 Load the previous state (even across levels)
+F9 To view colliders / logic 
+F10 God Mode
+F11 Enable/Disable FPS cap to 30
 
-CURRENTLY WORKING IN:
-
--Brofiler implementation
--Create a Entites UML
--Collider detection by culling
-
-
-FEATURES TO IMPROVE:
-
--Enemy parallax/speed 
--Pathfinding
--Collider blit
--Each enemy in a class
--Platform enemies go back to the initial position after a given time not being in alert
--Spawn enemies from TMX file
-
-
-NEW CONTENT FOR THE NEXT PATCHES:
-
--Audio Fx
--Background music
--Intro scene 
--UI 
--Controls image
--Transition animation
--Decoration in parallax
+Songs:
+MotherEarthBound_Zero_Remix_8_Melodies
+Onett_Theme_Remastered_EarthBound
 
 
 MIT License
