@@ -100,7 +100,7 @@ bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer, bool grou
 	if (ground == true)
 		return (GetTileAtGround(pos, layer) == 0);
 	else
-		return (GetTileAt(pos, layer) == 0);
+		return true;// (GetTileAt(pos, layer) == 0);
 }
 
 // Utility: return the walkability value of a tile
