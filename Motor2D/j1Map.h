@@ -21,7 +21,7 @@ struct MapLayer {
 	p2List<Collider*>   layer_colliders;
 
 	~MapLayer() {
-		RELEASE(tiles);
+		free(tiles);
 		p2List_item<Collider*>* item;
 		item = layer_colliders.start;
 
@@ -31,7 +31,6 @@ struct MapLayer {
 			item = item->next;
 		}
 		layer_colliders.clear();
-		layer_colliders.clearPointers();
 	}
 
 };

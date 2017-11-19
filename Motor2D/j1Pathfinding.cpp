@@ -7,17 +7,25 @@
 j1PathFinding::j1PathFinding() : j1Module(), last_path(nullptr), width(0), height(0)
 {
 	name.create("pathfinding");
-	maps.clearPointers();
-	for (uint i = 0; i < LayerID::LAYER_AMOUNT; i++)
-		maps.add(new uint());
+	maps.clear();
+	maps_ground.clear();
+
+	for (uint i = 0; i < LayerID::LAYER_AMOUNT; i++) {
+		maps.add(*new p2DynArray<uint>());
+		maps_ground.add(*new p2DynArray<uint>());
+	}
 }
 
 // Destructor
 j1PathFinding::~j1PathFinding()
 {
-	for (p2List_item<uint*>* map = maps.start; map != nullptr; map = map->next)
-		RELEASE_ARRAY(map->data);
+	for (p2List_item<p2DynArray<uint>>* map = maps.start; map != nullptr; map = map->next)
+		map->data.Clear();
 	maps.clear();
+
+	for (p2List_item<p2DynArray<uint>>* map = maps_ground.start; map != nullptr; map = map->next)
+		map->data.Clear();
+	maps_ground.clear();
 }
 
 // Called before quitting
@@ -25,22 +33,58 @@ bool j1PathFinding::CleanUp()
 {
 	LOG("Freeing pathfinding library");
 	
-	for (p2List_item<uint*>* map = maps.start; map != nullptr; map = map->next)
-		RELEASE_ARRAY(map->data);
+	for (p2List_item<p2DynArray<uint>>* map = maps.start; map != nullptr; map = map->next)
+		map->data.Clear();
 	maps.clear();
+
+	for (p2List_item<p2DynArray<uint>>* map = maps_ground.start; map != nullptr; map = map->next)
+		map->data.Clear();
+	maps_ground.clear();
 
 	return true;
 }
 
 // Sets up the walkability map
-void j1PathFinding::SetMap(uint width, uint height, const LayerID layer, uint* data)
+void j1PathFinding::SetMap(const MapLayer* layer_data)
 {
-	this->width = width;
-	this->height = height;
+	this->width = layer_data->width;
+	this->height = layer_data->height;
 
-	RELEASE_ARRAY(maps[(const uint)layer]);
-	maps[(const uint)layer] = new uint[width*height];
-	memcpy(maps[(const uint)layer], data, width*height);
+	maps.At(layer_data->layer)->data.Clear();
+	maps.At(layer_data->layer)->data.Insert(layer_data->tiles, width * height, 0);
+}
+
+
+void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
+{
+	uint l_width = layer_data->width;
+	uint l_height = layer_data->height;
+	LayerID l_layer = layer_data->layer;
+
+	maps_ground.At(l_layer)->data.Clear();
+	maps_ground.At(l_layer)->data.Insert(new uint[width * height], width * height, 0);
+
+	uint prev_id = 0, curr_id = 0;
+
+	for (int x = 0; x < l_width; x++) {
+		prev_id = curr_id = 0;
+		for (int y = 0; y < l_height; y++) {
+			prev_id = curr_id;
+			curr_id = layer_data->tiles[(y * l_width) + x];
+
+			if (prev_id == 0 && curr_id != 0 && CheckBoundaries(iPoint(x, y - 1)))
+			{
+				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 0, 1);
+			}
+			else if (CheckBoundaries(iPoint(x + 1, y - 1)) && CheckBoundaries(iPoint(x - 1, y - 1))
+				&& (layer_data->tiles[((y - 1) * l_width) + x + 1] != 0 || layer_data->tiles[((y - 1) * l_width) + x - 1] != 0))
+			{
+				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 0, 1);
+			}
+			else if (CheckBoundaries(iPoint(x, y - 1)))
+				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 1, 1);
+		}
+	}
 }
 
 // Utility: return true if pos is inside the map boundaries
@@ -51,10 +95,12 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 }
 
 // Utility: returns true is the tile is walkable
-bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer) const
+bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer, bool ground) const
 {
-	uchar t = GetTileAt(pos, layer);
-	return t == 0;//INVALID_WALK_CODE && t > 0;
+	if (ground == true)
+		return (GetTileAtGround(pos, layer) == 0);
+	else
+		return (GetTileAt(pos, layer) == 0);
 }
 
 // Utility: return the walkability value of a tile
@@ -62,6 +108,15 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos, const LayerID layer) const
 {
 	if(CheckBoundaries(pos))
 		return maps.At((const uint)layer)->data[(pos.y*width) + pos.x];
+
+	return INVALID_WALK_CODE;
+}
+
+// Utility: return the walkability value of a tile
+uchar j1PathFinding::GetTileAtGround(const iPoint& pos, const LayerID layer) const
+{
+	if (CheckBoundaries(pos))
+		return maps_ground.At(layer)->data[(pos.y*width) + pos.x];
 
 	return INVALID_WALK_CODE;
 }
@@ -123,7 +178,7 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 // PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
 // ----------------------------------------------------------------------------------
-uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
+uint PathNode::FindWalkableAdjacents(PathList& list_to_fill, bool ground) const
 {
 	iPoint cell;
 	uint before = list_to_fill.list.count();
@@ -131,42 +186,42 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 
 	// north
 	cell.create(pos.x, pos.y + 1);
-	if(App->pathfinding->IsWalkable(cell, layer))
+	if(App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.create(pos.x, pos.y - 1);
-	if(App->pathfinding->IsWalkable(cell, layer))
+	if(App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.create(pos.x + 1, pos.y);
-	if(App->pathfinding->IsWalkable(cell, layer))
+	if(App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.create(pos.x - 1, pos.y);
-	if(App->pathfinding->IsWalkable(cell, layer))
+	if(App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// nort-east
 	cell.create(pos.x + 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell, layer))
+	if (App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// nort-west
 	cell.create(pos.x - 1, pos.y + 1);
-	if (App->pathfinding->IsWalkable(cell, layer))
+	if (App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// south-east
 	cell.create(pos.x + 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell, layer))
+	if (App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	// south-west
 	cell.create(pos.x - 1, pos.y - 1);
-	if (App->pathfinding->IsWalkable(cell, layer))
+	if (App->pathfinding->IsWalkable(cell, layer, ground))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
 	return list_to_fill.list.count();
@@ -194,10 +249,10 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path, bool ground)
 {
 	// TODO 1: if origin or destination are not walkable, return -1
-	if (!(IsWalkable(origin, layer) || !IsWalkable(destination, layer)))
+	if (!(IsWalkable(origin, layer, ground) || !IsWalkable(destination, layer, ground)))
 		return -1;
 
 	// TODO 2: Create two lists: open, closed
@@ -237,7 +292,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 		// TODO 5: Fill a list of all adjancent nodes
 		PathList neighbours;
 		neighbours.layer = layer;
-		curr_node->data.FindWalkableAdjacents(neighbours);
+		curr_node->data.FindWalkableAdjacents(neighbours, ground);
 
 		// TODO 6: Iterate adjancent nodes:
 		// ignore nodes in the closed list
@@ -267,22 +322,4 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 		open.list.del(current_item);
 	}
 	return -1;
-}
-
-void j1PathFinding::LoadNodeMap(const MapData map_data)
-{
-	for (uint i = 0; i < LayerID::LAYER_AMOUNT; i++){
-		uint prev_id = 0, curr_id = 0;
-		for (int x = 0; x < map_data.width; x++) {
-			for (int y = map_data.height; y >= 0; y--) {
-				prev_id = curr_id;
-				curr_id = map_data.layers[i]->tiles[(y * map_data.width) + x];
-
-				if (prev_id != 0 && curr_id == 0)
-				{
-
-				}
-			}
-		}
-	}
 }

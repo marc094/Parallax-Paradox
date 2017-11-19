@@ -99,6 +99,12 @@ bool BaseEnemy::Update(float dt)
 				accumulated_updates = 0;
 				GetPath();
 			}
+			else if(type == GROUND && App->entities->player.current_layer == current_layer /*&& accumulated_updates * update_to_frame_ratio >= 1.0f*/)
+			{
+				accumulated_updates = 0;
+				GetPath();
+				speed_vect.x = 0;
+			}
 			else
 			{
 				if (player_rect.x < collider.x)
@@ -110,7 +116,7 @@ bool BaseEnemy::Update(float dt)
 					Accelerate(ACCELERATION, 0, dt);
 			}
 
-			if  (type == AIR)
+			if  (type == AIR || type == GROUND)
 				FollowPath();
 
 			current_animation = &moving_anim;
@@ -135,6 +141,7 @@ bool BaseEnemy::Update(float dt)
 		LarvaBlockUpdate(dt);
 	else
 		App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
+
 
 	if (type != AIR)
 		Move(dt);
@@ -196,19 +203,7 @@ void BaseEnemy::GetPath()
 {
 	current_path_index = 0;
 	iPoint player_dims(App->entities->player.collider.w / 2, App->entities->player.collider.h / 2);
-	App->pathfinding->CreatePath(App->map->WorldToMap(position.to_iPoint()), App->map->WorldToMap(player_dims) + App->map->WorldToMap(App->entities->player.position.to_iPoint()), FRONT_LAYER, &path);
-
-	if (App->debug == true) {
-		for (uint i = 0; i < path.Count(); i++) {
-			iPoint pos = App->map->MapToWorld(path[i]);
-			iRect aux_rect;
-			aux_rect.x = pos.x;
-			aux_rect.y = pos.y;
-			aux_rect.w = aux_rect.h = 16;
-			App->render->DrawQuad(aux_rect.toSDL_Rect(), 255, 255, 0);
-		}
-	}
-
+	App->pathfinding->CreatePath(App->map->WorldToMap(position.to_iPoint()), App->map->WorldToMap(player_dims + App->entities->player.position.to_iPoint()), FRONT_LAYER, &path, (type == GROUND));
 }
 
 void BaseEnemy::FollowPath()
@@ -226,5 +221,16 @@ void BaseEnemy::FollowPath()
 
 		if (path_point == position.to_iPoint() && current_path_index < path.Count())
 			current_path_index++;
+
+		if (App->debug == true) {
+			for (uint i = 0; i < path.Count(); i++) {
+				iPoint pos = App->map->MapToWorld(path[i]);
+				iRect aux_rect;
+				aux_rect.x = pos.x;
+				aux_rect.y = pos.y;
+				aux_rect.w = aux_rect.h = 16;
+				App->render->DrawQuad(aux_rect.toSDL_Rect(), 255, 255, 0, 1.0f, 128);
+			}
+		}
 	}
 }

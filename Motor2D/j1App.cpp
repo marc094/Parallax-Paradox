@@ -464,6 +464,7 @@ bool j1App::ReloadNow() {
 
 	if(ret)
 		ret = tex->CleanUp() &
+			//pathfinding->CleanUp() &
 			map->CleanUp() & 
 			scene->CleanUp() &
 			entities->CleanUp()&

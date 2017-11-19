@@ -154,7 +154,7 @@ public:
 	/**
 	* Clears all the pointers and then calls clear() to clear all the list items
 	*/
-	void clearPointers()
+	void clearPointers()	//Not used: dangerous behaviour; Recommended manual clear of pointers
 	{
 		p2List_item<tdata>*   p_data;
 		p_data = start;

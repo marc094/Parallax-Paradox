@@ -82,5 +82,4 @@ void Interpolate(TYPE& val, TYPE target, TYPE step)
 		else val = val + step;
 	else val = target;
 }
-
 #endif

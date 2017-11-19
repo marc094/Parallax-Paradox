@@ -81,7 +81,13 @@ bool j1Entities::CleanUp()
 	player.CleanUp();
 	App->tex->UnLoad(texture);
 	texture = nullptr;
-	Enemies.clearPointers();
+	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
+	while (current_enemy != NULL)
+	{
+		RELEASE(current_enemy->data);
+		current_enemy = current_enemy->next;
+	}
+	Enemies.clear();
 
 	return true;
 }
@@ -114,6 +120,7 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 	if (type == BaseEnemy::GROUND)
 	{
 		current_node = ground_enemy_node;
+		aux->max_speed = fPoint(1.0f, 1.0f);
 	}
 	else if (type == BaseEnemy::BOXER)
 	{

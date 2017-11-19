@@ -215,7 +215,8 @@ bool j1Map::Load(const char* file_name)
 		if (ret == true)
 		{
 			ret = LoadLayer(node_layer, layer);
-			App->pathfinding->SetMap(data.width, data.height, (LayerID)i++, layer->tiles); //Load pathfinding map
+			App->pathfinding->SetMap(layer); //Load pathfinding map
+			App->pathfinding->SetGroundMap(layer);
 		}
 
 		data.layers.add(layer);
@@ -440,7 +441,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 	layer->layer = type;
 	layer->size = layer->height * layer->width;
-	layer->tiles = (uint*)malloc(layer->size * sizeof(uint));
+	layer->tiles = new uint[layer->size];
 	
 	memset(layer->tiles, 0, layer->size);
 	
@@ -465,7 +466,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 				p2SString buffer(buf);
 				uint tile_id = (uint)buffer.ParseInt();
-				layer->tiles[tile_index++] = tile_id;
+				layer->tiles[tile_index] = tile_id;
 				figures = 0;
 				free(buf);
 
@@ -480,6 +481,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 					aux->rect = rect;
 					layer->layer_colliders.add(aux);
 				}
+				tile_index++;
 			}
 			buffer_index++;
 		}

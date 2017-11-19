@@ -130,6 +130,25 @@ public:
 		return true;
 	}
 
+	bool Insert(const VALUE* array, size_t size, unsigned int position)
+	{
+		if (position > num_elements)
+			return false;
+
+		if (num_elements + size > mem_capacity)
+			Alloc(num_elements + size + 1);
+
+		for (unsigned int i = position; i < position + size; ++i)
+		{
+			if (i + size < mem_capacity - 1)
+				data[i + size] = data[i];
+			data[i] = array[i - position];
+			++num_elements;
+		}
+
+		return true;
+	}
+
 	VALUE* At(unsigned int index)
 	{
 		VALUE* result = NULL;
