@@ -73,7 +73,7 @@
           <frame number="1" x="19" y ="62" w="19" h ="19"/>
           <frame number="2" x="39" y ="62" w="21" h ="19"/>
         </walking>
-        <alert frames="3" duration="0.08f" loop ="0">
+        <alert frames="3" duration="0" loop ="0">
           <frame number="0" x="0" y ="62" w="18" h ="18"/>
         </alert>
       </animationInfo>
