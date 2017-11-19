@@ -84,11 +84,11 @@
         <idle frames ="1" duration ="0" loop ="1">
           <frame number="0" x="3" y ="129" w="45" h ="39"/>
         </idle>
-        <walking frames="3" duration="5.0f" loop ="1">
-          <frame number="0" x="3" y ="129" w="45" h ="38" pivot_x="22" pivot_y="0"/>
-          <frame number="1" x="50" y ="129" w="46" h ="38" pivot_x="23" pivot_y="0"/>
-          <frame number="0" x="97" y ="129" w="48" h ="38" pivot_x="24" pivot_y="0"/>
-          <frame number="0" x="3" y ="146" w="46" h ="39" pivot_x="24" pivot_y=""/>
+        <walking frames="3" duration="2.0f" loop ="1">
+          <frame number="0" x="3" y ="129" w="45" h ="38" pivot_x="0" pivot_y="0"/>
+          <frame number="1" x="50" y ="129" w="46" h ="38" pivot_x="0" pivot_y="0"/>
+          <frame number="0" x="97" y ="129" w="48" h ="38" pivot_x="0" pivot_y="0"/>
+          <frame number="0" x="146" y ="129" w="46" h ="39" pivot_x="0" pivot_y="0"/>
         </walking>
         <alert frames="3" duration="5.0f" loop ="0">
           <frame number="0" x="3" y ="129" w="45" h ="39"/>
