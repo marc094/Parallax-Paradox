@@ -2,6 +2,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Entities.h"
+#include "j1Audio.h"
 
 
 Player::Player()
@@ -65,6 +66,10 @@ bool Player::Start()
 	god_mode = false;
 	is_jumping = false;
 	grounded = false;
+
+	jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
+	change_sound = App->audio->LoadFx("audio/FX/Change.wav");
+	hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
 	return true;
 }
 
@@ -124,7 +129,9 @@ bool Player::CleanUp()
 void Player::SelectAnim(fPoint speed_vect)
 {
 	if (is_jumping == true)
+	{
 		current_animation = &jumping_anim;
+	}
 	else if (speed_vect.x != 0)
 	{
 		if (current_animation != &landing_anim)
@@ -173,6 +180,7 @@ bool Player::Save(pugi::xml_node& data) const
 }
 
 void Player::SwapLayer() {
+	App->audio->PlayFx(App->entities->player.change_sound);
 	if (current_layer == BACK_LAYER) {
 		current_layer = FRONT_LAYER;
 		//scale = 1.0f;

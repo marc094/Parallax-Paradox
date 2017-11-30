@@ -35,6 +35,10 @@ public:
 
 	bool god_mode = false;
 
+	uint jump_sound;
+	uint hit_sound;
+	uint change_sound;
+
 private:
 	float		scale = 1.0f;
 	bool		flipped = false;

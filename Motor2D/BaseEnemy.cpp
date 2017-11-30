@@ -5,6 +5,7 @@
 #include "p2Log.h"
 #include "j1Entities.h"
 #include "j1Pathfinding.h"
+#include "j1Audio.h"
 
 
 BaseEnemy::BaseEnemy() : path(0)
@@ -42,7 +43,11 @@ bool BaseEnemy::Update(float dt)
 
 
 		if (App->collision->DoCollide(collider, player_rect) && !App->entities->player.god_mode)
+		{
+			App->audio->PlayFx(App->entities->player.hit_sound);
 			App->Reload();
+		}
+
 
 		//Move
 

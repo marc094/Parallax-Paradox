@@ -95,6 +95,7 @@ bool j1Scene::Update(float dt)
 	{
 		App->entities->player.setJumping(true);
 		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);
+		App->audio->PlayFx(App->entities->player.jump_sound);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
 	{
