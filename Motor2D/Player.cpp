@@ -96,7 +96,11 @@ bool Player::Update(float dt)
 	App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
 
 	if (position.y > 1400)
+	{
 		App->Reload();
+		App->audio->PlayFx(App->entities->player.hit_sound);
+	}
+	
 
 	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
 
