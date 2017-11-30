@@ -51,15 +51,15 @@ bool j1Scene::Start()
 	App->map->Load(xml_file_name[level-1].GetString());
 
 
-	if (!playing)
-	{
-		if (level == 1)
-			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-		else if (level == 2)
-			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
+	//if (!playing)
+	//{
+	//	if (level == 1)
+	//		App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+	//	else if (level == 2)
+	//		App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
 
-		playing = true;
-	}
+	//	playing = true;
+	//}
 
 
 	return true;

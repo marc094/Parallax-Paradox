@@ -77,7 +77,8 @@ bool Player::Update(float dt)
 	if (grounded == true && is_jumping == true)
 	{
 		is_jumping = false;
-		jumping_anim.Reset();
+		landing_anim.Reset();
+		current_animation = &landing_anim;
 	}
 
 	Move(dt);
@@ -126,6 +127,7 @@ void Player::SelectAnim(fPoint speed_vect)
 		current_animation = &jumping_anim;
 	else if (speed_vect.x != 0)
 	{
+		if (current_animation != &landing_anim)
 		current_animation = &moving_anim;
 
 		if (speed_vect.x > 0)
@@ -137,8 +139,19 @@ void Player::SelectAnim(fPoint speed_vect)
 			flipped = true;
 		}
 	}
-	else
+	else if (current_animation == &landing_anim)
+	{
+		if (landing_anim.Finished())
+		{
+			current_animation = &idle_anim;
+		}
+	}
+	else 
+	{		
 		current_animation = &idle_anim;
+
+	}
+		
 }
 
 bool Player::Load(pugi::xml_node& data)

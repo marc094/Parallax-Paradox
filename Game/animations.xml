@@ -17,19 +17,22 @@
         <frame number="5" x="0" y ="0" w="0" h ="0"/>
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </falling>
-      <landing frames="0" duration="0" loop ="0">
-        <frame number="0" x="0" y ="0" w="0" h ="0"/>
-        <frame number="1" x="0" y ="0" w="0" h ="0"/>
-        <frame number="2" x="0" y ="0" w="0" h ="0"/>
-        <frame number="3" x="0" y ="0" w="0" h ="0"/>
-        <frame number="4" x="0" y ="0" w="0" h ="0"/>
-        <frame number="5" x="0" y ="0" w="0" h ="0"/>
-        <frame number="6" x="0" y ="0" w="0" h ="0"/>
+      <landing frames="0" duration="10.0f" loop ="0">
+        <frame number="0" x="48" y ="0" w="13" h ="14"/>
+        <frame number="1" x="63" y ="0" w="15" h ="14"/>
+        <frame number="2" x="79" y ="0" w="15" h ="14"/>
+        <frame number="3" x="95" y ="0" w="15" h ="14"/>
+        <frame number="4" x="112" y ="0" w="13" h ="14"/>
       </landing>
-      <walking frames="3" duration="5.0f" loop ="1">
-        <frame number="0" x="0" y ="0" w="13" h ="14"/>
-        <frame number="1" x="32" y ="0" w="12" h ="14"/>
-        <frame number="2" x="17" y ="0" w="12" h ="14"/>
+      <walking frames="3" duration="6.0f" loop ="1">
+        <frame number="0" x="0" y ="16" w="13" h ="15"/>
+        <frame number="1" x="16" y ="16" w="13" h ="14"/>
+        <frame number="2" x="32" y ="16" w="13" h ="16"/>
+        <frame number="3" x="48" y ="16" w="12" h ="17"/>
+        <frame number="4" x="64" y ="16" w="11" h ="15"/>
+        <frame number="5" x="80" y ="16" w="13" h ="14"/>
+        <frame number="6" x="96" y ="16" w="13" h ="16"/>
+        <frame number="7" x="112" y ="16" w="13" h ="17"/>
       </walking>
       <changing frames="0" duration="0" loop ="0">
         <frame number="0" x="0" y ="0" w="0" h ="0"/>
@@ -40,8 +43,10 @@
         <frame number="5" x="0" y ="0" w="0" h ="0"/>
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </changing>
-      <idle frames="1" duration="0" loop ="1">
+      <idle frames="1" duration="3.2f" loop ="1">
         <frame number="0" x="0" y ="0" w="13" h ="14"/>
+        <frame number="2" x="16" y ="0" w="13" h ="14"/>
+        <frame number="1" x="32" y ="0" w="13" h ="14"/>
       </idle>
     </animationInfo>
   </player>
