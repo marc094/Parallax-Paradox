@@ -471,9 +471,9 @@ bool j1App::ReloadNow() {
 		entities->Awake(config.child(entities->name.GetString()));
 
 	if (ret)
-		ret = tex->Start() &
-		map->Start() &
-		scene->Start() &
+		ret = tex->Start() &&
+		map->Start() &&
+		scene->Start() &&
 		entities->Start();
 
 	return ret;
