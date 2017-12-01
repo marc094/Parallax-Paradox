@@ -43,9 +43,6 @@ bool j1Scene::Awake(pugi::xml_node& data)
 // Called before the first frame
 bool j1Scene::Start()
 {
-
-	
-
 	if (level > max_level)
 		level = 1;
 	App->map->Load(xml_file_name[level-1].GetString());
@@ -97,11 +94,17 @@ bool j1Scene::Update(float dt)
 		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);
 		App->audio->PlayFx(App->entities->player.jump_sound);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
+	
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
 	{
 		App->entities->player.Accelerate(0, -ACCELERATION, dt);
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
+		App->SetTimeScale(0.5f);
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
+		App->SetTimeScale(1.0f);
 
 	// Settings input
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)

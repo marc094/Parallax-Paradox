@@ -66,6 +66,7 @@ bool j1Entities::Start()
 bool j1Entities::Update(float dt)
 {
 	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::IndianRed);
+	dt *= App->GetTimeScale();
 	p2List_item<BaseEnemy*>* current_enemy = Enemies.start;
 	while (current_enemy != NULL)
 	{

@@ -479,6 +479,16 @@ bool j1App::ReloadNow() {
 	return ret;
 }
 
+float j1App::GetTimeScale() const
+{
+	return time_scale;
+}
+
+void j1App::SetTimeScale(float ts)
+{
+	time_scale = ts;
+}
+
 void j1App::Reload() {
 	want_to_reload = true;
 }

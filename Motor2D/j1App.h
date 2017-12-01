@@ -58,6 +58,9 @@ public:
 	uint32 GetFramerateCap() const;
 	void SetFramerateCap(uint32 cap);
 
+	float GetTimeScale()const;
+	void SetTimeScale(float ts);
+
 private:
 
 	// Load config file
@@ -102,8 +105,9 @@ public:
 private:
 
 	p2List<j1Module*>	modules;
-	uint				frames;
-	float				dt;
+	uint				frames = 0;
+	float				dt = .0f;
+	float				time_scale = 1.0f;
 	int					argc;
 	char**				args;
 
