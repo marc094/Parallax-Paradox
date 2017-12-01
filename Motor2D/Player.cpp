@@ -53,6 +53,12 @@ bool Player::Awake()
 			changing_layers_anim = aux;
 	}
 
+
+	jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
+	change_sound = App->audio->LoadFx("audio/FX/Change2.wav");
+	hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
+	level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
+
 	return ret;
 }
 
@@ -66,10 +72,8 @@ bool Player::Start()
 	god_mode = false;
 	is_jumping = false;
 	grounded = false;
+	App->audio->PlayFx(level_sound);
 
-	jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
-	change_sound = App->audio->LoadFx("audio/FX/Change.wav");
-	hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
 	return true;
 }
 

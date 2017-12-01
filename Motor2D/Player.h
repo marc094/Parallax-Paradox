@@ -38,6 +38,7 @@ public:
 	uint jump_sound;
 	uint hit_sound;
 	uint change_sound;
+	uint level_sound;
 
 private:
 	float		scale = 1.0f;
