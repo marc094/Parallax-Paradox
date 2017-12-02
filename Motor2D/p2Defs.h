@@ -72,7 +72,7 @@ inline const char* const PATH(const char* folder, const char* file)
 
 // Interpolates between two values at a cerain rate (step)
 template<class TYPE>
-void Interpolate(TYPE& val, TYPE target, TYPE step)
+TYPE Interpolate(TYPE val, TYPE target, TYPE step)
 {
 	if (val > target)
 		if (val - target < step)
@@ -83,5 +83,7 @@ void Interpolate(TYPE& val, TYPE target, TYPE step)
 			val = target;
 		else val = val + step;
 	else val = target;
+
+	return val;
 }
 #endif

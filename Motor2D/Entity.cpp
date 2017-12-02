@@ -19,7 +19,7 @@ void Entity::Move(float delta_time) {
 }
 
 void Entity::Break(float delta_time) {
-	Interpolate(speed_vect.x, 0.0f, DECELERATION * delta_time);
+	speed_vect.x = Interpolate(speed_vect.x, 0.0f, DECELERATION * delta_time);
 }
 
 void Entity::Accelerate( float x, float y, float delta_time) {

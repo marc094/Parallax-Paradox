@@ -95,9 +95,12 @@ bool Player::Update(float dt)
 
 	//Gravity
 	Accelerate(0, GRAVITY, dt);
+	
+	float camera_speed = 200.0f * dt;
 
-	App->render->camera.x = (int)(-position.x *scale + App->render->camera.w / 2);
-	App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
+	App->render->camera.x = Interpolate((float)App->render->camera.x, (-position.x * scale + (float)App->render->camera.w / 2), camera_speed);
+	App->render->camera.y = Interpolate((float)App->render->camera.y, (-position.y * scale + (float)App->render->camera.h / 2), camera_speed);
+	//App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
 
 	if (position.y > 1400)
 	{

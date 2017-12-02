@@ -219,8 +219,8 @@ void BaseEnemy::FollowPath(float delta_time)
 
 		Accelerate(ACCELERATION, ACCELERATION, delta_time);
 
-		Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x * delta_time));
-		Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y * delta_time));
+		position.x = Interpolate(position.x, (float)path_point.x, fabs(speed_vect.x * delta_time));
+		position.y = Interpolate(position.y, (float)path_point.y, fabs(speed_vect.y * delta_time));
 
 		if (path_point == position.to_iPoint())
 			current_path_index++;
