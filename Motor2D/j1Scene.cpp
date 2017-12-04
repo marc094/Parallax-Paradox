@@ -71,58 +71,10 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
-		//App->player->Accelerate(0, -1);
-		//App->render->camera.y -= 1;
-		App->entities->player.SwapLayer();
-	
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		//App->render->camera.y += 1;
-		App->entities->player.Accelerate(0, ACCELERATION, dt);
-
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		//App->render->camera.x -= 1;
-		App->entities->player.Accelerate(-ACCELERATION, 0, dt);
-
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		//App->render->camera.x += 1;
-		App->entities->player.Accelerate(ACCELERATION, 0, dt);
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping() && !App->entities->player.god_mode)
+	if (!App->entities->player.hit)
 	{
-		App->entities->player.setJumping(true);
-		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);
-		App->audio->PlayFx(App->entities->player.jump_sound);
+		CheckInput(dt);
 	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
-	{
-		App->entities->player.Accelerate(0, -ACCELERATION, dt);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
-		App->SetTimeScale(0.5f);
-
-	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
-		App->SetTimeScale(1.0f);
-
-	// Settings input
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		App->LoadGame();
-
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		App->SaveGame();
-
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		App->entities->player.god_mode = !App->entities->player.god_mode;
-
-	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	{
-		if (App->GetFramerateCap() == 60)
-			App->SetFramerateCap(30);
-		else App->SetFramerateCap(60);
-	}
-
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
@@ -174,6 +126,61 @@ void j1Scene::ChangeScene(uint _level) {
 	level = _level;
 	playing = false;
 	App->Reload();
+}
+void j1Scene::CheckInput(float dt)
+{
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+		//App->player->Accelerate(0, -1);
+		//App->render->camera.y -= 1;
+		App->entities->player.SwapLayer();
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		//App->render->camera.y += 1;
+		App->entities->player.Accelerate(0, ACCELERATION, dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		//App->render->camera.x -= 1;
+		App->entities->player.Accelerate(-ACCELERATION, 0, dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		//App->render->camera.x += 1;
+		App->entities->player.Accelerate(ACCELERATION, 0, dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping() && !App->entities->player.god_mode)
+	{
+		App->entities->player.setJumping(true);
+		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);
+		App->audio->PlayFx(App->entities->player.jump_sound);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
+	{
+		App->entities->player.Accelerate(0, -ACCELERATION, dt);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
+		App->SetTimeScale(0.5f);
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
+		App->SetTimeScale(1.0f);
+
+	// Settings input
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		App->LoadGame();
+
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		App->SaveGame();
+
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		App->entities->player.god_mode = !App->entities->player.god_mode;
+
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (App->GetFramerateCap() == 60)
+			App->SetFramerateCap(30);
+		else App->SetFramerateCap(60);
+	}
 }
 
 void j1Scene::CheckEnd() {

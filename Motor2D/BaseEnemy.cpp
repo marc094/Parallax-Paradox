@@ -75,7 +75,7 @@ bool BaseEnemy::Update(float dt)
 		}
 
 
-		if (App->collision->DoCollide(alert_rect, player_rect))
+		if (App->collision->DoCollide(alert_rect, player_rect) && !App->entities->player.hit)
 		{
 			if (state != RUNNING)
 				state = Entity::ALERT;

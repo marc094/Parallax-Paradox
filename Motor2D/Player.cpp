@@ -84,6 +84,11 @@ bool Player::Update(float dt)
 
 	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
+	if (onhit_timer.Count(0.3f))
+	{
+		hit = false;
+	}
+
 	if (grounded == true && is_jumping == true)
 	{
 		is_jumping = false;
@@ -114,7 +119,6 @@ bool Player::Update(float dt)
 		App->Reload();
 		App->audio->PlayFx(App->entities->player.hit_sound);
 	}
-
 
 	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped);
 
@@ -225,6 +229,8 @@ LayerID Player::GetCurrentLayer() {
 
 void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 {
+	hit = true;
+	onhit_timer.Start();
 	fPoint sp = speed_vect - collider_spv;
 	iRect player = current_animation->CurrentFrame().rect;
 	player.x = position.x;
@@ -232,5 +238,6 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 
 	App->collision->SetSpVecToCollisions(collider, player, speed_vect, grounded, dt);
 	Accelerate((-200 * sp.x), (-200 * sp.y), dt);
+	//speed_vect = sp * 30;
 
 }

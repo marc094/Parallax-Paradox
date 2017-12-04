@@ -33,6 +33,8 @@ public:
 	bool CleanUp();
 
 	void ChangeScene(uint level);
+	
+	void CheckInput(float dt);
 
 	void CheckEnd();
 

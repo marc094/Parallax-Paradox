@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "j1Map.h"
 #include "Rect.h"
+#include "j1Timer.h"
 
 #define ACCELERATION 7.5f * 60
 #define DECELERATION 15.0f * 60

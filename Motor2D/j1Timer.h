@@ -13,6 +13,7 @@ public:
 	void Start();
 	uint32 Read() const;
 	float ReadSec() const;
+	bool Count(float num);
 
 private:
 	uint32	started_at;
