@@ -42,6 +42,7 @@ public:
 	uint level_sound;
 	int lives;
 	bool hit;
+	bool invulnerable;
 
 private:
 	float		scale = 1.0f;
@@ -56,6 +57,8 @@ private:
 	Animation changing_layers_anim;
 	Animation god_mode_aura;
 	j1Timer onhit_timer;
+	j1Timer red_timer;
+
 
 
 };

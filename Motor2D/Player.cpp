@@ -84,9 +84,13 @@ bool Player::Update(float dt)
 
 	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
-	if (onhit_timer.Count(0.3f))
+	if (onhit_timer.Count(0.2f))
 	{
 		hit = false;
+		max_speed.x = MAX_SPEED_X;
+		max_speed.y = MAX_SPEED_Y;
+		SDL_SetTextureColorMod(App->entities->texture, 255, 255, 255);
+
 	}
 
 	if (grounded == true && is_jumping == true)
@@ -230,14 +234,17 @@ LayerID Player::GetCurrentLayer() {
 void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 {
 	hit = true;
+	invulnerable = true;
 	onhit_timer.Start();
 	fPoint sp = speed_vect - collider_spv;
 	iRect player = current_animation->CurrentFrame().rect;
 	player.x = position.x;
 	player.y = position.y;
-
+	max_speed.x = 500;
+	max_speed.y = 500;
 	App->collision->SetSpVecToCollisions(collider, player, speed_vect, grounded, dt);
-	Accelerate((-200 * sp.x), (-200 * sp.y), dt);
+	Accelerate((-10 * sp.x), (-10 * sp.y), dt);
+	
+	SDL_SetTextureColorMod(App->entities->texture, 255, 0, 0);
 	//speed_vect = sp * 30;
-
 }
