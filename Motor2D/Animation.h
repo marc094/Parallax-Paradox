@@ -42,6 +42,10 @@ public:
 		last_frame++;
 	}
 
+	AnimationFrame& CurrentFrame()
+	{
+		return frames[(int)current_frame];
+	}
 	AnimationFrame& GetCurrentFrame(float delta_time)
 	{
 		current_frame = current_frame + speed * delta_time;

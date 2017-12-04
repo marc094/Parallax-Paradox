@@ -115,7 +115,7 @@ bool Player::Update(float dt)
 	}
 	
 
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->GetCurrentFrame(dt).pivot.x, current_animation->GetCurrentFrame(dt).pivot.y, true, flipped);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped);
 
 	if (god_mode)
 	{
@@ -148,6 +148,16 @@ void Player::SelectAnim(fPoint speed_vect)
 	if (is_jumping == true)
 	{
 		current_animation = &jumping_anim;
+
+		if (speed_vect.x > 0)
+		{
+			flipped = false;
+		}
+		else if (speed_vect.x < 0)
+		{
+			flipped = true;
+		}
+
 	}
 	else if (current_animation == &landing_anim)
 	{

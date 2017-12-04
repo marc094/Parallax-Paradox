@@ -17,14 +17,14 @@
         <frame number="5" x="0" y ="0" w="0" h ="0"/>
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </falling>
-      <landing frames="0" duration="10.0f" loop ="0">
+      <landing frames="0" duration="15.0f" loop ="0">
         <frame number="0" x="48" y ="0" w="13" h ="14"/>
         <frame number="1" x="63" y ="0" w="15" h ="14"/>
         <frame number="2" x="79" y ="0" w="15" h ="14"/>
         <frame number="3" x="95" y ="0" w="15" h ="14"/>
         <frame number="4" x="112" y ="0" w="13" h ="14"/>
       </landing>
-      <walking frames="3" duration="6.0f" loop ="1">
+      <walking frames="3" duration="11.0f" loop ="1">
         <frame number="0" x="0" y ="19" w="13" h ="17" pivot_x="-2" pivot_y="0"/>
         <frame number="1" x="16" y ="19" w="13" h ="17" pivot_x="-3" pivot_y="0"/>
         <frame number="2" x="32" y ="19" w="13" h ="17" pivot_x="-1" pivot_y="0"/>
@@ -43,7 +43,7 @@
         <frame number="5" x="0" y ="0" w="0" h ="0"/>
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </changing>
-      <idle frames="1" duration="3.2f" loop ="1">
+      <idle frames="1" duration="4" loop ="1">
         <frame number="0" x="0" y ="0" w="13" h ="14"/>
         <frame number="2" x="16" y ="0" w="13" h ="14"/>
         <frame number="1" x="32" y ="0" w="13" h ="14"/>
