@@ -56,7 +56,7 @@ bool Player::Awake()
 
 	jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
 	change_sound = App->audio->LoadFx("audio/FX/Change2.wav");
-	hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
+	//hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
 	//level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
 
 	return ret;
@@ -72,6 +72,7 @@ bool Player::Start()
 	god_mode = false;
 	is_jumping = false;
 	grounded = false;
+	lives = 3;
 	App->audio->PlayFx(level_sound);
 
 	return true;
@@ -113,7 +114,7 @@ bool Player::Update(float dt)
 		App->Reload();
 		App->audio->PlayFx(App->entities->player.hit_sound);
 	}
-	
+
 
 	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped);
 
@@ -220,4 +221,16 @@ void Player::SwapLayer() {
 
 LayerID Player::GetCurrentLayer() {
 	return current_layer;
+}
+
+void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
+{
+	fPoint sp = speed_vect - collider_spv;
+	iRect player = current_animation->CurrentFrame().rect;
+	player.x = position.x;
+	player.y = position.y;
+
+	App->collision->SetSpVecToCollisions(collider, player, speed_vect, grounded, dt);
+	Accelerate((-200 * sp.x), (-200 * sp.y), dt);
+
 }

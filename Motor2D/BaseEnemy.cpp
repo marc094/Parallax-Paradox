@@ -45,7 +45,7 @@ bool BaseEnemy::Update(float dt)
 		if (App->collision->DoCollide(collider, player_rect) && !App->entities->player.god_mode)
 		{
 			App->audio->PlayFx(App->entities->player.hit_sound);
-			App->Reload();
+			App->entities->player.OnHit(collider, speed_vect, dt);
 		}
 
 

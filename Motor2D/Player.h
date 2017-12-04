@@ -34,11 +34,13 @@ public:
 	LayerID GetCurrentLayer();
 
 	bool god_mode = false;
+	void OnHit(iRect collider,fPoint collider_spv, float dt);
 
 	uint jump_sound;
 	uint hit_sound;
 	uint change_sound;
 	uint level_sound;
+	int lives;
 
 private:
 	float		scale = 1.0f;
@@ -52,6 +54,7 @@ private:
 	Animation landing_anim;
 	Animation changing_layers_anim;
 	Animation god_mode_aura;
+	bool hit;
 
 };
 
