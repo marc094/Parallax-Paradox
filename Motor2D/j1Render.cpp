@@ -134,14 +134,14 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	if (scaling == true)
 	{
 
-		rect.x = (int)(camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.x = x * scale - (int)(camera.x * speed);
+		rect.y = y * scale - (int)(camera.y * speed);
 
 	}
 	else
 	{
-		rect.x = (int)(camera.x * speed) + x;
-		rect.y = (int)(camera.y * speed) + y;
+		rect.x = x - (int)(camera.x * speed);
+		rect.y = y - (int)(camera.y * speed);
 	}
 
 
@@ -192,8 +192,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, float s
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)((camera.x * speed) + rect.x * scale);
-		rec.y = (int)((camera.y * speed) + rect.y * scale);
+		rec.x = (rect.x * scale) - (int)(camera.x * speed);
+		rec.y = (rect.y * scale) - (int)(camera.y * speed);
 		rec.w *= scale;
 		rec.h *= scale;
 	}
@@ -220,7 +220,7 @@ bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 
 	int result = -1;
 
 	if(use_camera)
-		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
+		result = SDL_RenderDrawLine(renderer, x1 * scale - camera.x, y1 * scale - camera.y, x2 * scale - camera.x, y2 * scale - camera.y);
 	else
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
 

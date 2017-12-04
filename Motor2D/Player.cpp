@@ -96,10 +96,16 @@ bool Player::Update(float dt)
 	//Gravity
 	Accelerate(0, GRAVITY, dt);
 	
-	float camera_speed = 200.0f * dt;
+	float camera_speed = 400.0f * dt;
+	fPoint cam_vec, c;
+	c.x = (position.x * scale - (float)App->render->camera.w / 2.0f);
+	c.y = (position.y * scale - (float)App->render->camera.h / 2.0f);
+	cam_vec.x = c.x - (float)App->render->camera.x;
+	cam_vec.y = c.y - (float)App->render->camera.y;
+	float angle = cam_vec.angle();
 
-	App->render->camera.x = Interpolate((float)App->render->camera.x, (-position.x * scale + (float)App->render->camera.w / 2), camera_speed);
-	App->render->camera.y = Interpolate((float)App->render->camera.y, (-position.y * scale + (float)App->render->camera.h / 2), camera_speed);
+	App->render->camera.x = Interpolate((float)App->render->camera.x, c.x, abs(camera_speed * cos(angle)));
+	App->render->camera.y = Interpolate((float)App->render->camera.y, c.y, abs(camera_speed * sin(angle)));
 	//App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
 
 	if (position.y > 1400)

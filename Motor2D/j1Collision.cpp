@@ -74,11 +74,11 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 		aux.w *= scale;
 		aux.h *= scale;
 
-		aux.x = (int)(App->render->camera.x * map_layer->data->parallax_speed * scale) + (aux.x * scale);
-		aux.y = (int)(App->render->camera.y * map_layer->data->parallax_speed * scale) + (aux.y * scale);
+		aux.x = (aux.x * scale) - (int)(App->render->camera.x * map_layer->data->parallax_speed * scale);
+		aux.y = (aux.y * scale) - (int)(App->render->camera.y * map_layer->data->parallax_speed * scale);
 
-		player_rect.x = (int)(App->render->camera.x * scale) + (player_rect.x * scale);
-		player_rect.y = (int)(App->render->camera.y * scale) + (player_rect.y * scale);
+		player_rect.x = (player_rect.x * scale) - (int)(App->render->camera.x * scale);
+		player_rect.y = (player_rect.y * scale) - (int)(App->render->camera.y * scale);
 
 		iPoint p1, p2;
 		p1 = iPoint(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);

@@ -157,6 +157,16 @@ public:
 	{
 		return (fabs(x - other.x) < radius && fabs(y - other.y) < radius);
 	}
+
+	float angle(const p2Point& other)
+	{
+		return atan2((float)(other.y - y), (float)(other.x - x));
+	}
+
+	float angle()
+	{
+		return atan2((float)(y), (float)(x));
+	}
 };
 
 typedef p2Point<int> iPoint;
