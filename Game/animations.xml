@@ -25,14 +25,14 @@
         <frame number="4" x="112" y ="0" w="13" h ="14"/>
       </landing>
       <walking frames="3" duration="6.0f" loop ="1">
-        <frame number="0" x="0" y ="16" w="13" h ="15"/>
-        <frame number="1" x="16" y ="16" w="13" h ="14"/>
-        <frame number="2" x="32" y ="16" w="13" h ="16"/>
-        <frame number="3" x="48" y ="16" w="12" h ="17"/>
-        <frame number="4" x="64" y ="16" w="11" h ="15"/>
-        <frame number="5" x="80" y ="16" w="13" h ="14"/>
-        <frame number="6" x="96" y ="16" w="13" h ="16"/>
-        <frame number="7" x="112" y ="16" w="13" h ="17"/>
+        <frame number="0" x="0" y ="19" w="13" h ="17" pivot_x="-2" pivot_y="0"/>
+        <frame number="1" x="16" y ="19" w="13" h ="17" pivot_x="-3" pivot_y="0"/>
+        <frame number="2" x="32" y ="19" w="13" h ="17" pivot_x="-1" pivot_y="0"/>
+        <frame number="3" x="48" y ="19" w="12" h ="17" pivot_x="0" pivot_y="0"/>
+        <frame number="4" x="64" y ="19" w="11" h ="17" pivot_x="-2" pivot_y="0"/>
+        <frame number="5" x="80" y ="19" w="13" h ="17" pivot_x="-3" pivot_y="0"/>
+        <frame number="6" x="96" y ="19" w="13" h ="17" pivot_x="-1" pivot_y="0"/>
+        <frame number="7" x="112" y ="19" w="13" h ="17" pivot_x="0" pivot_y="0"/>
       </walking>
       <changing frames="0" duration="0" loop ="0">
         <frame number="0" x="0" y ="0" w="0" h ="0"/>

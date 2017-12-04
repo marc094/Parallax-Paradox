@@ -35,8 +35,8 @@ bool Player::Awake()
 		for (pugi::xml_node frames : animation.children())
 		{
 			SDL_Rect aux_rect{ frames.attribute("x").as_int(), frames.attribute("y").as_int(), frames.attribute("w").as_int(), frames.attribute("h").as_int() };
-			aux.PushBack(aux_rect);
-			animation_list.add(aux);
+			iPoint pivot(frames.attribute("pivot_x").as_int(), frames.attribute("pivot_y").as_int());
+			aux.PushBack(aux_rect, pivot);
 		}
 
 		if (!strcmp(aux.name, "idle"))
@@ -57,7 +57,7 @@ bool Player::Awake()
 	jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
 	change_sound = App->audio->LoadFx("audio/FX/Change2.wav");
 	hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
-	level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
+	//level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
 
 	return ret;
 }
@@ -115,7 +115,7 @@ bool Player::Update(float dt)
 	}
 	
 
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->GetCurrentFrame(dt).pivot.x, current_animation->GetCurrentFrame(dt).pivot.y, true, flipped);
 
 	if (god_mode)
 	{
@@ -149,6 +149,13 @@ void Player::SelectAnim(fPoint speed_vect)
 	{
 		current_animation = &jumping_anim;
 	}
+	else if (current_animation == &landing_anim)
+	{
+		if (landing_anim.Finished())
+		{
+			current_animation = &idle_anim;
+		}
+	}
 	else if (speed_vect.x != 0)
 	{
 		if (current_animation != &landing_anim)
@@ -161,13 +168,6 @@ void Player::SelectAnim(fPoint speed_vect)
 		else if (speed_vect.x < 0)
 		{
 			flipped = true;
-		}
-	}
-	else if (current_animation == &landing_anim)
-	{
-		if (landing_anim.Finished())
-		{
-			current_animation = &idle_anim;
 		}
 	}
 	else 
