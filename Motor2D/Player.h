@@ -49,7 +49,7 @@ private:
 	bool		flipped = false;
 	bool		is_jumping = false;
 	float		aura_angle = 0.0f;
-
+	SDL_Color	color = { 255,255,255 };
 	p2List<Animation> animation_list;
 	Animation jumping_anim;
 	Animation falling_anim;
