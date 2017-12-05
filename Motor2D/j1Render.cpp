@@ -125,7 +125,7 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y, bool scaling, bool h_flip) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y, bool scaling, bool h_flip,bool use_camera, SDL_Color color) const
 {
 	bool ret = true;
 
@@ -134,17 +134,28 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	if (scaling == true)
 	{
 
-		rect.x = x * scale - (int)(camera.x * speed);
-		rect.y = y * scale - (int)(camera.y * speed);
+		if (use_camera)
+		{
+			rect.x = x * scale - (int)(camera.x * speed);
+			rect.y = y * scale - (int)(camera.y * speed);
+		}
+		else
+		{
+			rect.x = x * scale;
+			rect.y = y * scale;
+		}
 
 	}
 	else
 	{
-		rect.x = x - (int)(camera.x * speed);
-		rect.y = y - (int)(camera.y * speed);
+
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
 	}
+	
 
 
+	
 	if(section != NULL)
 	{
 		rect.w = section->w;
@@ -172,12 +183,21 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	if (h_flip)
 		flip = SDL_FLIP_HORIZONTAL;
 
+	if (color.r != 255 && color.g != 255 && color.b != 255)
+	{
+		SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
+	}
+
 	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
 	}
 
+	if (color.r != 255 || color.g != 255 || color.b != 255)
+	{
+		SDL_SetTextureColorMod(texture, 255, 255, 255);
+	}
 	return ret;
 }
 

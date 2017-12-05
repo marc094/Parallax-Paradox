@@ -89,7 +89,7 @@ bool Player::Update(float dt)
 		hit = false;
 		max_speed.x = MAX_SPEED_X;
 		max_speed.y = MAX_SPEED_Y;
-		SDL_SetTextureColorMod(App->entities->texture, 255, 255, 255);
+		color = { 255,0,0 };
 
 	}
 
@@ -124,7 +124,7 @@ bool Player::Update(float dt)
 		App->audio->PlayFx(App->entities->player.hit_sound);
 	}
 
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped,true,color);
 
 	if (god_mode)
 	{
