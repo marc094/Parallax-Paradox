@@ -11,6 +11,12 @@ public:
 
 	j1Scene();
 
+	enum state {
+		IN_GAME,
+		IN_MENU,
+		TRANSITION
+	}state = IN_MENU;
+
 	// Destructor
 	virtual ~j1Scene();
 
@@ -43,6 +49,7 @@ private:
 	uint max_level;
 	p2DynArray<p2SString> xml_file_name;
 	bool playing;
+	SDL_Texture* menu_background;
 };
 
 #endif // __j1SCENE_H__

@@ -45,18 +45,28 @@ bool j1Scene::Start()
 {
 	if (level > max_level)
 		level = 1;
-	App->map->Load(xml_file_name[level-1].GetString());
 
+	if (state == IN_GAME)
+	{
+		App->map->Load(xml_file_name[level - 1].GetString());
+		App->entities->active = true;
+	}
+	else
+	{
+		menu_background = App->tex->Load("textures/menu background.png");
+		App->entities->active = false;
+	}
+		
 
-	//if (!playing)
-	//{
-	//	if (level == 1)
-	//		App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-	//	else if (level == 2)
-	//		App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
+	if (!playing)
+	{
+		if (level == 1)
+			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+		else if (level == 2)
+			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
 
-	//	playing = true;
-	//}
+		playing = true;
+	}
 
 
 	return true;
@@ -71,12 +81,21 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (!App->entities->player.hit)
+	if (state == IN_GAME && !App->entities->player.hit)
 	{
 		CheckInput(dt);
 	}
+	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		state = IN_GAME;
+		App->Reload();
+	}
 	//App->render->Blit(img, 0, 0);
-	App->map->Draw();
+	if (state == IN_GAME)
+		App->map->Draw();
+
+	else
+		App->render->Blit(menu_background, 0, 0);
 
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -105,6 +124,25 @@ bool j1Scene::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 		App->debug = !App->debug;
 
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
+		App->SetTimeScale(0.5f);
+
+	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
+		App->SetTimeScale(1.0f);
+
+	// Settings input
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		App->LoadGame();
+
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		App->SaveGame();
+
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (App->GetFramerateCap() == 60)
+			App->SetFramerateCap(30);
+		else App->SetFramerateCap(60);
+	}
 
 
 	CheckEnd();
@@ -159,28 +197,10 @@ void j1Scene::CheckInput(float dt)
 		App->entities->player.Accelerate(0, -ACCELERATION, dt);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN)
-		App->SetTimeScale(0.5f);
-
-	if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_UP)
-		App->SetTimeScale(1.0f);
-
-	// Settings input
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		App->LoadGame();
-
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		App->SaveGame();
-
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		App->entities->player.god_mode = !App->entities->player.god_mode;
 
-	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	{
-		if (App->GetFramerateCap() == 60)
-			App->SetFramerateCap(30);
-		else App->SetFramerateCap(60);
-	}
+
 }
 
 void j1Scene::CheckEnd() {
