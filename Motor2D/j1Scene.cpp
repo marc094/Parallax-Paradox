@@ -53,20 +53,20 @@ bool j1Scene::Start()
 	}
 	else
 	{
-		menu_background = App->tex->Load("textures/menu background.png");
+		menu_background = App->tex->Load("textures/menu background2.png");
 		App->entities->active = false;
 	}
 		
 
-	if (!playing)
-	{
-		if (level == 1)
-			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-		else if (level == 2)
-			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
+	//if (!playing)
+	//{
+	//	if (level == 1)
+	//		App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+	//	else if (level == 2)
+	//		App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
 
-		playing = true;
-	}
+	//	playing = true;
+	//}
 
 
 	return true;
@@ -85,11 +85,7 @@ bool j1Scene::Update(float dt)
 	{
 		CheckInput(dt);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		state = IN_GAME;
-		App->Reload();
-	}
+
 	//App->render->Blit(img, 0, 0);
 	if (state == IN_GAME)
 		App->map->Draw();
@@ -144,9 +140,14 @@ bool j1Scene::PostUpdate()
 		else App->SetFramerateCap(60);
 	}
 
-
+	if (state == IN_GAME)
 	CheckEnd();
 
+	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		App->Reload();
+		state = IN_GAME;
+	}
 	return ret;
 }
 

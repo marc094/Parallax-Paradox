@@ -50,6 +50,7 @@ private:
 	p2DynArray<p2SString> xml_file_name;
 	bool playing;
 	SDL_Texture* menu_background;
+	SDL_Texture* title;
 };
 
 #endif // __j1SCENE_H__
