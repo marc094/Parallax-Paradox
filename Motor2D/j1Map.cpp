@@ -39,9 +39,11 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-void j1Map::Draw()
+void j1Map::Draw(float dt)
 {
 	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::SlateBlue);
+
+	bool player_blit = false;
 	if(map_loaded == false)
 		return;
 	App->render->Blit(background, 0, 0,0,0.7f);
@@ -67,6 +69,11 @@ void j1Map::Draw()
 		}
 		++layer;
 		item_layer = item_layer->next;
+		if (!player_blit)
+		{
+			App->entities->player.BlitPlayer(dt);
+			player_blit = true;
+		}
 	}
 
 	SDL_SetTextureAlphaMod(data.tilesets[0]->texture, 255);

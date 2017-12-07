@@ -75,6 +75,7 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+
 	return true;
 }
 
@@ -88,7 +89,10 @@ bool j1Scene::Update(float dt)
 
 	//App->render->Blit(img, 0, 0);
 	if (state == IN_GAME)
-		App->map->Draw();
+	{
+		App->map->Draw(dt);
+	}
+
 
 	else
 		App->render->Blit(menu_background, 0, 0);

@@ -44,6 +44,8 @@ public:
 	bool hit;
 	bool invulnerable;
 
+	void BlitPlayer(float dt);
+
 private:
 	float		scale = 1.0f;
 	bool		flipped = false;

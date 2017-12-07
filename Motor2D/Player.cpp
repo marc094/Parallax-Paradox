@@ -124,14 +124,9 @@ bool Player::Update(float dt)
 		App->audio->PlayFx(App->entities->player.hit_sound);
 	}
 
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped,true,color);
+	//App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped,true,color);
 
-	if (god_mode)
-	{
-		aura_angle += 90.0f * dt;
-		iRect frame_rect = god_mode_aura.GetCurrentFrame(dt).rect;
-		App->render->Blit(App->entities->texture, (int)position.x + (collider.w/2) - (frame_rect.w/2), (int)position.y + (collider.h/2) - (frame_rect.h/2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
-	}
+
 
 	return true;
 }
@@ -247,4 +242,17 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 	
 	SDL_SetTextureColorMod(App->entities->texture, 255, 0, 0);
 	//speed_vect = sp * 30;
+}
+
+void Player::BlitPlayer(float dt) 
+{
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped, true, color);
+	
+	if (god_mode)
+	{
+		aura_angle += 90.0f * dt;
+		iRect frame_rect = god_mode_aura.GetCurrentFrame(dt).rect;
+		App->render->Blit(App->entities->texture, (int)position.x + (collider.w / 2) - (frame_rect.w / 2), (int)position.y + (collider.h / 2) - (frame_rect.h / 2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
+	}
+
 }
