@@ -155,7 +155,11 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	
 
 
-	
+	if (pivot_y < 0)
+	{
+		rect.y += pivot_y;
+	}
+
 	if(section != NULL)
 	{
 		rect.w = section->w;
