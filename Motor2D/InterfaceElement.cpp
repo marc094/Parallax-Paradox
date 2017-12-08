@@ -178,7 +178,9 @@ void InterfaceElement::SetFocus()
 
 void InterfaceElement::ComputeAbsolutePos()
 {
-	if (parent != nullptr)
-		abs_pos = rel_pos + parent->abs_pos;
+	if (parent != nullptr) {
+		abs_pos.x = rel_pos.x + parent->abs_pos.x + (-parent->anchor_point.x * parent->rect.w);
+		abs_pos.y = rel_pos.y + parent->abs_pos.y + (-parent->anchor_point.y * parent->rect.h);
+	}
 	else abs_pos = rel_pos;
 }
