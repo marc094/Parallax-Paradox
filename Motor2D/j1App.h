@@ -18,6 +18,8 @@ class j1Map;
 class j1Entities;
 class j1Collision;
 class j1PathFinding;
+class j1Fonts;
+class j1Gui;
 
 class j1App
 {
@@ -99,6 +101,8 @@ public:
 	j1Entities*			entities = nullptr;
 	j1Collision*		collision = nullptr;
 	j1PathFinding*		pathfinding = nullptr;
+	j1Fonts*			font = nullptr;
+	j1Gui*				gui = nullptr;
 
 	bool debug = false;
 

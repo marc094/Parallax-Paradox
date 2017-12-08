@@ -133,7 +133,6 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Rect rect;
 	if (scaling == true)
 	{
-
 		if (use_camera)
 		{
 			rect.x = x * scale - (int)(camera.x * speed);
@@ -144,15 +143,12 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 			rect.x = x * scale;
 			rect.y = y * scale;
 		}
-
 	}
 	else
 	{
-
 		rect.x = (int)(camera.x * speed) + x * scale;
 		rect.y = (int)(camera.y * speed) + y * scale;
 	}
-	
 
 
 	if (pivot_y < 0)
@@ -202,6 +198,71 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	{
 		SDL_SetTextureColorMod(texture, 255, 255, 255);
 	}
+	return ret;
+}
+
+bool j1Render::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * section, bool use_camera, float speed, double angle, bool h_flip, SDL_Color color, int pivot_x, int pivot_y)
+{
+	bool ret = true;
+
+	uint scale = App->win->GetScale();
+	SDL_Rect rect;
+	if (use_camera)
+	{
+		rect.x = x * scale - (int)(camera.x * speed);
+		rect.y = y * scale - (int)(camera.y * speed);
+	}
+	else
+	{
+		rect.x = x * scale;
+		rect.y = y * scale;
+	}
+
+	if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	rect.w *= scale;
+	rect.h *= scale;
+
+	SDL_Point* p = NULL;
+	SDL_Point pivot;
+
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
+	{
+		pivot.x = pivot_x;
+		pivot.y = pivot_y;
+		p = &pivot;
+	}
+
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	if (h_flip)
+		flip = SDL_FLIP_HORIZONTAL;
+
+	if (color.r != 255 && color.g != 255 && color.b != 255)
+		SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
+
+	if (color.a != 255)
+		SDL_SetTextureAlphaMod(texture, color.a);
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	if (color.r != 255 || color.g != 255 || color.b != 255)
+		SDL_SetTextureColorMod(texture, 255, 255, 255);
+
+	if (color.a != 255)
+		SDL_SetTextureAlphaMod(texture, 255);
+
 	return ret;
 }
 
