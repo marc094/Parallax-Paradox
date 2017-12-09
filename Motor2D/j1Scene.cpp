@@ -75,11 +75,11 @@ bool j1Scene::Start()
 		start->setString("START");
 		start_button->setLabel(start);
 
-		Button* exit_button = App->gui->AddButton(w / 2, 150 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		Button* exit_button = App->gui->AddButton(w / 2, 150 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
 
 		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 150, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
-		exit_button->setLabel(start);
+		exit_button->setLabel(exit);
 
 
 		App->entities->active = false;
@@ -135,7 +135,6 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	bool ret = true;
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -242,4 +241,8 @@ void Game_start()
 {
 	App->Reload();
 	App->scene->state = App->scene->IN_GAME;
+}
+void Game_exit()
+{
+	App->scene->ret = false;
 }

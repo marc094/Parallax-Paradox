@@ -45,7 +45,7 @@ public:
 
 	void CheckEnd();
 
-
+	bool ret = true;
 
 private:
 	uint level;
