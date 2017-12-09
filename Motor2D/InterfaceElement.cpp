@@ -58,7 +58,7 @@ bool InterfaceElement::PostUpdate()
 		ret = current_element->data->PostUpdate();
 	}
 
-	if (App->gui->debug_draw) {
+	if (App->debug) {
 		SDL_Rect r = rect;
 		App->render->DrawQuad(r, 0, 0, 255, 255, false, false);
 		App->render->DrawLine(r.x, r.y + r.h * anchor_point.y, r.x + r.w, r.y + r.h * anchor_point.y, 0, 0, 255, 255, false);

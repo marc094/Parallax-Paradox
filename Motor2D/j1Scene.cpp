@@ -12,6 +12,8 @@
 #include "Entity.h"
 #include "Player.h"
 #include "j1Textures.h"
+#include "j1Gui.h"
+#include "Window.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -68,6 +70,19 @@ bool j1Scene::Start()
 	//	playing = true;
 	//}
 
+	SDL_Rect win_rect{ 0, 512, 484, 512 };
+	SDL_Texture* tex = App->tex->Load("gui/atlas.png");
+	Window* win = App->gui->AddWindow(0.5f * App->gui->GetGuiSize().x, 0.5f * App->gui->GetGuiSize().y, tex, true, &win_rect);
+
+	SDL_Rect idle{ 0, 110, 230, 71 };
+	SDL_Rect hovered{ 411, 166, 230, 71 };
+	SDL_Rect pressed{ 641, 166, 230, 71 };
+	Button* butt = App->gui->AddButton(0.5f * win->rect.w, 0.5f * win->rect.h, tex, true, &idle, &button_callback, &hovered, &pressed);
+	butt->SetParent(win);
+	butt->SetAnchor(1.0f, 1.0f);
+	Label* text = App->gui->AddLabel(0.5 * butt->rect.w, 0.5f * butt->rect.h,
+		30, "fonts/open_sans/OpenSans-Bold.ttf", { 200, 200, 200, 255 }, Label::RenderMode::BLENDED, "Button #%d", 1);
+	text->SetParent(butt);
 
 	return true;
 }
@@ -211,4 +226,8 @@ void j1Scene::CheckInput(float dt)
 void j1Scene::CheckEnd() {
 	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 30)
 		App->scene->ChangeScene(level + 1);
+}
+
+void button_callback(const char* text) {
+	LOG("%s", text);
 }

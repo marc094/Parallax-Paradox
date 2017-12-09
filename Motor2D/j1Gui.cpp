@@ -56,24 +56,6 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
-	//Sprites
-	/*p2List_item<Sprite*>* current_sprite = sprites.start;
-	while (current_sprite != NULL)
-	{
-		if (current_sprite->data->enabled)
-			current_sprite->data->PostUpdate();
-		current_sprite = current_sprite->next;
-	}
-
-	//Labels
-	p2List_item<Label*>* current_label = labels.start;
-	while (current_label != NULL)
-	{
-		if (current_label->data->enabled)
-			current_label->data->PostUpdate();
-		current_label = current_label->next;
-	}*/
-
 	p2List_item<InterfaceElement*>* current_element = elements.start;
 	while (current_element != NULL)
 	{
@@ -89,14 +71,23 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
+	p2List_item<InterfaceElement*>* current_element = elements.start;
+	while (current_element != NULL)
+	{
+			delete current_element->data;
+		current_element = current_element->next;
+	}
+	elements.clear();
 
+	if(atlas_texture != nullptr)
+		App->tex->UnLoad(atlas_texture);
 	return true;
 }
 
 // const getter for atlas
 const SDL_Texture* j1Gui::GetAtlas() const
 {
-	return nullptr;
+	return atlas_texture;
 }
 
 uiPoint j1Gui::GetGuiSize()

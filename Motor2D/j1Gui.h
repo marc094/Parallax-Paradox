@@ -38,7 +38,7 @@ public:
 	bool PostUpdate();
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
@@ -56,11 +56,10 @@ public:
 	InterfaceElement* AddElement(InterfaceElement* elem);
 	bool RemoveElement(InterfaceElement* elem);
 
-	bool debug_draw = false;
-
 private:
 	p2List<InterfaceElement*> elements;
 
+	SDL_Texture* atlas_texture = nullptr;
 	uiPoint gui_size;
 	float scale;
 

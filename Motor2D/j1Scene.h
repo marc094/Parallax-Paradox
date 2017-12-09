@@ -53,4 +53,6 @@ private:
 	SDL_Texture* title;
 };
 
+void button_callback(const char*);
+
 #endif // __j1SCENE_H__
