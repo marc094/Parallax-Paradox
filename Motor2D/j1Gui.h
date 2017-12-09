@@ -44,7 +44,7 @@ public:
 	// Gui creation functions
 	Sprite* AddSprite(int x, int y, SDL_Texture* tex, bool enabled = true, SDL_Rect* anim = NULL);
 	Label* AddLabel(int x, int y, int psize, const char* font_path = nullptr, SDL_Color color = {0,0,0,255}, Label::RenderMode mode = Label::BLENDED, const char* format = nullptr, ...);
-	Button* AddButton(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_c callback, SDL_Rect* _hovered_anim = nullptr, SDL_Rect* _pressed_anim = nullptr);
+	Button* AddButton(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim = nullptr, SDL_Rect* _pressed_anim = nullptr);
 	Window* AddWindow(int x, int y, SDL_Texture* tex, bool enabled = true, SDL_Rect* anim = NULL);
 	const SDL_Texture* GetAtlas() const;
 	p2SString atlas_file_name;
@@ -56,9 +56,9 @@ public:
 	InterfaceElement* AddElement(InterfaceElement* elem);
 	bool RemoveElement(InterfaceElement* elem);
 
-private:
 	p2List<InterfaceElement*> elements;
 
+private:
 	SDL_Texture* atlas_texture = nullptr;
 	uiPoint gui_size;
 	float scale;

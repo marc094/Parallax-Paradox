@@ -56,6 +56,31 @@ bool j1Scene::Start()
 	else
 	{
 		menu_background = App->tex->Load("textures/menu background2.png");
+		title = App->tex->Load("textures/title2.png");
+		buttons = App->tex->Load("gui/Buttons2.png");
+		uint w;
+		uint h;
+		App->win->GetWindowSize(w, h);
+
+		SDL_Rect button_idle = { 1000,1000,922/3,213/3 };
+		SDL_Rect button_hover = { 0,0,922/3,213/3 };
+		SDL_Rect button_press = { 0,0,0,0 };
+
+		App->gui->AddSprite( w/2, h/2, menu_background);
+		App->gui->AddSprite(w / 2, (h / 2 - 100), title);
+		Button* start_button = App->gui->AddButton(w / 2, 71 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		
+		Label* start = App->gui->AddLabel(w/2, (h/2) + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		start->setString("START");
+		start_button->setLabel(start);
+
+		Button* exit_button = App->gui->AddButton(w / 2, 150 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
+
+		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 150, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		exit->setString("EXIT");
+		exit_button->setLabel(exit);
+
+
 		App->entities->active = false;
 	}
 		
@@ -70,7 +95,7 @@ bool j1Scene::Start()
 	//	playing = true;
 	//}
 
-	SDL_Rect win_rect{ 0, 512, 484, 512 };
+	/*SDL_Rect win_rect{ 0, 512, 484, 512 };
 	SDL_Texture* tex = App->tex->Load("gui/atlas.png");
 	Window* win = App->gui->AddWindow(0.5f * App->gui->GetGuiSize().x, 0.5f * App->gui->GetGuiSize().y, tex, true, &win_rect);
 
@@ -82,7 +107,7 @@ bool j1Scene::Start()
 	butt->SetAnchor(1.0f, 1.0f);
 	Label* text = App->gui->AddLabel(0.5 * butt->rect.w, 0.5f * butt->rect.h,
 		30, "fonts/open_sans/OpenSans-Bold.ttf", { 200, 200, 200, 255 }, Label::RenderMode::BLENDED, "Button #%d", 1);
-	text->SetParent(butt);
+	text->SetParent(butt);*/
 
 	return true;
 }
@@ -109,9 +134,6 @@ bool j1Scene::Update(float dt)
 	}
 
 
-	else
-		App->render->Blit(menu_background, 0, 0);
-
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 					App->map->data.width, App->map->data.height,
@@ -125,7 +147,6 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	bool ret = true;
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -187,7 +208,6 @@ void j1Scene::ChangeScene(uint _level) {
 }
 void j1Scene::CheckInput(float dt)
 {
-
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 		//App->player->Accelerate(0, -1);
 		//App->render->camera.y -= 1;
@@ -230,4 +250,15 @@ void j1Scene::CheckEnd() {
 
 void button_callback(const char* text) {
 	LOG("%s", text);
+}
+
+void Game_start()
+{
+	App->Reload();
+	App->scene->state = App->scene->IN_GAME;
+}
+
+void Game_exit()
+{
+	App->scene->ret = false;
 }

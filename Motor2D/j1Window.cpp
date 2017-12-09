@@ -4,6 +4,8 @@
 #include "j1Window.h"
 
 #include "SDL/include/SDL.h"
+#include "SDL_image/include/SDL_image.h"
+
 
 
 j1Window::j1Window() : j1Module()
@@ -17,7 +19,15 @@ j1Window::j1Window() : j1Module()
 j1Window::~j1Window()
 {
 }
+bool j1Window::Start()
+{
+	SDL_Surface* icon = IMG_Load("textures/icon.png");
+	SDL_SetWindowIcon(window, icon);
 
+	SDL_FreeSurface(icon);
+
+	return true;
+}
 // Called before render is available
 bool j1Window::Awake(pugi::xml_node& config)
 {

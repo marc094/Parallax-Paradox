@@ -468,9 +468,9 @@ bool j1App::ReloadNow() {
 		map->CleanUp() &
 		scene->CleanUp() &
 		entities->CleanUp() &
+		audio->CleanUp() &
 		font->CleanUp() &
-		gui->CleanUp();/* &
-		audio->CleanUp();*/
+		gui->CleanUp();
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
