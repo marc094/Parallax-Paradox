@@ -12,6 +12,9 @@
 #include "Entity.h"
 #include "Player.h"
 #include "j1Textures.h"
+#include "j1Gui.h"
+#include "Button.h"
+#include "Label.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -54,6 +57,31 @@ bool j1Scene::Start()
 	else
 	{
 		menu_background = App->tex->Load("textures/menu background2.png");
+		title = App->tex->Load("textures/title2.png");
+		buttons = App->tex->Load("gui/Buttons2.png");
+		uint w;
+		uint h;
+		App->win->GetWindowSize(w, h);
+
+		SDL_Rect button_idle = { 1000,1000,922/3,213/3 };
+		SDL_Rect button_hover = { 0,0,922/3,213/3 };
+		SDL_Rect button_press = { 0,0,0,0 };
+
+		App->gui->AddSprite( w/2, h/2, menu_background);
+		App->gui->AddSprite(w / 2, (h / 2 - 100), title);
+		Button* start_button = App->gui->AddButton(w / 2, 71 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		
+		Label* start = App->gui->AddLabel(w/2, (h/2) + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		start->setString("START");
+		start_button->setLabel(start);
+
+		Button* exit_button = App->gui->AddButton(w / 2, 150 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+
+		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 150, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		exit->setString("EXIT");
+		exit_button->setLabel(start);
+
+
 		App->entities->active = false;
 	}
 		
@@ -93,9 +121,6 @@ bool j1Scene::Update(float dt)
 		App->map->Draw(dt);
 	}
 
-
-	else
-		App->render->Blit(menu_background, 0, 0);
 
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -211,4 +236,10 @@ void j1Scene::CheckInput(float dt)
 void j1Scene::CheckEnd() {
 	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 30)
 		App->scene->ChangeScene(level + 1);
+}
+
+void Game_start()
+{
+	App->Reload();
+	App->scene->state = App->scene->IN_GAME;
 }

@@ -7,11 +7,13 @@
 	<map />
 	<scene />
 	<entities>
-		<position x="560.599976" y="962.25" />
+		<position x="0" y="0" />
 	</entities>
 	<collision />
 	<pathfinding />
+	<fonts />
+	<gui />
 	<renderer>
-		<camera x="-48" y="-578" />
+		<camera x="0" y="0" />
 	</renderer>
 </game_state>

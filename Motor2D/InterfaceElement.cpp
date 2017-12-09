@@ -166,7 +166,13 @@ void InterfaceElement::SetParent(InterfaceElement * parent)
 
 void InterfaceElement::SetFocus()
 {
-	p2List_item<InterfaceElement*>* curr = parent->elements.start;
+
+	p2List_item<InterfaceElement*>* curr = nullptr;
+
+	if (parent == NULL)
+		curr = App->gui->elements.start;
+	else
+		curr = parent->elements.start;
 
 	while (curr != NULL)
 	{

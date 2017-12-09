@@ -47,6 +47,7 @@ typedef unsigned char uchar;
 
 typedef void(*Callback_v)(void);
 typedef void(*Callback_c)(const char*);
+typedef void(*Callback_n)();
 
 template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 {

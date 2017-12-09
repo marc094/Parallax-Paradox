@@ -106,7 +106,7 @@ bool Player::Update(float dt)
 	//Gravity
 	Accelerate(0, GRAVITY, dt);
 	
-	float camera_speed = 400.0f * dt;
+	float camera_speed = 310.0f * dt;
 	fPoint cam_vec, c;
 	c.x = (position.x * scale - (float)App->render->camera.w / 2.0f);
 	c.y = (position.y * scale - (float)App->render->camera.h / 2.0f);

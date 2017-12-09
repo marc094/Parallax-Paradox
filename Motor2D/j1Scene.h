@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 
+
 struct SDL_Texture;
 
 class j1Scene : public j1Module
@@ -44,13 +45,20 @@ public:
 
 	void CheckEnd();
 
+
+
 private:
 	uint level;
 	uint max_level;
 	p2DynArray<p2SString> xml_file_name;
 	bool playing;
-	SDL_Texture* menu_background;
-	SDL_Texture* title;
+	SDL_Texture* menu_background = nullptr;
+	SDL_Texture* title = nullptr;
+	SDL_Texture* buttons = nullptr;
+
+
 };
 
+void Game_start();
+void Game_exit();
 #endif // __j1SCENE_H__

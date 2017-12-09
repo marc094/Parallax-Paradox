@@ -467,20 +467,23 @@ bool j1App::ReloadNow() {
 		//pathfinding->CleanUp() &
 		map->CleanUp() &
 		scene->CleanUp() &
-		entities->CleanUp();/* &
+		entities->CleanUp() &/* &
 		audio->CleanUp();*/
+		gui->CleanUp();
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
 		map->Awake(config.child(map->name.GetString())) &
 		scene->Awake(config.child(scene->name.GetString())) &
-		entities->Awake(config.child(entities->name.GetString()));
+		entities->Awake(config.child(entities->name.GetString()))&
+		gui->Awake(config.child(entities->name.GetString()));
 
 	if (ret)
 		ret = tex->Start() &&
 		map->Start() &&
 		scene->Start() &&
-		entities->Start();
+		entities->Start() &&
+		gui->Start();
 
 	return ret;
 }

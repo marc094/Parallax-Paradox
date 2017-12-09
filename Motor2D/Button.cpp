@@ -4,7 +4,7 @@
 #include "j1Input.h"
 
 
-Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_c callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
+Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_n callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
 	: Sprite(_x, _y, _tex, _enabled, _anim)
 {
 	type = BUTTON;
@@ -66,7 +66,7 @@ bool Button::PostUpdate()
 
 			if (label != nullptr)
 				label->setString("Left mouse button click");
-			OnClick("Left mouse button click");
+			OnClick();
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
@@ -74,22 +74,24 @@ bool Button::PostUpdate()
 
 			if (label != nullptr)
 				label->setString("Right mouse button click");
-			OnClick("Right mouse button click");
+			OnClick();
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 		{
 			current_anim = &hovered_anim;
 
 			if (label != nullptr)
-				label->setString("Hovered");
+				label->setColor({ 228, 204, 42, 255 });
 			OnHover();
 		}
 	}
 	else
 	{
 		current_anim = &idle_anim;
-		if (label != nullptr)
-			label->setString("Idle");
+		SDL_Color curr;
+		label->getColor(&curr);
+		if (label != nullptr && curr.r != 255 || curr.g != 255 || curr.b != 255|| curr.a != 255)
+			label->setColor({ 255, 255, 255, 255 });
 	}
 
 	/*if (in_focus)
