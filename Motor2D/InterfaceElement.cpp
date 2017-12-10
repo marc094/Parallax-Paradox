@@ -78,6 +78,21 @@ SDL_Rect InterfaceElement::getRect() const
 	return rect;
 }
 
+void InterfaceElement::SetContentRect(int x_margin, int y_margin)
+{
+	if (x_margin == INT_MAX) x_margin = (content_rect.w - rect.w) / 2;
+	if (y_margin == INT_MAX) y_margin = (content_rect.h - rect.h) / 2;
+	content_rect.x = rect.x + x_margin;
+	content_rect.y = rect.y + y_margin;
+	content_rect.w = rect.w - (2 * x_margin);
+	content_rect.h = rect.h - (2 * y_margin);
+}
+
+SDL_Rect InterfaceElement::GetContentRect() const
+{
+	return content_rect;
+}
+
 int InterfaceElement::getPositionX() const
 {
 	return rel_pos.x;
@@ -184,8 +199,9 @@ void InterfaceElement::SetFocus()
 void InterfaceElement::ComputeAbsolutePos()
 {
 	if (parent != nullptr) {
-		abs_pos.x = rel_pos.x + parent->abs_pos.x + (-parent->anchor_point.x * parent->rect.w);
-		abs_pos.y = rel_pos.y + parent->abs_pos.y + (-parent->anchor_point.y * parent->rect.h);
+		parent->SetContentRect();
+		abs_pos.x = rel_pos.x + parent->content_rect.x;
+		abs_pos.y = rel_pos.y + parent->content_rect.y;
 	}
 	else abs_pos = rel_pos;
 }
