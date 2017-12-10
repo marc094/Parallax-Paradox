@@ -328,7 +328,7 @@ void j1PathFinding::DebugBlitMap()
 			{
 				iPoint pos(x, y);
 				pos = App->map->MapToWorld(pos);
-				App->render->DrawQuad(iRect(pos.x, pos.y, 16, 16).toSDL_Rect(), 255, 128, 128, 1.0f, 128);
+				App->render->DrawQuad(iRect(pos.x, pos.y, 16, 16).toSDL_Rect(), 255, 128, 128, 128, 1.0f);
 			}
 		}
 	}

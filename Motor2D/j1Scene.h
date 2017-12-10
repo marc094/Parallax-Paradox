@@ -5,8 +5,8 @@
 
 
 struct SDL_Texture;
-struct Window;
-struct Button;
+class Window;
+class Button;
 
 class j1Scene : public j1Module
 {
@@ -72,7 +72,6 @@ private:
 
 void button_callback(const char*);
 void Game_start();
-void Game_exit();
 void Game_continue();
 void Show_Credits();
 void Hide_Credits();

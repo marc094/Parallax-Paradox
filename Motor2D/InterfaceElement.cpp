@@ -59,7 +59,8 @@ bool InterfaceElement::PostUpdate()
 	}
 
 	if (App->debug) {
-		SDL_Rect r = rect;
+		SDL_Rect r = content_rect;
+		App->render->DrawQuad(rect, 0, 0, 255, 255, false, false);
 		App->render->DrawQuad(r, 0, 0, 255, 255, false, false);
 		App->render->DrawLine(r.x, r.y + r.h * anchor_point.y, r.x + r.w, r.y + r.h * anchor_point.y, 0, 0, 255, 255, false);
 		App->render->DrawLine(r.x + r.w * anchor_point.x, r.y, r.x + r.w * anchor_point.x, r.y + r.h, 0, 0, 255, 255, false);
@@ -80,8 +81,8 @@ SDL_Rect InterfaceElement::getRect() const
 
 void InterfaceElement::SetContentRect(int x_margin, int y_margin)
 {
-	if (x_margin == INT_MAX) x_margin = (content_rect.w - rect.w) / 2;
-	if (y_margin == INT_MAX) y_margin = (content_rect.h - rect.h) / 2;
+	if (x_margin == INT_MAX) x_margin = (rect.w - content_rect.w) / 2;
+	if (y_margin == INT_MAX) y_margin = (rect.h - content_rect.h) / 2;
 	content_rect.x = rect.x + x_margin;
 	content_rect.y = rect.y + y_margin;
 	content_rect.w = rect.w - (2 * x_margin);
@@ -204,4 +205,5 @@ void InterfaceElement::ComputeAbsolutePos()
 		abs_pos.y = rel_pos.y + parent->content_rect.y;
 	}
 	else abs_pos = rel_pos;
+	SetContentRect();
 }

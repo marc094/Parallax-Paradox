@@ -266,7 +266,7 @@ bool j1Render::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * sec
 	return ret;
 }
 
-bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, float speed, Uint8 a, bool filled, bool use_camera) const
+bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, float speed, bool filled, bool use_camera) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();

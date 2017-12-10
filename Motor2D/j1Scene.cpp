@@ -36,8 +36,6 @@ bool j1Scene::Awake(pugi::xml_node& data)
 		max_level++;
 		xml_file_name.PushBack(level.attribute("name").as_string());
 	}
-	
-
 
 	return ret;
 }
@@ -94,7 +92,9 @@ bool j1Scene::Start()
 
 		menu_buttons.add(credits_button);
 
-		Button* exit_button = App->gui->AddButton(w / 2, 142 + 71 +71 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
+		Button* exit_button = App->gui->AddButton(w / 2, 142 + 71 + 71 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
+			App->scene->ret = false;
+		}, &button_hover, &button_press);
 
 		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 142 +71+ 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
@@ -119,14 +119,16 @@ bool j1Scene::Start()
 	/*SDL_Rect win_rect{ 0, 512, 484, 512 };
 	SDL_Texture* tex = App->tex->Load("gui/atlas.png");
 	Window* win = App->gui->AddWindow(0.5f * App->gui->GetGuiSize().x, 0.5f * App->gui->GetGuiSize().y, tex, true, &win_rect);
-
+	win->SetContentRect(100, 100);
 	SDL_Rect idle{ 0, 110, 230, 71 };
 	SDL_Rect hovered{ 411, 166, 230, 71 };
 	SDL_Rect pressed{ 641, 166, 230, 71 };
-	Button* butt = App->gui->AddButton(0.5f * win->rect.w, 0.5f * win->rect.h, tex, true, &idle, &button_callback, &hovered, &pressed);
+	Button* butt = App->gui->AddButton(0.5f * win->content_rect.w, 0.5f * win->content_rect.h, tex, true, &idle, nullptr, &hovered, &pressed);
 	butt->SetParent(win);
-	butt->SetAnchor(1.0f, 1.0f);
-	Label* text = App->gui->AddLabel(0.5 * butt->rect.w, 0.5f * butt->rect.h,
+	butt->SetAnchor(0.5f, 0.5f);
+	butt->type = InterfaceElement::Interfacetype::TEXT_INPUT;
+
+	Label* text = App->gui->AddLabel(0.5 * butt->content_rect.w, 0.5f * butt->content_rect.h,
 		30, "fonts/open_sans/OpenSans-Bold.ttf", { 200, 200, 200, 255 }, Label::RenderMode::BLENDED, "Button #%d", 1);
 	text->SetParent(butt);*/
 
@@ -153,6 +155,7 @@ bool j1Scene::Update(float dt)
 	{
 		App->map->Draw(dt);
 	}
+
 	if (credits_bool)
 	{
 
@@ -177,10 +180,8 @@ bool j1Scene::PostUpdate()
 	{
 		if (!credits_bool)
 			ret = false;
-
 		else
 			Hide_Credits();
-
 	}
 
 
@@ -210,11 +211,11 @@ bool j1Scene::PostUpdate()
 	{
 		if (App->GetFramerateCap() == 60)
 			App->SetFramerateCap(30);
-		else App->SetFramerateCap(60);
+		else App->SetFramerateCap(-1);
 	}
 
 	if (state == IN_GAME)
-	CheckEnd();
+		CheckEnd();
 
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
@@ -239,6 +240,7 @@ void j1Scene::ChangeScene(uint _level) {
 	playing = false;
 	App->Reload();
 }
+
 void j1Scene::CheckInput(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
@@ -272,8 +274,6 @@ void j1Scene::CheckInput(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		App->entities->player.god_mode = !App->entities->player.god_mode;
-
-
 }
 
 void j1Scene::CheckEnd() {
@@ -307,11 +307,6 @@ void Game_start()
 	App->scene->state = App->scene->IN_GAME;
 }
 
-void Game_exit()
-{
-	App->scene->ret = false;
-}
-
 void Game_continue()
 {
 	App->LoadGame();
@@ -322,6 +317,7 @@ void Game_continue()
 void Show_Credits()
 {
 	App->scene->credits_window->Enable(true);
+	App->gui->setFocus(App->scene->credits_window);
 	App->scene->credits_bool = true;
 }
 

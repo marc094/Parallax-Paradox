@@ -23,6 +23,8 @@ Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	rect.w = idle_anim.w;
 	rect.h = idle_anim.h;
 
+	content_rect = rect;
+
 	current_anim = &idle_anim;
 }
 

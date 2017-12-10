@@ -63,13 +63,15 @@ bool Button::PostUpdate()
 		{
 			current_anim = &pressed_anim;
 			SetFocus();
-			OnClick();
+			if (OnClick != nullptr)
+				OnClick();
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			current_anim = &pressed_anim;
 
-			OnClick();
+			if (OnClick != nullptr)
+				OnClick();
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 		{
@@ -85,7 +87,7 @@ bool Button::PostUpdate()
 		current_anim = &idle_anim;
 		SDL_Color curr;
 		label->getColor(&curr);
-		if (label != nullptr && curr.r != 255 || curr.g != 255 || curr.b != 255|| curr.a != 255)
+		if (label != nullptr && (curr.r != 255 || curr.g != 255 || curr.b != 255|| curr.a != 255))
 			label->setColor({ 255, 255, 255, 255 });
 	}
 
@@ -96,8 +98,10 @@ bool Button::PostUpdate()
 			OnClick("focus");
 			current_anim = &pressed_anim;
 		}*/
+	if (parent != nullptr)
+		SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
 
-		App->render->BlitGui(tex, rect.x, rect.y, current_anim);
+	App->render->BlitGui(tex, rect.x, rect.y, current_anim);
 	//}
 
 	bool ret = InterfaceElement::PostUpdate();

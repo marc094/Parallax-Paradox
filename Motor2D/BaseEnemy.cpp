@@ -232,7 +232,7 @@ void BaseEnemy::FollowPath(float delta_time)
 				aux_rect.x = pos.x;
 				aux_rect.y = pos.y;
 				aux_rect.w = aux_rect.h = 16;
-				App->render->DrawQuad(aux_rect.toSDL_Rect(), 255, 255, 0, 1.0f, 128);
+				App->render->DrawQuad(aux_rect.toSDL_Rect(), 255, 255, 0, 128, 1.0f);
 			}
 		}
 	}

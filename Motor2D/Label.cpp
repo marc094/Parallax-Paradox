@@ -106,6 +106,8 @@ bool Label::RenderFont()
 	else
 		SDL_QueryTexture(tex, nullptr, nullptr, &rect.w, &rect.h);
 
+	result_rect = rect;
+
 	return ret;
 }
 

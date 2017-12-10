@@ -102,7 +102,7 @@ void j1Collision::BlitDebugColliders() const
 		for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 		{
 			iRect aux(collider->data->rect);
-			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, map_layer->data->parallax_speed, 128);
+			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, 128, map_layer->data->parallax_speed);
 		}
 	}
 
@@ -114,20 +114,20 @@ void j1Collision::BlitDebugColliders() const
 		if (enemy->data->type == BaseEnemy::Type::LARVA)
 		{
 			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
-			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed, 128);
+			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, 128, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed);
 
 			iRect aux_cube = App->entities->larva_cube.frames[App->entities->larva_cube.getFrameIndex()].rect;
 			aux_cube = iRect((int)enemy->data->position.x, (int)enemy->data->position.y, aux_cube.w, aux_cube.h);
-			App->render->DrawQuad(aux_cube.toSDL_Rect(), 0, 255, 0, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed, 128);
+			App->render->DrawQuad(aux_cube.toSDL_Rect(), 0, 255, 0, 128, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed);
 		}
 		else {
 			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
-			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, 1/*App->map->data.layers[enemy->data->current_layer]->parallax_speed*/, 128);
+			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, 128, 1/*App->map->data.layers[enemy->data->current_layer]->parallax_speed*/);
 		}
 	}
 
 	iRect aux((int)App->entities->player.position.x, (int)App->entities->player.position.y, App->entities->player.collider.w, App->entities->player.collider.h);
-	App->render->DrawQuad(aux.toSDL_Rect(), 0, 0, 255, 1.0f, 128);
+	App->render->DrawQuad(aux.toSDL_Rect(), 0, 0, 255, 128, 1.0f);
 
 }
 

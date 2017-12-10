@@ -56,6 +56,7 @@ public:
 	Interfacetype type = NONE;
 	SDL_Rect rect;
 	SDL_Rect content_rect;
+	SDL_Rect result_rect;
 	float scale = 1.0f;
 	bool enabled = true;
 	iPoint rel_pos;
