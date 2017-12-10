@@ -6,6 +6,7 @@
 #include "j1Entities.h"
 #include "j1Pathfinding.h"
 #include "j1Audio.h"
+#include "j1Scene.h"
 
 
 BaseEnemy::BaseEnemy() : path(0)
@@ -46,6 +47,8 @@ bool BaseEnemy::Update(float dt)
 		{
 			App->audio->PlayFx(App->entities->player.hit_sound);
 			App->entities->player.OnHit(collider, speed_vect, dt);
+			App->entities->player.lives--;
+			App->scene->ChangeLifes();
 		}
 
 

@@ -50,7 +50,22 @@ bool j1Scene::Start()
 
 	if (state == IN_GAME)
 	{
+		uint w;
+		uint h;
+		App->win->GetWindowSize(w, h);
+
 		App->map->Load(xml_file_name[level - 1].GetString());
+		lifes_sprite = App->tex->Load("textures/Lifeicon.png");
+		Sprite* first_life = App->gui->AddSprite(50, h - 50, lifes_sprite, true);
+
+		Sprite* second_life = App->gui->AddSprite(110, h - 50, lifes_sprite, true);
+
+		Sprite* third_life = App->gui->AddSprite(170, h - 50, lifes_sprite, true);
+
+		lives.add(first_life);
+		lives.add(second_life);
+		lives.add(third_life);
+
 		App->entities->active = true;
 	}
 	else
@@ -152,11 +167,11 @@ bool j1Scene::Update(float dt)
 	if (state == IN_GAME)
 	{
 		App->map->Draw(dt);
-	}
-	if (credits_bool)
-	{
+
 
 	}
+
+	
 
 
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
@@ -295,6 +310,21 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	pos.append_attribute("current_level") = level;
 
 	return true;
+}
+
+void j1Scene::ChangeLifes()
+{
+	p2List_item<Sprite*>* curr = lives.end;
+	while (curr->prev != NULL)
+	{
+		if (curr->data->enabled)
+		{
+			curr->data->Enable(false);
+			break;
+		}
+		curr = curr->prev;
+	}
+
 }
 
 void button_callback(const char* text) {
