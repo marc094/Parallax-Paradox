@@ -58,6 +58,7 @@ bool j1Scene::Start()
 		menu_background = App->tex->Load("textures/menu background2.png");
 		title = App->tex->Load("textures/title2.png");
 		buttons = App->tex->Load("gui/Buttons2.png");
+		credits_win = App->tex->Load("gui/Window2.png");
 		uint w;
 		uint h;
 		App->win->GetWindowSize(w, h);
@@ -74,6 +75,7 @@ bool j1Scene::Start()
 		start->setString("START");
 		start_button->setLabel(start);
 
+		menu_buttons.add(start_button);
 
 		Button* continue_button = App->gui->AddButton(w / 2, 142+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
 
@@ -81,13 +83,26 @@ bool j1Scene::Start()
 		continue_label->setString("CONTINUE");
 		continue_button->setLabel(continue_label);
 
+		menu_buttons.add(continue_button);
 
-		Button* exit_button = App->gui->AddButton(w / 2, 142 + 71 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
+		Button* credits_button = App->gui->AddButton(w / 2, 142 + 71 + (h / 2), buttons, true, &button_idle, &Show_Credits, &button_hover, &button_press);
 
-		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 142 + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* credit = App->gui->AddLabel(w / 2, (h / 2) + 142 + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		credit->setString("CREDITS");
+		credits_button->setLabel(credit);
+		App->entities->active = false;
+
+		menu_buttons.add(credits_button);
+
+		Button* exit_button = App->gui->AddButton(w / 2, 142 + 71 +71 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
+
+		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 142 +71+ 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
 		exit_button->setLabel(exit);
 		App->entities->active = false;
+
+		menu_buttons.add(exit_button);
+		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
 	}
 		
 
@@ -138,6 +153,10 @@ bool j1Scene::Update(float dt)
 	{
 		App->map->Draw(dt);
 	}
+	if (credits_bool)
+	{
+
+	}
 
 
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
@@ -154,8 +173,16 @@ bool j1Scene::Update(float dt)
 bool j1Scene::PostUpdate()
 {
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		if (!credits_bool)
+			ret = false;
+
+		else
+			Hide_Credits();
+
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		ChangeScene(1);
@@ -290,4 +317,16 @@ void Game_continue()
 	App->LoadGame();
 	App->Reload();
 	App->scene->state = App->scene->IN_GAME;
+}
+
+void Show_Credits()
+{
+	App->scene->credits_window->Enable(true);
+	App->scene->credits_bool = true;
+}
+
+void Hide_Credits()
+{
+	App->scene->credits_window->Enable(false);
+	App->scene->credits_bool = false;
 }

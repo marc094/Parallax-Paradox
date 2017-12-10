@@ -63,17 +63,12 @@ bool Button::PostUpdate()
 		{
 			current_anim = &pressed_anim;
 			SetFocus();
-
-			if (label != nullptr)
-				label->setString("Left mouse button click");
 			OnClick();
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
 			current_anim = &pressed_anim;
 
-			if (label != nullptr)
-				label->setString("Right mouse button click");
 			OnClick();
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)

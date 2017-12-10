@@ -5,6 +5,8 @@
 
 
 struct SDL_Texture;
+struct Window;
+struct Button;
 
 class j1Scene : public j1Module
 {
@@ -50,6 +52,8 @@ public:
 	bool Save(pugi::xml_node& data) const;
 
 	bool ret = true;
+	Window* credits_window = nullptr;
+	bool credits_bool = false;
 
 private:
 	uint level;
@@ -59,6 +63,9 @@ private:
 	SDL_Texture* menu_background = nullptr;
 	SDL_Texture* title = nullptr;
 	SDL_Texture* buttons = nullptr;
+	SDL_Texture* credits_win = nullptr;
+	p2List<Button*> menu_buttons;
+
 
 
 };
@@ -67,4 +74,6 @@ void button_callback(const char*);
 void Game_start();
 void Game_exit();
 void Game_continue();
+void Show_Credits();
+void Hide_Credits();
 #endif // __j1SCENE_H__
