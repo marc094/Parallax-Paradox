@@ -193,13 +193,14 @@ void j1App::FinishUpdate()
 	if(want_to_save == true)
 		SavegameNow();
 
-	if(want_to_load == true)
-		LoadGameNow();
 
 	if (want_to_reload == true)
 	{
 		ReloadNow();
 	}
+
+	if (want_to_load == true)
+		LoadGameNow();
 
 	if (last_sec_frame_time.Read() > 1000)
 	{

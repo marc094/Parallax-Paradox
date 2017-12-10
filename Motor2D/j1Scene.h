@@ -45,6 +45,10 @@ public:
 
 	void CheckEnd();
 
+	bool Load(pugi::xml_node& data);
+
+	bool Save(pugi::xml_node& data) const;
+
 	bool ret = true;
 
 private:
@@ -62,4 +66,5 @@ private:
 void button_callback(const char*);
 void Game_start();
 void Game_exit();
+void Game_continue();
 #endif // __j1SCENE_H__

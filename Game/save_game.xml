@@ -5,15 +5,17 @@
 	<textures />
 	<audio />
 	<map />
-	<scene />
+	<scene>
+		<level current_level="1" />
+	</scene>
 	<entities>
-		<position x="0" y="0" />
+		<position x="1014.85706" y="1026.18298" />
 	</entities>
 	<collision />
 	<pathfinding />
 	<fonts />
 	<gui />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="502" y="642" />
 	</renderer>
 </game_state>

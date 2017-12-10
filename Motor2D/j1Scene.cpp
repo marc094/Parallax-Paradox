@@ -74,13 +74,19 @@ bool j1Scene::Start()
 		start->setString("START");
 		start_button->setLabel(start);
 
-		Button* exit_button = App->gui->AddButton(w / 2, 150 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
 
-		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 150, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Button* continue_button = App->gui->AddButton(w / 2, 142+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
+
+		Label* continue_label = App->gui->AddLabel(w / 2, (h / 2) + 142 , 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		continue_label->setString("CONTINUE");
+		continue_button->setLabel(continue_label);
+
+
+		Button* exit_button = App->gui->AddButton(w / 2, 142 + 71 + (h / 2), buttons, true, &button_idle, &Game_exit, &button_hover, &button_press);
+
+		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 142 + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
 		exit_button->setLabel(exit);
-
-
 		App->entities->active = false;
 	}
 		
@@ -248,6 +254,22 @@ void j1Scene::CheckEnd() {
 		App->scene->ChangeScene(level + 1);
 }
 
+
+bool j1Scene::Load(pugi::xml_node& data) 
+{
+	level = data.child("level").attribute("current_level").as_int();
+	return true;
+}
+
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node pos = data.append_child("level");
+
+	pos.append_attribute("current_level") = level;
+
+	return true;
+}
+
 void button_callback(const char* text) {
 	LOG("%s", text);
 }
@@ -261,4 +283,11 @@ void Game_start()
 void Game_exit()
 {
 	App->scene->ret = false;
+}
+
+void Game_continue()
+{
+	App->LoadGame();
+	App->Reload();
+	App->scene->state = App->scene->IN_GAME;
 }
