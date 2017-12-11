@@ -7,6 +7,7 @@
 Window::Window(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim) : Sprite(_x,_y, _tex, _enabled, _anim)
 {
 	type = Interfacetype::WINDOW;
+	culled = false;
 }
 
 
@@ -16,7 +17,7 @@ Window::~Window()
 
 bool Window::PreUpdate()
 {
-	ComputeAbsolutePos();
+	ComputeRects();
 
 	App->input->GetMousePosition(Mouse.x, Mouse.y);
 	Mouse.w = CURSOR_WIDTH;
@@ -24,9 +25,8 @@ bool Window::PreUpdate()
 
 	Focus();
 
-	SDL_Rect result, r;
-	r = rect;
-	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
+	SDL_Rect result;
+	if (SDL_IntersectRect(&rect, &Mouse, &result) == SDL_TRUE)
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
@@ -55,8 +55,8 @@ bool Window::PreUpdate()
 
 void Window::DragWindow()
 {
-	rel_pos.x = Mouse.x + delta_pos_mouse.x;
-	rel_pos.y = Mouse.y + delta_pos_mouse.y;
+	rel_pos.x = Mouse.x + delta_pos_mouse.x - (abs_pos.x - rel_pos.x);
+	rel_pos.y = Mouse.y + delta_pos_mouse.y - (abs_pos.y - rel_pos.y);
 }
 
 void Window::Focus()

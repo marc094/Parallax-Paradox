@@ -57,7 +57,7 @@ bool Label::PreUpdate()
 
 bool Label::PostUpdate()
 {
-	ComputeAbsolutePos();
+	ComputeRects();
 
 	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
 	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
@@ -82,7 +82,23 @@ bool Label::PostUpdate()
 			break;
 		}*/
 
-		App->render->BlitGui(tex, rect.x + d_x, rect.y + d_y);
+		int dx = 0, dy = 0, dw = 0, dh = 0;
+		if (parent != nullptr) {
+			//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
+			dx = result_rect.x - rect.x;
+			dy = result_rect.y - rect.y;
+			dw = result_rect.w;
+			dh = result_rect.h;
+		}
+
+		SDL_Rect actual_anim_rect;
+		actual_anim_rect.w = dw;
+		actual_anim_rect.h = dh;
+		actual_anim_rect.x = dx;
+		actual_anim_rect.y = dy;
+
+
+		App->render->BlitGui(tex, result_rect.x + d_x, result_rect.y + d_y, &actual_anim_rect);
 	}
 
 	bool ret = InterfaceElement::PostUpdate();

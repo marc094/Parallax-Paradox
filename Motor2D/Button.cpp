@@ -2,6 +2,7 @@
 #include "j1Fonts.h"
 #include "InterfaceElement.h"
 #include "j1Input.h"
+#include "j1Render.h"
 
 
 Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
@@ -46,7 +47,7 @@ bool Button::PostUpdate()
 		}
 	}
 
-	ComputeAbsolutePos();
+	ComputeRects();
 	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
 	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
 
@@ -55,9 +56,17 @@ bool Button::PostUpdate()
 	Mouse.w = CURSOR_WIDTH;
 	Mouse.h = CURSOR_WIDTH;
 
-	SDL_Rect result, r;
-	r = rect;
-	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
+	/*int dx = 0, dy = 0, dw = 0, dh = 0;
+	if (parent != nullptr) {
+		//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
+		dx = result_rect.x - rect.x;
+		dy = result_rect.y - rect.y;
+		dw = result_rect.w - rect.w;
+		dh = result_rect.h - rect.h;
+	}*/
+
+	SDL_Rect result;
+	if (SDL_IntersectRect(&result_rect, &Mouse, &result) == SDL_TRUE)
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
@@ -98,10 +107,14 @@ bool Button::PostUpdate()
 			OnClick("focus");
 			current_anim = &pressed_anim;
 		}*/
-	if (parent != nullptr)
-		SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
 
-	App->render->BlitGui(tex, rect.x, rect.y, current_anim);
+	/*SDL_Rect actual_anim_rect = *current_anim;
+	actual_anim_rect.w += dw;
+	actual_anim_rect.h += dh;
+	actual_anim_rect.x += dx;
+	actual_anim_rect.y += dy;
+
+	App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect);*/
 	//}
 
 	bool ret = InterfaceElement::PostUpdate();

@@ -47,9 +47,28 @@ bool InterfaceElement::PreUpdate()
 bool InterfaceElement::PostUpdate()
 {
 	bool ret = true;
-	ComputeAbsolutePos();
+	ComputeRects();
 	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
 	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
+	if (culled && parent != nullptr) {
+		int dx = 0, dy = 0, dw = 0, dh = 0;
+		if (parent != nullptr) {
+			//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
+			dx = result_rect.x - rect.x;
+			dy = result_rect.y - rect.y;
+			dw = result_rect.w - rect.w;
+			dh = result_rect.h - rect.h;
+		}
+		SDL_Rect actual_anim_rect = { 0, 0, 0, 0 };
+		actual_anim_rect = (current_anim != nullptr) ? *current_anim : actual_anim_rect;
+		actual_anim_rect.w += dw;
+		actual_anim_rect.h += dh;
+		actual_anim_rect.x += dx;
+		actual_anim_rect.y += dy;
+
+		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect);
+	}
+	else if (current_anim != nullptr) App->render->BlitGui(tex, rect.x, rect.y, current_anim);
 
 	for (p2List_item<InterfaceElement*>* current_element = elements.start;
 		current_element != nullptr && ret == true;
@@ -60,8 +79,9 @@ bool InterfaceElement::PostUpdate()
 
 	if (App->debug) {
 		SDL_Rect r = content_rect;
-		App->render->DrawQuad(rect, 0, 0, 255, 255, false, false);
-		App->render->DrawQuad(r, 0, 0, 255, 255, false, false);
+		App->render->DrawQuad(result_rect, 255, 0, 0, 255, 0.0f, false);
+		App->render->DrawQuad(rect, 0, 0, 255, 255, 0.0f, false);
+		App->render->DrawQuad(r, 0, 255, 0, 255, 0.0f, false);
 		App->render->DrawLine(r.x, r.y + r.h * anchor_point.y, r.x + r.w, r.y + r.h * anchor_point.y, 0, 0, 255, 255, false);
 		App->render->DrawLine(r.x + r.w * anchor_point.x, r.y, r.x + r.w * anchor_point.x, r.y + r.h, 0, 0, 255, 255, false);
 	}
@@ -197,13 +217,22 @@ void InterfaceElement::SetFocus()
 	this->in_focus = true;
 }
 
-void InterfaceElement::ComputeAbsolutePos()
+void InterfaceElement::ComputeRects()
 {
 	if (parent != nullptr) {
+		parent->ComputeRects();
 		parent->SetContentRect();
 		abs_pos.x = rel_pos.x + parent->content_rect.x;
 		abs_pos.y = rel_pos.y + parent->content_rect.y;
+		SetContentRect();
+		if (culled)
+			SDL_IntersectRect(&parent->result_rect, &rect, &result_rect);
+		else result_rect = rect;
+		//SDL_IntersectRect(&result_rect, &parent->result_rect, &result_rect);
 	}
-	else abs_pos = rel_pos;
-	SetContentRect();
+	else {
+		abs_pos = rel_pos;
+		SetContentRect();
+		result_rect = content_rect;
+	}
 }

@@ -50,7 +50,7 @@ public:
 
 	void SetParent(InterfaceElement* parent);
 
-	void ComputeAbsolutePos();
+	void ComputeRects();
 
 	SDL_Texture* tex = nullptr;
 	Interfacetype type = NONE;
@@ -62,6 +62,7 @@ public:
 	iPoint rel_pos;
 	iPoint abs_pos;
 	bool in_focus = false;
+	bool culled = true;
 
 
 protected:
@@ -71,5 +72,6 @@ protected:
 	void SetFocus();
 
 	fPoint anchor_point = { 0.5f, 0.5f };
+	SDL_Rect* current_anim = nullptr;
 };
 #endif

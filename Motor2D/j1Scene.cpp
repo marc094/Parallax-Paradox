@@ -89,25 +89,28 @@ bool j1Scene::Start()
 		App->gui->AddSprite(w / 2, (h / 2 - 100), title);
 		Button* start_button = App->gui->AddButton(w / 2, 71 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
 		
-		Label* start = App->gui->AddLabel(w/2, (h/2) + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
-		start_button->setLabel(start);
+		start->SetParent(start_button);
+		//start_button->setLabel(start);
 
 		menu_buttons.add(start_button);
 
 		Button* continue_button = App->gui->AddButton(w / 2, 142+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
 
-		Label* continue_label = App->gui->AddLabel(w / 2, (h / 2) + 142 , 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* continue_label = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		continue_label->setString("CONTINUE");
-		continue_button->setLabel(continue_label);
+		continue_label->SetParent(continue_button);
+		//continue_button->setLabel(continue_label);
 
 		menu_buttons.add(continue_button);
 
 		Button* credits_button = App->gui->AddButton(w / 2, 142 + 71 + (h / 2), buttons, true, &button_idle, &Show_Credits, &button_hover, &button_press);
 
-		Label* credit = App->gui->AddLabel(w / 2, (h / 2) + 142 + 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* credit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		credit->setString("CREDITS");
-		credits_button->setLabel(credit);
+		credit->SetParent(credits_button);
+		//credits_button->setLabel(credit);
 		App->entities->active = false;
 
 		menu_buttons.add(credits_button);
@@ -116,9 +119,10 @@ bool j1Scene::Start()
 			App->scene->ret = false;
 		}, &button_hover, &button_press);
 
-		Label* exit = App->gui->AddLabel(w / 2, (h / 2) + 142 +71+ 71, 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* exit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
-		exit_button->setLabel(exit);
+		exit->SetParent(exit_button);
+		//exit_button->setLabel(exit);
 		App->entities->active = false;
 
 		menu_buttons.add(exit_button);
@@ -139,16 +143,18 @@ bool j1Scene::Start()
 	/*SDL_Rect win_rect{ 0, 512, 484, 512 };
 	SDL_Texture* tex = App->tex->Load("gui/atlas.png");
 	Window* win = App->gui->AddWindow(0.5f * App->gui->GetGuiSize().x, 0.5f * App->gui->GetGuiSize().y, tex, true, &win_rect);
-	win->SetContentRect(100, 100);
+	win->SetContentRect(-100, 100);
 	SDL_Rect idle{ 0, 110, 230, 71 };
 	SDL_Rect hovered{ 411, 166, 230, 71 };
 	SDL_Rect pressed{ 641, 166, 230, 71 };
-	Button* butt = App->gui->AddButton(0.5f * win->content_rect.w, 0.5f * win->content_rect.h, tex, true, &idle, nullptr, &hovered, &pressed);
+	Button* butt = App->gui->AddButton(1.0f * win->content_rect.w, 0.5f * win->content_rect.h, tex, true, &idle, nullptr, &hovered, &pressed);
 	butt->SetParent(win);
+	Window* win2 = App->gui->AddWindow(0.0f * win->content_rect.w, 0.0f * win->content_rect.h, tex, true, &win_rect);
+	win2->SetParent(win);
 	butt->SetAnchor(0.5f, 0.5f);
 	butt->type = InterfaceElement::Interfacetype::TEXT_INPUT;
 
-	Label* text = App->gui->AddLabel(0.5 * butt->content_rect.w, 0.5f * butt->content_rect.h,
+	Label* text = App->gui->AddLabel(0.5f * butt->content_rect.w, 0.5f * butt->content_rect.h,
 		30, "fonts/open_sans/OpenSans-Bold.ttf", { 200, 200, 200, 255 }, Label::RenderMode::BLENDED, "Button #%d", 1);
 	text->SetParent(butt);*/
 
