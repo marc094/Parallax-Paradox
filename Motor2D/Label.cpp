@@ -58,8 +58,11 @@ bool Label::PreUpdate()
 bool Label::PostUpdate()
 {
 	ComputeAbsolutePos();
+
 	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
 	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
+	
+
 
 	if (font != nullptr) {
 		int d_x = 0, d_y = 0;

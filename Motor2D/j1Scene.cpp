@@ -1,3 +1,4 @@
+#include <math.h>
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -65,6 +66,10 @@ bool j1Scene::Start()
 		lives.add(first_life);
 		lives.add(second_life);
 		lives.add(third_life);
+
+		time_lab = App->gui->AddLabel(w - 50, h  - 50, 40, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		time_lab->setAlignment(Label::LEFT);
+		time.Start();
 
 		App->entities->active = true;
 	}
@@ -167,7 +172,7 @@ bool j1Scene::Update(float dt)
 	if (state == IN_GAME)
 	{
 		App->map->Draw(dt);
-
+		time_lab->setString("%.2f", time.ReadSec());
 
 	}
 
