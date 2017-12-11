@@ -25,8 +25,9 @@ bool Window::PreUpdate()
 
 	Focus();
 
-	SDL_Rect result;
-	if (SDL_IntersectRect(&rect, &Mouse, &result) == SDL_TRUE)
+	SDL_Rect result, r;
+	r = (parent == nullptr) ? rect : result_rect;
+	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
 	{
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{

@@ -151,6 +151,7 @@ bool j1Scene::Start()
 	butt->SetParent(win);
 	Window* win2 = App->gui->AddWindow(0.0f * win->content_rect.w, 0.0f * win->content_rect.h, tex, true, &win_rect);
 	win2->SetParent(win);
+	win2->culled = true;
 	butt->SetAnchor(0.5f, 0.5f);
 	butt->type = InterfaceElement::Interfacetype::TEXT_INPUT;
 
