@@ -7,6 +7,7 @@
 struct SDL_Texture;
 class Window;
 class Button;
+class Sprite;
 
 class j1Scene : public j1Module
 {
@@ -52,6 +53,8 @@ public:
 	bool Save(pugi::xml_node& data) const;
 
 	bool ret = true;
+
+	void ChangeLifes();
 	Window* credits_window = nullptr;
 	bool credits_bool = false;
 
@@ -65,6 +68,8 @@ private:
 	SDL_Texture* buttons = nullptr;
 	SDL_Texture* credits_win = nullptr;
 	p2List<Button*> menu_buttons;
+	p2List<Sprite*> lives;
+	SDL_Texture* lifes_sprite;
 
 
 

@@ -126,7 +126,8 @@ bool Player::Update(float dt)
 
 	//App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped,true,color);
 
-
+	if (lives <= 0)
+		App->Reload();
 
 	return true;
 }
