@@ -2,12 +2,14 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "j1Timer.h"
 
 
 struct SDL_Texture;
 class Window;
 class Button;
 class Sprite;
+class Label;
 
 class j1Scene : public j1Module
 {
@@ -70,9 +72,8 @@ private:
 	p2List<Button*> menu_buttons;
 	p2List<Sprite*> lives;
 	SDL_Texture* lifes_sprite;
-
-
-
+	j1Timer time;
+	Label* time_lab;
 };
 
 void button_callback(const char*);
