@@ -107,6 +107,7 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Slider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="Slider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

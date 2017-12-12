@@ -9,6 +9,7 @@ class Sprite;
 class Label;
 class Button;
 class Window;
+class Slider;
 
 #define CURSOR_WIDTH 2
 
@@ -45,6 +46,7 @@ public:
 	Label* AddLabel(int x, int y, int psize, const char* font_path = nullptr, SDL_Color color = {0,0,0,255}, Label::RenderMode mode = Label::BLENDED, const char* format = nullptr, ...);
 	Button* AddButton(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim = nullptr, SDL_Rect* _pressed_anim = nullptr);
 	Window* AddWindow(int x, int y, SDL_Texture* tex, bool enabled = true, SDL_Rect* anim = NULL);
+	Slider* AddSlider(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim = nullptr, SDL_Rect* _pressed_anim = nullptr, bool _axis = 1, InterfaceElement* parent = nullptr);
 	const SDL_Texture* GetAtlas() const;
 	p2SString atlas_file_name;
 

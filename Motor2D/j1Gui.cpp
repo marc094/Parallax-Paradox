@@ -10,6 +10,7 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "Window.h"
+#include "Slider.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -163,6 +164,16 @@ Label* j1Gui::AddLabel(int x, int y, int psize, const char * font_path, SDL_Colo
 Button* j1Gui::AddButton(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
 {
 	Button* aux = new Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim);
+
+	elements.add(aux);
+	return aux;
+}
+Slider* j1Gui::AddSlider(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim,bool _axis, InterfaceElement* parent)
+{
+	Slider* aux = new Slider(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim,_axis, parent);
+	
+	if (parent != NULL)
+	aux->SetParent(parent);
 
 	elements.add(aux);
 	return aux;
