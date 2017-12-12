@@ -2,7 +2,7 @@
 #include "Button.h"
 #include "j1Input.h"
 
-Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim, bool _axis) : Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim)
+Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim, bool _axis, InterfaceElement* parent) : Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim)
 {
 	axis = _axis;
 }
@@ -35,6 +35,7 @@ bool Slider::PreUpdate()
 	}
 
 
+
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true/*prev_mouse.x != Mouse.x && prev_mouse.y != Mouse.y*/)
 	{
 		DragSlider();
@@ -48,10 +49,20 @@ bool Slider::PreUpdate()
 void Slider::DragSlider()
 {
 	if (axis)
-	rel_pos.x = Mouse.x + delta_pos_mouse.x - (abs_pos.x - rel_pos.x);
+	{
+		rel_pos.x = Mouse.x + delta_pos_mouse.x - (abs_pos.x - rel_pos.x);
+		rel_pos.x = CLAMP(rel_pos.x, 0, parent->content_rect.w);
+	}
+	
 
-	else if(!axis)
-	rel_pos.y = Mouse.y + delta_pos_mouse.y - (abs_pos.y - rel_pos.y);
+	else if (!axis)
+	{
+		rel_pos.y = Mouse.y + delta_pos_mouse.y - (abs_pos.y - rel_pos.y);
+		rel_pos.y = CLAMP(rel_pos.y, 0, parent->content_rect.h);
+	}
+
+
+
 }
 
 

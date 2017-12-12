@@ -108,9 +108,11 @@ bool j1Scene::Start()
 		SDL_Rect button_press = { 0,58,250,58 };
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
-		App->gui->AddSprite(w / 2, (h / 2 - 100), title);
-		Slider* start_button = App->gui->AddSlider((w / 2), 60 + (h / 2), buttons, true, &button_idle, nullptr, &button_hover, &button_press);
-		
+		Sprite* title_spr = App->gui->AddSprite(w / 2, (h / 2 - 100), title);
+		//Slider* start_button = App->gui->AddSlider((w / 2), 60 + (h / 2), buttons, true, &button_idle, nullptr, &button_hover, &button_press, 0, title_spr);
+		Slider* start_button = App->gui->AddSlider(0, 0.5f * title_spr->content_rect.h, buttons, true, &button_idle, nullptr, &button_hover, &button_press, 0, title_spr);
+		start_button->culled = false;
+
 		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
 		start->SetParent(start_button);
