@@ -13,6 +13,8 @@ Window::Window(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 
 Window::~Window()
 {
+	if (in_focus)
+		App->gui->setFocus(parent);
 }
 
 bool Window::PreUpdate()
@@ -23,7 +25,7 @@ bool Window::PreUpdate()
 	Mouse.w = CURSOR_WIDTH;
 	Mouse.h = CURSOR_WIDTH;
 
-	Focus();
+	//Focus();
 
 	SDL_Rect result, r;
 	r = (parent == nullptr) ? rect : result_rect;
@@ -48,8 +50,8 @@ bool Window::PreUpdate()
 	{
 		DragWindow();
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && in_focus == true)
-		App->gui->setFocus(nullptr);
+	/*else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && in_focus == true)
+		App->gui->setFocus(nullptr);*/
 
 	return true;
 }

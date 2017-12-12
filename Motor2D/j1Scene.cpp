@@ -217,13 +217,7 @@ bool j1Scene::Update(float dt)
 		App->map->Draw(dt);
 
 		time_lab->setString("%.2f", time.ReadSec());
-
 	}
-
-
-
-	
-
 
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -246,7 +240,6 @@ bool j1Scene::PostUpdate()
 		else
 			Hide_Credits();
 	}
-
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		ChangeScene(1);
@@ -294,7 +287,7 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	xml_file_name.Clear();
-	
+
 	return true;
 }
 

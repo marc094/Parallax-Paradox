@@ -5,7 +5,6 @@
 #include "InterfaceElement.h"
 #include "Label.h"
 
-class InterfaceElement;
 class Sprite;
 class Label;
 class Button;

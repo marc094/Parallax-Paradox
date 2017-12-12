@@ -217,6 +217,24 @@ void InterfaceElement::SetFocus()
 	this->in_focus = true;
 }
 
+InterfaceElement * InterfaceElement::NextElement(InterfaceElement* curr_child)
+{
+	if (elements.start == nullptr) {
+		return parent->NextElement(this);
+	}
+	
+	int index = elements.find(curr_child);
+	if (index < 0) {
+		LOG("Could not find desired object %d in this obejct", curr_child);
+		return nullptr;
+	}
+
+	if (elements.At(index)->next == nullptr) {
+		return elements.At(0)->data;
+	}
+	else return elements.At(index)->data;
+}
+
 void InterfaceElement::ComputeRects()
 {
 	if (parent != nullptr) {
