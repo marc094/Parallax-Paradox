@@ -40,6 +40,7 @@ bool j1Entities::Awake(pugi::xml_node& conf)
 		exclamation.PushBack({ 0,36,3,8 });
 		larva_cube.PushBack({ 0,81,48,48});
 		air_cube.PushBack({ 100,81,69,34 });
+		coin.PushBack({ 112,45,12,16 });
 	}
 
 
@@ -198,7 +199,7 @@ Coin* j1Entities::Add_Coin(fPoint pos)
 {
 	Coin* aux = new Coin();
 	aux->position = pos;
-	aux->current_animation = &exclamation;
+	aux->current_animation = &coin;
 
 	Coins.add(aux);
 

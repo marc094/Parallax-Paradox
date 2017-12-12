@@ -46,6 +46,7 @@ public:
 	Animation exclamation;
 	Animation larva_cube;
 	Animation air_cube;
+	Animation coin;
 	pugi::xml_node player_node;
 
 

@@ -55,11 +55,13 @@ bool j1Scene::Start()
 
 		App->map->Load(xml_file_name[level - 1].GetString());
 		lifes_sprite = App->tex->Load("textures/Lifeicon.png");
-		Sprite* first_life = App->gui->AddSprite(50, h - 50, lifes_sprite, true);
+		SDL_Rect life = { 0,0,45,48 };
+		SDL_Rect coin_rect = { 45,0,36,48 };
+		Sprite* first_life = App->gui->AddSprite(50, h - 50, lifes_sprite, true,&life);
 
-		Sprite* second_life = App->gui->AddSprite(110, h - 50, lifes_sprite, true);
+		Sprite* second_life = App->gui->AddSprite(110, h - 50, lifes_sprite, true, &life);
 
-		Sprite* third_life = App->gui->AddSprite(170, h - 50, lifes_sprite, true);
+		Sprite* third_life = App->gui->AddSprite(170, h - 50, lifes_sprite, true, &life);
 
 		lives.add(first_life);
 		lives.add(second_life);
@@ -68,6 +70,12 @@ bool j1Scene::Start()
 		time_lab = App->gui->AddLabel(w - 150, h  - 50, 40, "gui/Earth 2073.ttf", { 255,255,255,255 },Label::BLENDED);
 		time_lab->SetAnchor(0.0f, 0.5f);
 		time.Start();
+
+		Sprite* Coin = App->gui->AddSprite(270, h - 50, lifes_sprite, true, &coin_rect);
+
+		coin_lab = App->gui->AddLabel(300, h - 50,40, "gui/Earth 2073.ttf", { 255,255,255,255 }, Label::BLENDED);
+		coin_lab->SetAnchor(0.0f, 0.5f);
+		coin_lab->setString("X%d", App->entities->player.coins);
 
 		jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
 		change_sound = App->audio->LoadFx("audio/FX/Change2.wav");
@@ -352,6 +360,11 @@ void j1Scene::ChangeLifes()
 		curr = curr->prev;
 	}
 
+}
+
+void j1Scene::SumCoin()
+{
+	coin_lab->setString("X%d", App->entities->player.coins);
 }
 
 void button_callback(const char* text) {

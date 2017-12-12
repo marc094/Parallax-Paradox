@@ -57,6 +57,7 @@ public:
 	bool ret = true;
 
 	void ChangeLifes();
+	void SumCoin();
 	Window* credits_window = nullptr;
 	bool credits_bool = false;
 
@@ -79,6 +80,7 @@ private:
 	SDL_Texture* lifes_sprite;
 	j1Timer time;
 	Label* time_lab;
+	Label* coin_lab;
 };
 
 void button_callback(const char*);

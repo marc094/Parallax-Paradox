@@ -35,6 +35,7 @@ bool Coin::Update(float dt)
 	{
 		App->audio->PlayFx(App->scene->hit_sound);
 		App->entities->player.coins++;
+		App->scene->SumCoin();
 		to_delete = true;
 			
 	}
