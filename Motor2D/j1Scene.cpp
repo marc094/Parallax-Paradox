@@ -95,19 +95,20 @@ bool j1Scene::Start()
 		menu_background = App->tex->Load("textures/menu background2.png");
 		title = App->tex->Load("textures/title2.png");
 		buttons = App->tex->Load("gui/Buttons2.png");
-		credits_win = App->tex->Load("gui/Window2.png");
+		credits_win = App->tex->Load("gui/Credits_win.png");
+		settings_win = App->tex->Load("gui/Settings win.png");
 
 		uint w;
 		uint h;
 		App->win->GetWindowSize(w, h);
 
-		SDL_Rect button_idle = { 1000,1000,922/3,213/3 };
-		SDL_Rect button_hover = { 0,0,922/3,213/3 };
-		SDL_Rect button_press = { 0,0,0,0 };
+		SDL_Rect button_idle = { 1000,1000,250,58 };
+		SDL_Rect button_hover = { 0,0,250,58 };
+		SDL_Rect button_press = { 0,58,250,58 };
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
 		App->gui->AddSprite(w / 2, (h / 2 - 100), title);
-		Button* start_button = App->gui->AddButton(w / 2, 71 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
 		
 		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
@@ -116,7 +117,7 @@ bool j1Scene::Start()
 
 		menu_buttons.add(start_button);
 
-		Button* continue_button = App->gui->AddButton(w / 2, 142+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
+		Button* continue_button = App->gui->AddButton(w / 2, 120+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
 
 		Label* continue_label = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		continue_label->setString("CONTINUE");
@@ -125,7 +126,7 @@ bool j1Scene::Start()
 
 		menu_buttons.add(continue_button);
 
-		Button* credits_button = App->gui->AddButton(w / 2, 142 + 71 + (h / 2), buttons, true, &button_idle, &Show_Credits, &button_hover, &button_press);
+		Button* credits_button = App->gui->AddButton(w / 2, 180+ (h / 2), buttons, true, &button_idle, &Show_Credits, &button_hover, &button_press);
 
 		Label* credit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		credit->setString("CREDITS");
@@ -134,7 +135,18 @@ bool j1Scene::Start()
 
 		menu_buttons.add(credits_button);
 
-		Button* exit_button = App->gui->AddButton(w / 2, 142 + 71 + 71 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
+		Button* settings_button = App->gui->AddButton(w / 2, 240 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
+			App->scene->settings_window->Enable(true);
+		}, &button_hover, &button_press);
+
+		Label* settings = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		settings->setString("SETTINGS");
+		settings->SetParent(settings_button);
+
+		menu_buttons.add(settings_button);
+
+
+		Button* exit_button = App->gui->AddButton(w / 2, 300+ (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
 			App->scene->ret = false;
 		}, &button_hover, &button_press);
 
@@ -145,6 +157,7 @@ bool j1Scene::Start()
 
 		menu_buttons.add(exit_button);
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
+		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
 	}
 		
 

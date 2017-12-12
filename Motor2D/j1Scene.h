@@ -59,6 +59,7 @@ public:
 	void ChangeLifes();
 	void SumCoin();
 	Window* credits_window = nullptr;
+	Window* settings_window = nullptr;
 	bool credits_bool = false;
 
 	uint jump_sound = 0;
@@ -75,6 +76,7 @@ private:
 	SDL_Texture* title = nullptr;
 	SDL_Texture* buttons = nullptr;
 	SDL_Texture* credits_win = nullptr;
+	SDL_Texture* settings_win = nullptr;
 	p2List<Button*> menu_buttons;
 	p2List<Sprite*> lives;
 	SDL_Texture* lifes_sprite;
