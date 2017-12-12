@@ -66,7 +66,7 @@ bool j1Scene::Start()
 		lives.add(third_life);
 
 		time_lab = App->gui->AddLabel(w - 50, h  - 50, 40, "gui/Earth 2073.ttf", { 255,255,255,255 });
-		time_lab->setAlignment(Label::LEFT);
+		time_lab->SetAnchor(0.0f, 0.5f);
 		time.Start();
 
 		App->entities->active = true;
@@ -181,12 +181,12 @@ bool j1Scene::Update(float dt)
 	if (state == IN_GAME)
 	{
 		App->map->Draw(dt);
+
+		time_lab->setString("%.2f", time.ReadSec());
+
 	}
 
-	if (credits_bool)
-	{
-		time_lab->setString("%.2f", time.ReadSec());
-	}
+
 
 	
 
