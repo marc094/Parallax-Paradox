@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "BaseEnemy.h"
 #include "Player.h"
+#include "Coin.h"
 
 class j1Entities :
 	public j1Module
@@ -26,6 +27,7 @@ public:
 	// Called each loop iteration
 	bool Update(float dt) override;
 
+	bool PostUpdate() override;
 	// Called before quitting
 	bool CleanUp() override;
 
@@ -34,8 +36,10 @@ public:
 	bool Save(pugi::xml_node&) const override;
 
 	BaseEnemy* Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID layer);
+	Coin* Add_Coin(fPoint pos);
 
 	p2List<BaseEnemy*> Enemies;
+	p2List<Coin*> Coins;
 	Player player;
 
 	SDL_Texture* texture = nullptr;

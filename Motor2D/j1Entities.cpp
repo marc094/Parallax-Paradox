@@ -74,7 +74,30 @@ bool j1Entities::Update(float dt)
 		current_enemy = current_enemy->next;
 	}
 
+	p2List_item<Coin*>* current_coin = Coins.start;
+	while (current_coin != NULL)
+	{
+		current_coin->data->Update(dt);
+		current_coin = current_coin->next;
+	}
 	player.Update(dt);
+	return true;
+}
+
+bool j1Entities::PostUpdate()
+{
+	p2List_item<Coin*>* curr = Coins.start;
+	while (curr != NULL)
+	{
+		if (curr->data->to_delete)
+		{
+			delete curr->data;
+			curr->data = nullptr;
+			Coins.del(curr);
+		}
+		curr = curr->next;
+	}
+
 	return true;
 }
 bool j1Entities::CleanUp()
@@ -168,5 +191,16 @@ BaseEnemy* j1Entities::Add_Enemy(BaseEnemy::Type type, fPoint position, LayerID 
 	aux->collider = aux->current_animation->GetCurrentFrame(0.0f).rect;
 
 	Enemies.add(aux);
+	return aux;
+}
+
+Coin* j1Entities::Add_Coin(fPoint pos)
+{
+	Coin* aux = new Coin();
+	aux->position = pos;
+	aux->current_animation = &exclamation;
+
+	Coins.add(aux);
+
 	return aux;
 }

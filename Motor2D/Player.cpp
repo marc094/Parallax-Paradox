@@ -67,6 +67,7 @@ bool Player::Start()
 	is_jumping = false;
 	grounded = false;
 	lives = 3;
+	coins = 0;
 
 	return true;
 }

@@ -83,19 +83,29 @@ bool Label::PostUpdate()
 		}*/
 
 		int dx = 0, dy = 0, dw = 0, dh = 0;
+
+		SDL_Rect actual_anim_rect;
+
 		if (parent != nullptr) {
 			//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
 			dx = result_rect.x - rect.x;
 			dy = result_rect.y - rect.y;
 			dw = result_rect.w;
 			dh = result_rect.h;
+
+			actual_anim_rect.w = dw;
+			actual_anim_rect.h = dh;
+			actual_anim_rect.x = dx;
+			actual_anim_rect.y = dy;
+
+		}
+		else
+		{
+			actual_anim_rect = rect;
+			actual_anim_rect.x = 0;
+			actual_anim_rect.y = 0;
 		}
 
-		SDL_Rect actual_anim_rect;
-		actual_anim_rect.w = dw;
-		actual_anim_rect.h = dh;
-		actual_anim_rect.x = dx;
-		actual_anim_rect.y = dy;
 
 
 		App->render->BlitGui(tex, result_rect.x + d_x, result_rect.y + d_y, &actual_anim_rect);
@@ -125,7 +135,7 @@ bool Label::RenderFont()
 	else
 		SDL_QueryTexture(tex, nullptr, nullptr, &rect.w, &rect.h);
 
-	result_rect = rect;
+	result_rect = content_rect = rect;
 
 	return ret;
 }

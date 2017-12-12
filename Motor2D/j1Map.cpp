@@ -262,7 +262,7 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	background = App->tex->Load("textures/background2.png");
-
+	App->entities->Add_Coin({ 1474,866 });
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);

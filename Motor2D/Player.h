@@ -37,6 +37,7 @@ public:
 	void OnHit(iRect collider,fPoint collider_spv, float dt);
 
 	int lives;
+	int coins;
 	bool hit;
 	bool invulnerable;
 
