@@ -52,8 +52,8 @@ bool j1Gui::PreUpdate()
 		current_element = current_element->next;
 	}
 
-	if (focused_item != nullptr && (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN))
-		focused_item->NextElement(focused_item)->setFocus();
+	/*if (focused_item != nullptr && (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN))
+		focused_item->NextElement(focused_item)->setFocus();*/
 
 	return true;
 }
