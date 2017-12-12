@@ -41,6 +41,7 @@ public:
 	uint change_sound;
 	uint level_sound;
 	int lives;
+	int coins;
 	bool hit;
 	bool invulnerable;
 

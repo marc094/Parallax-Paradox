@@ -65,7 +65,7 @@ bool j1Scene::Start()
 		lives.add(second_life);
 		lives.add(third_life);
 
-		time_lab = App->gui->AddLabel(w - 50, h  - 50, 40, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		time_lab = App->gui->AddLabel(w - 150, h  - 50, 40, "gui/Earth 2073.ttf", { 255,255,255,255 },Label::BLENDED);
 		time_lab->SetAnchor(0.0f, 0.5f);
 		time.Start();
 
@@ -238,8 +238,8 @@ bool j1Scene::PostUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
-		if (App->GetFramerateCap() == 60)
-			App->SetFramerateCap(30);
+		if (App->GetFramerateCap() == -1)
+			App->SetFramerateCap(60);
 		else App->SetFramerateCap(-1);
 	}
 

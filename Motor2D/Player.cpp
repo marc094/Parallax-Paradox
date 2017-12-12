@@ -73,6 +73,7 @@ bool Player::Start()
 	is_jumping = false;
 	grounded = false;
 	lives = 3;
+	coins = 0;
 	App->audio->PlayFx(level_sound);
 
 	return true;

@@ -79,6 +79,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Desenvolupament  ========\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>Desenvolupament  ========\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
