@@ -59,8 +59,8 @@ bool Label::PostUpdate()
 {
 	ComputeRects();
 
-	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
-	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
+	rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
+	rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
 	
 
 

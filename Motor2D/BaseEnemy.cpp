@@ -216,7 +216,7 @@ void BaseEnemy::GetPath()
 
 void BaseEnemy::FollowPath(float delta_time)
 {
-	int path_length = path.Count();
+	uint path_length = path.Count();
 	if (path_length > 0 && current_path_index < path_length) {
 		iPoint path_point(App->map->MapToWorld(path[current_path_index]));
 

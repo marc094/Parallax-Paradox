@@ -67,9 +67,9 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 
 	uint prev_id = 0, curr_id = 0;
 
-	for (int x = 0; x < l_width; x++) {
+	for (uint x = 0; x < l_width; x++) {
 		prev_id = curr_id = 0;
-		for (int y = 0; y < l_height; y++) {
+		for (uint y = 0; y < l_height; y++) {
 			prev_id = curr_id;
 			curr_id = layer_data->tiles[(y * l_width) + x];
 
@@ -322,8 +322,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 void j1PathFinding::DebugBlitMap()
 {
 	p2List_item<p2DynArray<uint>>* ground_map = maps_ground.At(FRONT_LAYER);
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
+	for (uint x = 0; x < width; x++) {
+		for (uint y = 0; y < height; y++) {
 			if (ground_map->data[(y * width) + x] != 1)
 			{
 				iPoint pos(x, y);

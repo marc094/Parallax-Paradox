@@ -103,10 +103,10 @@ bool Player::Update(float dt)
 	
 	float camera_speed = 310.0f * dt;
 	fPoint cam_vec, c;
-	c.x = (position.x * scale - (float)App->render->camera.w / 2.0f);
-	c.y = (position.y * scale - (float)App->render->camera.h / 2.0f);
-	cam_vec.x = c.x - (float)App->render->camera.x;
-	cam_vec.y = c.y - (float)App->render->camera.y;
+	c.x = (position.x * scale) - (App->render->camera.w / 2.0f);
+	c.y = (position.y * scale) - (App->render->camera.h / 2.0f);
+	cam_vec.x = c.x - App->render->camera.x;
+	cam_vec.y = c.y - App->render->camera.y;
 	float angle = cam_vec.angle();
 
 	App->render->camera.x = Interpolate(App->render->camera.x, c.x, abs(camera_speed * cos(angle)));
@@ -227,8 +227,8 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 	onhit_timer.Start();
 	fPoint sp = speed_vect - collider_spv;
 	iRect player = current_animation->CurrentFrame().rect;
-	player.x = position.x;
-	player.y = position.y;
+	player.x = (int)position.x;
+	player.y = (int)position.y;
 	max_speed.x = 500;
 	max_speed.y = 500;
 	App->collision->SetSpVecToCollisions(collider, player, speed_vect, grounded, dt);

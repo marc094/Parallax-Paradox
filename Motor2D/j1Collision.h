@@ -53,6 +53,6 @@ public:
 	void BlitDebugColliders() const;
 
 private:
-	int scale = 0;
+	float scale = 1.0f;
 };
 #endif

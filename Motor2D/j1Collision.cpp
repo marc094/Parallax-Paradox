@@ -65,20 +65,20 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 	{
 		iRect player_rect = rect_frame;
-		player_rect.x = (int)position.x * scale;
-		player_rect.y = (int)position.y * scale;
-		player_rect.w *= scale;
-		player_rect.h *= scale;
+		player_rect.x = (int)(position.x * scale);
+		player_rect.y = (int)(position.y * scale);
+		player_rect.w = (int)(player_rect.w * scale);
+		player_rect.h = (int)(player_rect.h * scale);
 
 		iRect aux = collider->data->rect * scale;
-		aux.w *= scale;
-		aux.h *= scale;
+		aux.w = (int)(aux.w * scale);
+		aux.h = (int)(aux.h * scale);
 
-		aux.x = (aux.x * scale) - (int)(App->render->camera.x * map_layer->data->parallax_speed * scale);
-		aux.y = (aux.y * scale) - (int)(App->render->camera.y * map_layer->data->parallax_speed * scale);
+		aux.x = (int)(aux.x * scale) - (int)(App->render->camera.x * map_layer->data->parallax_speed * scale);
+		aux.y = (int)(aux.y * scale) - (int)(App->render->camera.y * map_layer->data->parallax_speed * scale);
 
-		player_rect.x = (player_rect.x * scale) - (int)(App->render->camera.x * scale);
-		player_rect.y = (player_rect.y * scale) - (int)(App->render->camera.y * scale);
+		player_rect.x = (int)(player_rect.x * scale) - (int)(App->render->camera.x * scale);
+		player_rect.y = (int)(player_rect.y * scale) - (int)(App->render->camera.y * scale);
 
 		iPoint p1, p2;
 		p1 = iPoint(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);

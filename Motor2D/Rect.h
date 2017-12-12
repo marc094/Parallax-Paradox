@@ -23,8 +23,13 @@ struct Rect {
 		h = rect.h;
 	}
 
-	Rect operator *(TYPE n) const {
+	Rect operator *(int n) const {
 		Rect<TYPE> r(x * n, y * n, w * n, h * n);
+		return r;
+	}
+
+	Rect operator *(float n) const {
+		Rect<TYPE> r((TYPE)(x * n), (TYPE)(y * n), (TYPE)(w * n), (TYPE)(h * n));
 		return r;
 	}
 

@@ -39,8 +39,8 @@ bool Sprite::PostUpdate()
 
 	//if (in_focus) {
 		ComputeRects();
-		rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
-		rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
+		rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
+		rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
 
 		/*int dx = 0, dy = 0, dw = 0, dh = 0;
 		if (parent != nullptr) {

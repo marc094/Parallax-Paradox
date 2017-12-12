@@ -48,8 +48,8 @@ bool InterfaceElement::PostUpdate()
 {
 	bool ret = true;
 	ComputeRects();
-	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
-	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
+	rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
+	rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
 
 	if (culled && parent != nullptr) {
 		int dx = 0, dy = 0, dw = 0, dh = 0;
@@ -82,8 +82,8 @@ bool InterfaceElement::PostUpdate()
 		App->render->DrawQuad(result_rect, 255, 0, 0, 255, 0.0f, false);
 		App->render->DrawQuad(rect, 0, 0, 255, 255, 0.0f, false);
 		App->render->DrawQuad(r, 0, 255, 0, 255, 0.0f, false);
-		App->render->DrawLine(r.x, r.y + r.h * anchor_point.y, r.x + r.w, r.y + r.h * anchor_point.y, 0, 0, 255, 255, false);
-		App->render->DrawLine(r.x + r.w * anchor_point.x, r.y, r.x + r.w * anchor_point.x, r.y + r.h, 0, 0, 255, 255, false);
+		App->render->DrawLine(r.x, r.y + (int)(r.h * anchor_point.y), r.x + r.w, r.y + (int)(r.h * anchor_point.y), 0, 0, 255, 255, false);
+		App->render->DrawLine(r.x + (int)(r.w * anchor_point.x), r.y, r.x + (int)(r.w * anchor_point.x), r.y + r.h, 0, 0, 255, 255, false);
 	}
 
 	return ret;
