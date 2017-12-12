@@ -69,14 +69,26 @@ bool j1Scene::Start()
 		time_lab->SetAnchor(0.0f, 0.5f);
 		time.Start();
 
+		jump_sound = App->audio->LoadFx("audio/FX/Jump.wav");
+		change_sound = App->audio->LoadFx("audio/FX/Change2.wav");
+		hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
+		level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
+
+		if (jump_sound == 0 || change_sound == 0 || hit_sound == 0 || level_sound == 0)
+			LOG("Error loading sound fx: %s", Mix_GetError());
+
+		App->audio->PlayFx(level_sound);
+
 		App->entities->active = true;
 	}
 	else
 	{
+		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background2.png");
 		title = App->tex->Load("textures/title2.png");
 		buttons = App->tex->Load("gui/Buttons2.png");
 		credits_win = App->tex->Load("gui/Window2.png");
+
 		uint w;
 		uint h;
 		App->win->GetWindowSize(w, h);
@@ -111,7 +123,6 @@ bool j1Scene::Start()
 		credit->setString("CREDITS");
 		credit->SetParent(credits_button);
 		//credits_button->setLabel(credit);
-		App->entities->active = false;
 
 		menu_buttons.add(credits_button);
 
@@ -123,7 +134,6 @@ bool j1Scene::Start()
 		exit->setString("EXIT");
 		exit->SetParent(exit_button);
 		//exit_button->setLabel(exit);
-		App->entities->active = false;
 
 		menu_buttons.add(exit_button);
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
@@ -144,14 +154,17 @@ bool j1Scene::Start()
 	SDL_Texture* tex = App->tex->Load("gui/atlas.png");
 	Window* win = App->gui->AddWindow(0.5f * App->gui->GetGuiSize().x, 0.5f * App->gui->GetGuiSize().y, tex, true, &win_rect);
 	win->SetContentRect(-100, 100);
+	Window* win2 = App->gui->AddWindow(0.0f * win->content_rect.w, 0.0f * win->content_rect.h, tex, true, &win_rect);
+	win2->SetParent(win);
+	win->SetContentRect(50, 50);
+	win2->culled = true;
 	SDL_Rect idle{ 0, 110, 230, 71 };
 	SDL_Rect hovered{ 411, 166, 230, 71 };
 	SDL_Rect pressed{ 641, 166, 230, 71 };
-	Button* butt = App->gui->AddButton(1.0f * win->content_rect.w, 0.5f * win->content_rect.h, tex, true, &idle, nullptr, &hovered, &pressed);
-	butt->SetParent(win);
-	Window* win2 = App->gui->AddWindow(0.0f * win->content_rect.w, 0.0f * win->content_rect.h, tex, true, &win_rect);
-	win2->SetParent(win);
-	win2->culled = true;
+	Button* butt = App->gui->AddButton(0.5f * win2->content_rect.w, 0.5f * win2->content_rect.h, tex, true, &idle, [win2]() {
+		win2->culled = !win2->culled;
+	}, &hovered, &pressed);
+	butt->SetParent(win2);
 	butt->SetAnchor(0.5f, 0.5f);
 	butt->type = InterfaceElement::Interfacetype::TEXT_INPUT;
 
@@ -293,7 +306,7 @@ void j1Scene::CheckInput(float dt)
 	{
 		App->entities->player.setJumping(true);
 		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);
-		App->audio->PlayFx(App->entities->player.jump_sound);
+		App->audio->PlayFx(jump_sound);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)

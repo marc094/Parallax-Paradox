@@ -50,10 +50,10 @@ bool InterfaceElement::PostUpdate()
 	ComputeRects();
 	rect.x = (-anchor_point.x * rect.w) + abs_pos.x;
 	rect.y = (-anchor_point.y * rect.h) + abs_pos.y;
+
 	if (culled && parent != nullptr) {
 		int dx = 0, dy = 0, dw = 0, dh = 0;
 		if (parent != nullptr) {
-			//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
 			dx = result_rect.x - rect.x;
 			dy = result_rect.y - rect.y;
 			dw = result_rect.w - rect.w;

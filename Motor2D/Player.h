@@ -36,10 +36,6 @@ public:
 	bool god_mode = false;
 	void OnHit(iRect collider,fPoint collider_spv, float dt);
 
-	uint jump_sound;
-	uint hit_sound;
-	uint change_sound;
-	uint level_sound;
 	int lives;
 	bool hit;
 	bool invulnerable;

@@ -60,6 +60,11 @@ public:
 	Window* credits_window = nullptr;
 	bool credits_bool = false;
 
+	uint jump_sound = 0;
+	uint hit_sound = 0;
+	uint change_sound = 0;
+	uint level_sound = 0;
+
 private:
 	uint level;
 	uint max_level;
