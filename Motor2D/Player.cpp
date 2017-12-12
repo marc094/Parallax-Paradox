@@ -21,9 +21,9 @@ bool Player::Awake()
 
 	pugi::xml_node doc_node = App->entities->player_node.child("animationInfo");
 
-	speed_vect = { 0, 0 };
+	speed_vect = { 0.0f, 0.0f };
 
-	god_mode_aura.PushBack({ 79,45,30,30 });
+	god_mode_aura.PushBack({ 79, 45, 30, 30 });
 
 	for (pugi::xml_node animation : doc_node.children()) {
 
@@ -109,8 +109,8 @@ bool Player::Update(float dt)
 	cam_vec.y = c.y - (float)App->render->camera.y;
 	float angle = cam_vec.angle();
 
-	App->render->camera.x = Interpolate((float)App->render->camera.x, c.x, abs(camera_speed * cos(angle)));
-	App->render->camera.y = Interpolate((float)App->render->camera.y, c.y, abs(camera_speed * sin(angle)));
+	App->render->camera.x = Interpolate(App->render->camera.x, c.x, abs(camera_speed * cos(angle)));
+	App->render->camera.y = Interpolate(App->render->camera.y, c.y, abs(camera_speed * sin(angle)));
 	//App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
 
 	if (position.y > 1400)
@@ -118,8 +118,6 @@ bool Player::Update(float dt)
 		App->Reload();
 		App->audio->PlayFx(App->scene->hit_sound);
 	}
-
-	//App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped,true,color);
 
 	if (lives <= 0)
 		App->Reload();

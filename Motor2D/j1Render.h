@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include "j1Module.h"
 #include "p2DynArray.h"
+#include "Rect.h"
 
 struct RenderPos {
 
@@ -59,7 +60,7 @@ public:
 public:
 
 	SDL_Renderer*	renderer;
-	SDL_Rect		camera;
+	fRect			camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
 	p2DynArray<p2DynArray<RenderPos>> Renderorder;
