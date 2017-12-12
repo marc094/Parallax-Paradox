@@ -15,6 +15,7 @@
 #include "j1Textures.h"
 #include "j1Gui.h"
 #include "Window.h"
+#include "Slider.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -108,7 +109,7 @@ bool j1Scene::Start()
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
 		App->gui->AddSprite(w / 2, (h / 2 - 100), title);
-		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		Slider* start_button = App->gui->AddSlider((w / 2), 60 + (h / 2), buttons, true, &button_idle, nullptr, &button_hover, &button_press);
 		
 		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
@@ -146,7 +147,7 @@ bool j1Scene::Start()
 		menu_buttons.add(settings_button);
 
 
-		Button* exit_button = App->gui->AddButton(w / 2, 300+ (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
+		Button* exit_button = App->gui->AddButton(w / 2, 300 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
 			App->scene->ret = false;
 		}, &button_hover, &button_press);
 
