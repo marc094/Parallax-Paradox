@@ -3,6 +3,7 @@
 #include "j1Render.h"
 #include "j1Entities.h"
 #include "j1Audio.h"
+#include "j1Scene.h"
 
 
 Player::Player()
@@ -115,7 +116,7 @@ bool Player::Update(float dt)
 	if (position.y > 1400)
 	{
 		App->Reload();
-		App->audio->PlayFx(App->entities->player.hit_sound);
+		App->audio->PlayFx(App->scene->hit_sound);
 	}
 
 	//App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f,0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped,true,color);
@@ -206,7 +207,7 @@ bool Player::Save(pugi::xml_node& data) const
 }
 
 void Player::SwapLayer() {
-	App->audio->PlayFx(App->entities->player.change_sound);
+	App->audio->PlayFx(App->scene->change_sound);
 	if (current_layer == BACK_LAYER) {
 		current_layer = FRONT_LAYER;
 		//scale = 1.0f;

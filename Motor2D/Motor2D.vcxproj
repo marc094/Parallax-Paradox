@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="BaseEnemy.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="InterfaceElement.cpp" />
     <ClCompile Include="j1Collision.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BaseEnemy.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="InterfaceElement.h" />
     <ClInclude Include="j1Collision.h" />

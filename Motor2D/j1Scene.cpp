@@ -75,7 +75,7 @@ bool j1Scene::Start()
 		level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
 
 		if (jump_sound == 0 || change_sound == 0 || hit_sound == 0 || level_sound == 0)
-			LOG("Error loading sound fx: %s", Mix_GetError());
+			LOG("Error loading sound fx: %s\n", Mix_GetError());
 
 		App->audio->PlayFx(level_sound);
 
