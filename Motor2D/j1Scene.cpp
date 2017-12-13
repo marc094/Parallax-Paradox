@@ -160,8 +160,8 @@ bool j1Scene::Start()
 
 		menu_buttons.add(exit_button);
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
-		credits_window->SetContentRect(10, 40);
-		credits_window->content_rect.y = credits_window->rect.h * 0.5f;
+		credits_window->SetContentRect(10, 80,0,100);
+
 		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
 
 
@@ -418,5 +418,5 @@ void Hide_Credits()
 
 void Drag_Credits()
 {
-	App->scene->credits_text->rel_pos.y = App->scene->credits_text->GetAnchorY() + ((App->scene->credits_slider->GetAnchorY() - App->scene->credits_slider->rel_pos.y)* 1.1f);
+	App->scene->credits_text->rel_pos.y = App->scene->credits_text->initial_pos.y + ((App->scene->credits_slider->initial_pos.y - App->scene->credits_slider->rel_pos.y));
 }

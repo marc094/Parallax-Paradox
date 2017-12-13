@@ -32,7 +32,7 @@ public:
 	virtual bool CleanUp();
 
 	virtual SDL_Rect getRect() const;
-	virtual void SetContentRect(int x_margin = INT_MAX, int y_margin = INT_MAX);
+	virtual void SetContentRect(int x_margin = INT_MAX, int y_margin = INT_MAX, int x = 0, int y = 0);
 	SDL_Rect GetContentRect() const;
 	virtual int getPositionX() const;
 	virtual int getPositionY() const;
@@ -61,6 +61,7 @@ public:
 	bool enabled = true;
 	iPoint rel_pos;
 	iPoint abs_pos;
+	iPoint initial_pos;
 	bool in_focus = false;
 	bool culled = true;
 

@@ -7,6 +7,7 @@
 Window::Window(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim) : Sprite(_x,_y, _tex, _enabled, _anim)
 {
 	type = Interfacetype::WINDOW;
+	initial_pos = {(int) _x,(int)_y };
 	culled = false;
 }
 

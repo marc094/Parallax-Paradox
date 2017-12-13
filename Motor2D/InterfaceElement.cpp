@@ -105,12 +105,12 @@ SDL_Rect InterfaceElement::getRect() const
 	return rect;
 }
 
-void InterfaceElement::SetContentRect(int x_margin, int y_margin)
+void InterfaceElement::SetContentRect(int x_margin, int y_margin, int x, int y)
 {
 	if (x_margin == INT_MAX) x_margin = (rect.w - content_rect.w) / 2;
 	if (y_margin == INT_MAX) y_margin = (rect.h - content_rect.h) / 2;
-	content_rect.x = rect.x + x_margin;
-	content_rect.y = rect.y + y_margin;
+	content_rect.x = rect.x + x + x_margin;
+	content_rect.y = rect.y + y + y_margin;
 	content_rect.w = rect.w - (2 * x_margin);
 	content_rect.h = rect.h - (2 * y_margin);
 }
