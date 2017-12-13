@@ -20,7 +20,8 @@ public:
 		SPRITE,
 		TEXT_INPUT,
 		CHECK_BUTTON,
-		WINDOW
+		WINDOW,
+		SLIDER
 	};
 
 

@@ -6,6 +6,7 @@ Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 {
 	axis = _axis;
 	initial_pos = { (int)_x, (int)_y };
+	type = SLIDER;
 }
 
 
