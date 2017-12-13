@@ -10,6 +10,7 @@ class Window;
 class Button;
 class Sprite;
 class Label;
+class Slider;
 
 class j1Scene : public j1Module
 {
@@ -60,6 +61,8 @@ public:
 	void SumCoin();
 	Window* credits_window = nullptr;
 	Window* settings_window = nullptr;
+	Slider* credits_slider;
+	Sprite* title_spr2;
 	bool credits_bool = false;
 
 	uint jump_sound = 0;
@@ -83,6 +86,7 @@ private:
 	j1Timer time;
 	Label* time_lab;
 	Label* coin_lab;
+
 };
 
 void button_callback(const char*);
@@ -90,4 +94,5 @@ void Game_start();
 void Game_continue();
 void Show_Credits();
 void Hide_Credits();
+void Drag_Credits();
 #endif // __j1SCENE_H__

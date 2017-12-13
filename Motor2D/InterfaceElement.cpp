@@ -18,6 +18,12 @@ InterfaceElement::~InterfaceElement()
 bool InterfaceElement::Enable(bool enable)
 {
 	this->enabled = enable;
+	p2List_item<InterfaceElement*>* current_element = elements.start;
+	while (current_element != nullptr)
+	{
+		current_element->data->Enable(enable);
+		current_element = current_element->next;
+	}
 	return this->enabled;
 }
 

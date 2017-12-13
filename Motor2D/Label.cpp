@@ -35,6 +35,8 @@ bool Label::Start()
 bool Label::PreUpdate()
 {
 	bool ret = true;
+
+
 	if (font != nullptr && text_changed) {
 		if (font_changed) {
 			App->font->Unload(font);

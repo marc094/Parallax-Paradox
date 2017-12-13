@@ -109,9 +109,8 @@ bool j1Scene::Start()
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
 		Sprite* title_spr = App->gui->AddSprite(w / 2, (h / 2 - 100), title);
-		//Slider* start_button = App->gui->AddSlider((w / 2), 60 + (h / 2), buttons, true, &button_idle, nullptr, &button_hover, &button_press, 0, title_spr);
-		Slider* start_button = App->gui->AddSlider(0, 0.5f * title_spr->content_rect.h, buttons, true, &button_idle, nullptr, &button_hover, &button_press, 0, title_spr);
-		start_button->culled = false;
+		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		
 
 		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
@@ -160,7 +159,16 @@ bool j1Scene::Start()
 
 		menu_buttons.add(exit_button);
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
+		credits_window->SetContentRect(10, 40);
+		credits_window->content_rect.y = credits_window->rect.h * 0.5f;
 		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
+
+
+		title_spr2 = App->gui->AddSprite(w / 2, (h / 2 - 100), title,false);
+		title_spr2->SetParent(credits_window);
+		
+		credits_slider = App->gui->AddSlider(0.9f * credits_window->content_rect.w, 0.1f * credits_window->content_rect.h, buttons, false, &button_idle, &Drag_Credits, &button_hover, &button_press, 0, credits_window);
+		start_button->culled = false;
 	}
 		
 
@@ -404,4 +412,9 @@ void Hide_Credits()
 {
 	App->scene->credits_window->Enable(false);
 	App->scene->credits_bool = false;
+}
+
+void Drag_Credits()
+{
+	App->scene->title_spr2->rel_pos.y = App->scene->credits_slider->rel_pos.y;
 }

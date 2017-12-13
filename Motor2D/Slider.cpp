@@ -39,6 +39,7 @@ bool Slider::PreUpdate()
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true/*prev_mouse.x != Mouse.x && prev_mouse.y != Mouse.y*/)
 	{
 		DragSlider();
+		OnClick();
 	}
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && in_focus == true)
 		App->gui->setFocus(nullptr);
