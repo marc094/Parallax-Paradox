@@ -98,6 +98,7 @@ bool j1Scene::Start()
 		buttons = App->tex->Load("gui/Buttons2.png");
 		credits_win = App->tex->Load("gui/Credits_win.png");
 		settings_win = App->tex->Load("gui/Settings win.png");
+		credits_tex = App->tex->Load("gui/Credits 3.png");
 
 		uint w;
 		uint h;
@@ -164,8 +165,9 @@ bool j1Scene::Start()
 		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
 
 
-		title_spr2 = App->gui->AddSprite(w / 2, (h / 2 - 100), title,false);
-		title_spr2->SetParent(credits_window);
+		credits_text = App->gui->AddSprite(0.0f * credits_window->content_rect.w, 0.1f * credits_window->content_rect.h, credits_tex,false);
+		credits_text->SetAnchor(0.0f, 0.0f);
+		credits_text->SetParent(credits_window);
 		
 		credits_slider = App->gui->AddSlider(0.9f * credits_window->content_rect.w, 0.1f * credits_window->content_rect.h, buttons, false, &button_idle, &Drag_Credits, &button_hover, &button_press, 0, credits_window);
 		start_button->culled = false;
@@ -416,5 +418,5 @@ void Hide_Credits()
 
 void Drag_Credits()
 {
-	App->scene->title_spr2->rel_pos.y = App->scene->credits_slider->rel_pos.y;
+	App->scene->credits_text->rel_pos.y = App->scene->credits_text->GetAnchorY() + ((App->scene->credits_slider->GetAnchorY() - App->scene->credits_slider->rel_pos.y)* 1.1f);
 }

@@ -62,7 +62,7 @@ public:
 	Window* credits_window = nullptr;
 	Window* settings_window = nullptr;
 	Slider* credits_slider;
-	Sprite* title_spr2;
+	Sprite* credits_text;
 	bool credits_bool = false;
 
 	uint jump_sound = 0;
@@ -80,6 +80,7 @@ private:
 	SDL_Texture* buttons = nullptr;
 	SDL_Texture* credits_win = nullptr;
 	SDL_Texture* settings_win = nullptr;
+	SDL_Texture* credits_tex = nullptr;
 	p2List<Button*> menu_buttons;
 	p2List<Sprite*> lives;
 	SDL_Texture* lifes_sprite;
