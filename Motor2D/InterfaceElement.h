@@ -33,7 +33,7 @@ public:
 	virtual bool CleanUp();
 
 	virtual SDL_Rect getRect() const;
-	virtual void SetContentRect(int x_margin = INT_MAX, int y_margin = INT_MAX, int x = 0, int y = 0);
+	virtual void SetContentRect(int x_margin = INT_MAX, int y_margin = INT_MAX, int x_margin_2 = INT_MAX, int y_margin_2 = INT_MAX);
 	SDL_Rect GetContentRect() const;
 	virtual int getPositionX() const;
 	virtual int getPositionY() const;
@@ -56,7 +56,7 @@ public:
 	SDL_Texture* tex = nullptr;
 	Interfacetype type = NONE;
 	SDL_Rect rect;
-	SDL_Rect content_rect;
+	SDL_Rect content_rect, content_rect_margins;
 	SDL_Rect result_rect;
 	float scale = 1.0f;
 	bool enabled = true;
