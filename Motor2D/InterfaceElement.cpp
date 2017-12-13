@@ -18,12 +18,14 @@ InterfaceElement::~InterfaceElement()
 bool InterfaceElement::Enable(bool enable)
 {
 	this->enabled = enable;
-	p2List_item<InterfaceElement*>* current_element = elements.start;
+	if (!enabled && in_focus)
+		App->gui->setFocus(nullptr);
+	/*p2List_item<InterfaceElement*>* current_element = elements.start;
 	while (current_element != nullptr)
 	{
 		current_element->data->Enable(enable);
 		current_element = current_element->next;
-	}
+	}*/
 	return this->enabled;
 }
 
@@ -45,7 +47,8 @@ bool InterfaceElement::PreUpdate()
 		current_element != nullptr && ret == true;
 		current_element = current_element->next)
 	{
-		ret = current_element->data->PreUpdate();
+		if (current_element->data->isEnabled())
+			ret = current_element->data->PreUpdate();
 	}
 	return ret;
 }
@@ -80,7 +83,8 @@ bool InterfaceElement::PostUpdate()
 		current_element != nullptr && ret == true;
 		current_element = current_element->next)
 	{
-		ret = current_element->data->PostUpdate();
+		if (current_element->data->isEnabled())
+			ret = current_element->data->PostUpdate();
 	}
 
 	if (App->debug) {
@@ -255,7 +259,6 @@ void InterfaceElement::ComputeRects()
 		if (culled)
 			SDL_IntersectRect(&parent->result_rect, &rect, &result_rect);
 		else result_rect = rect;
-		//SDL_IntersectRect(&result_rect, &parent->result_rect, &result_rect);
 	}
 	else {
 		abs_pos = rel_pos;

@@ -24,6 +24,7 @@ Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	current_anim = &idle_anim;
 
 	OnClick = callback;
+	interactuable = true;
 }
 
 

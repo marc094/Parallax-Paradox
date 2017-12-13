@@ -22,6 +22,7 @@ public:
 
 	SDL_Rect Mouse;
 	bool locked = false;
+	bool dragging = false;
 	iPoint delta_pos_mouse;
 };
 #endif

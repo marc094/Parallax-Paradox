@@ -172,21 +172,21 @@ bool j1Scene::Start()
 
 		menu_buttons.add(exit_button);
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
-		credits_window->SetContentRect(10, 86, 0, 35);
+		credits_window->SetContentRect(10, 86, 0, 15);
 
 		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
 
 
-		credits_text = App->gui->AddSprite(0, 0, credits_tex,false);
+		credits_text = App->gui->AddSprite(0, 0, credits_tex);
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
 
-		Sprite* slider = App->gui->AddSprite(0.99f * credits_window->content_rect.w, credits_window->content_rect.h / 2 + 10, sliders, false, &slider_bar);
+		Sprite* slider = App->gui->AddSprite(0.97f * credits_window->content_rect.w, credits_window->content_rect.h / 2 - 10, sliders, true, &slider_bar);
 		slider->culled = false;
 		slider->SetParent(credits_window);
 		slider->SetContentRect(0, 48, 0, 48);
 		
-		credits_slider = App->gui->AddSlider(slider->content_rect.w/2, 0, sliders, false, &slider_idle, &Drag_Credits, &slider_hover, &slider_pressed, 0, slider);
+		credits_slider = App->gui->AddSlider(slider->content_rect.w/2, 0, sliders, true, &slider_idle, &Drag_Credits, &slider_hover, &slider_pressed, 0, slider);
 		credits_slider->culled = false;
 	}
 		

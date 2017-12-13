@@ -66,9 +66,6 @@ public:
 	bool in_focus = false;
 	bool culled = true;
 
-	void SetFocus();
-	InterfaceElement* NextElement(InterfaceElement* curr_child);
-
 protected:
 	InterfaceElement* AddElement(InterfaceElement* elem);
 	p2List<InterfaceElement*> elements;
@@ -76,6 +73,6 @@ protected:
 
 	fPoint anchor_point = { 0.5f, 0.5f };
 	SDL_Rect* current_anim = nullptr;
-	const bool interactuable = false;
+	bool interactuable = false;
 };
 #endif

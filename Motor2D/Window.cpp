@@ -9,6 +9,7 @@ Window::Window(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	type = Interfacetype::WINDOW;
 	initial_pos = {(int) _x,(int)_y };
 	culled = false;
+	interactuable = true;
 }
 
 
@@ -35,6 +36,7 @@ bool Window::PreUpdate()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			App->gui->setFocus(this);
+			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };
 			delta_pos_mouse = abs_pos - m;
 		}
@@ -47,12 +49,12 @@ bool Window::PreUpdate()
 		current_element->data->PreUpdate();
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true/*prev_mouse.x != Mouse.x && prev_mouse.y != Mouse.y*/)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true && dragging == true)
 	{
 		DragWindow();
 	}
-	/*else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && in_focus == true)
-		App->gui->setFocus(nullptr);*/
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging == true)
+		dragging = false;
 
 	return true;
 }
