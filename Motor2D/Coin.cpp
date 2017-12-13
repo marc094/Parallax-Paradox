@@ -33,7 +33,7 @@ bool Coin::Update(float dt)
 
 	if (App->collision->DoCollide(collider_rect, player_rect))
 	{
-		App->audio->PlayFx(App->scene->hit_sound);
+		App->audio->PlayFx(App->scene->coin_sound);
 		App->entities->player.coins++;
 		App->scene->SumCoin();
 		to_delete = true;

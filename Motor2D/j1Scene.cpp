@@ -48,6 +48,9 @@ bool j1Scene::Start()
 	if (level > max_level)
 		level = 1;
 
+
+	button_sound = App->audio->LoadFx("audio/FX/Button.wav");
+
 	if (state == IN_GAME)
 	{
 		uint w;
@@ -82,6 +85,8 @@ bool j1Scene::Start()
 		change_sound = App->audio->LoadFx("audio/FX/Change2.wav");
 		hit_sound = App->audio->LoadFx("audio/FX/Onhit.wav");
 		level_sound = App->audio->LoadFx("audio/FX/Wierd.wav");
+		coin_sound = App->audio->LoadFx("audio/FX/Coin.wav");
+
 
 		if (jump_sound == 0 || change_sound == 0 || hit_sound == 0 || level_sound == 0)
 			LOG("Error loading sound fx: %s\n", Mix_GetError());
@@ -100,6 +105,7 @@ bool j1Scene::Start()
 		settings_win = App->tex->Load("gui/Settings win.png");
 		credits_tex = App->tex->Load("gui/Credits 3.png");
 		sliders = App->tex->Load("gui/Scroll.png");
+		
 
 		SDL_Rect slider_bar = { 0,0,20,435 };
 		SDL_Rect slider_idle = { 33,0,16,94 };
@@ -171,7 +177,7 @@ bool j1Scene::Start()
 		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
 
 
-		credits_text = App->gui->AddSprite(0.0f * credits_window->content_rect.w, 0.1f * credits_window->content_rect.h, credits_tex,false);
+		credits_text = App->gui->AddSprite(0, 0, credits_tex,false);
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
 

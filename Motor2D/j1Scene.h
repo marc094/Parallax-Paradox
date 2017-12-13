@@ -69,6 +69,8 @@ public:
 	uint hit_sound = 0;
 	uint change_sound = 0;
 	uint level_sound = 0;
+	uint coin_sound = 0;
+	uint button_sound = 0;
 
 private:
 	uint level;

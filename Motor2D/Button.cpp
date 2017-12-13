@@ -3,7 +3,8 @@
 #include "InterfaceElement.h"
 #include "j1Input.h"
 #include "j1Render.h"
-
+#include "j1Audio.h"
+#include "j1Scene.h"
 
 Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
 	: Sprite(_x, _y, _tex, _enabled, _anim)
@@ -73,7 +74,14 @@ bool Button::PostUpdate()
 			current_anim = &pressed_anim;
 			SetFocus();
 			if (OnClick != nullptr)
+			{
 				OnClick();
+
+				if (type != SLIDER)
+				App->audio->PlayFx(App->scene->button_sound);
+
+			}
+
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
