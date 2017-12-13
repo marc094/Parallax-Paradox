@@ -63,8 +63,9 @@ public:
 	Window* settings_window = nullptr;
 	Slider* credits_slider;
 	Sprite* credits_text;
+	Slider* set_mus_slider;
 	bool credits_bool = false;
-
+	bool settings_bool = false;
 	uint jump_sound = 0;
 	uint hit_sound = 0;
 	uint change_sound = 0;
@@ -98,5 +99,6 @@ void Game_start();
 void Game_continue();
 void Show_Credits();
 void Hide_Credits();
+void Hide_Settings();
 void Drag_Credits();
 #endif // __j1SCENE_H__

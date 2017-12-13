@@ -112,6 +112,11 @@ bool j1Scene::Start()
 		SDL_Rect slider_hover = { 33,103,16,94 };
 		SDL_Rect slider_pressed = { 33,212,16,94 };
 
+		SDL_Rect h_slider_bar = { 54,0,326,7 };
+		SDL_Rect h_slider_idle = { 58,14,10,21 };
+		SDL_Rect h_slider_hovered = { 72,14,10,21 };
+		SDL_Rect h_slider_pressed = { 86,14,10,21 };
+
 		uint w;
 		uint h;
 		App->win->GetWindowSize(w, h);
@@ -122,36 +127,42 @@ bool j1Scene::Start()
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
 		Sprite* title_spr = App->gui->AddSprite(w / 2, (h / 2 - 100), title);
+
+
+		//START BUTTON
 		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
 		
-
 		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
 		start->SetParent(start_button);
-		//start_button->setLabel(start);
 
 		menu_buttons.add(start_button);
 
+
+		//CONTINUE BUTTON
 		Button* continue_button = App->gui->AddButton(w / 2, 120+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
 
 		Label* continue_label = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		continue_label->setString("CONTINUE");
 		continue_label->SetParent(continue_button);
-		//continue_button->setLabel(continue_label);
 
 		menu_buttons.add(continue_button);
 
+
+		//CREDITS BUTTON
 		Button* credits_button = App->gui->AddButton(w / 2, 180+ (h / 2), buttons, true, &button_idle, &Show_Credits, &button_hover, &button_press);
 
 		Label* credit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		credit->setString("CREDITS");
 		credit->SetParent(credits_button);
-		//credits_button->setLabel(credit);
 
 		menu_buttons.add(credits_button);
 
+
+		//SETTINGS BUTTON
 		Button* settings_button = App->gui->AddButton(w / 2, 240 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
 			App->scene->settings_window->Enable(true);
+			App->scene->settings_bool = true;
 		}, &button_hover, &button_press);
 
 		Label* settings = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
@@ -160,7 +171,8 @@ bool j1Scene::Start()
 
 		menu_buttons.add(settings_button);
 
-
+		
+		//EXIT BUTTON
 		Button* exit_button = App->gui->AddButton(w / 2, 300 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
 			App->scene->ret = false;
 		}, &button_hover, &button_press);
@@ -168,14 +180,13 @@ bool j1Scene::Start()
 		Label* exit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
 		exit->SetParent(exit_button);
-		//exit_button->setLabel(exit);
 
 		menu_buttons.add(exit_button);
+
+
+		//CREDITS WINDOW
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
 		credits_window->SetContentRect(10, 86, 0, 15);
-
-		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
-
 
 		credits_text = App->gui->AddSprite(0, 0, credits_tex);
 		credits_text->SetAnchor(0.0f, 0.0f);
@@ -188,6 +199,34 @@ bool j1Scene::Start()
 		
 		credits_slider = App->gui->AddSlider(slider->content_rect.w/2, 0, sliders, true, &slider_idle, &Drag_Credits, &slider_hover, &slider_pressed, 0, slider);
 		credits_slider->culled = false;
+
+		//SETTINGS WINDOW
+		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
+		settings_window->SetContentRect(10, 40, 10, 60);
+
+		Label* music_set_lab = App->gui->AddLabel(15,30, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		music_set_lab->SetParent(settings_window);
+		music_set_lab->SetAnchor(0, 0);
+		music_set_lab->setString("Music:");
+
+		Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2,66 , sliders, true, &h_slider_bar);
+		music_set_slid->SetParent(settings_window);
+		music_set_slid->SetContentRect(5, 0, 5, 0);
+
+		set_mus_slider = App->gui->AddSlider(music_set_slid->content_rect.w / 2, 0, sliders, true, &h_slider_idle, nullptr, &h_slider_hovered, &h_slider_pressed, 1, music_set_slid);
+		set_mus_slider->culled = false;
+
+		Label* fx_set_lab = App->gui->AddLabel(15, 100, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		fx_set_lab->SetParent(settings_window);
+		fx_set_lab->SetAnchor(0, 0);
+		fx_set_lab->setString("SFX:");
+
+
+		Label* fps_set_lab = App->gui->AddLabel(15, 170, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		fps_set_lab->SetParent(settings_window);
+		fps_set_lab->SetAnchor(0, 0);
+		fps_set_lab->setString("Framerate:");
+
 	}
 		
 
@@ -265,10 +304,12 @@ bool j1Scene::PostUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		if (!credits_bool)
-			ret = false;
-		else
+		if (credits_bool && credits_window->enabled)
 			Hide_Credits();
+		else if (settings_bool && settings_window->enabled)
+			Hide_Settings();
+		else		
+			ret = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -431,6 +472,11 @@ void Hide_Credits()
 {
 	App->scene->credits_window->Enable(false);
 	App->scene->credits_bool = false;
+}
+void Hide_Settings()
+{
+	App->scene->settings_window->Enable(false);
+	App->scene->settings_bool = false;
 }
 
 void Drag_Credits()
