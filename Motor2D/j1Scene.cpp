@@ -175,7 +175,7 @@ bool j1Scene::Start()
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
 
-		Sprite* slider = App->gui->AddSprite(0.9f * credits_window->content_rect.w, credits_window->content_rect.h / 2 + 10, sliders, false, &slider_bar);
+		Sprite* slider = App->gui->AddSprite(0.99f * credits_window->content_rect.w, credits_window->content_rect.h / 2 + 10, sliders, false, &slider_bar);
 		slider->culled = false;
 		slider->SetParent(credits_window);
 		slider->SetContentRect(0,48);
