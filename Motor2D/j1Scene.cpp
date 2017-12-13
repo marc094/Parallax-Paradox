@@ -99,6 +99,12 @@ bool j1Scene::Start()
 		credits_win = App->tex->Load("gui/Credits_win.png");
 		settings_win = App->tex->Load("gui/Settings win.png");
 		credits_tex = App->tex->Load("gui/Credits 3.png");
+		sliders = App->tex->Load("gui/Scroll.png");
+
+		SDL_Rect slider_bar = { 0,0,20,435 };
+		SDL_Rect slider_idle = { 33,0,16,94 };
+		SDL_Rect slider_hover = { 33,103,16,94 };
+		SDL_Rect slider_pressed = { 33,212,16,94 };
 
 		uint w;
 		uint h;
@@ -168,9 +174,14 @@ bool j1Scene::Start()
 		credits_text = App->gui->AddSprite(0.0f * credits_window->content_rect.w, 0.1f * credits_window->content_rect.h, credits_tex,false);
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
+
+		Sprite* slider = App->gui->AddSprite(0.9f * credits_window->content_rect.w, credits_window->content_rect.h / 2 + 10, sliders, false, &slider_bar);
+		slider->culled = false;
+		slider->SetParent(credits_window);
+		slider->SetContentRect(0,48);
 		
-		credits_slider = App->gui->AddSlider(0.9f * credits_window->content_rect.w, 0, buttons, false, &button_idle, &Drag_Credits, &button_hover, &button_press, 0, credits_window);
-		start_button->culled = false;
+		credits_slider = App->gui->AddSlider(slider->content_rect.w/2, 0, sliders, false, &slider_idle, &Drag_Credits, &slider_hover, &slider_pressed, 0, slider);
+		credits_slider->culled = false;
 	}
 		
 

@@ -81,6 +81,7 @@ private:
 	SDL_Texture* credits_win = nullptr;
 	SDL_Texture* settings_win = nullptr;
 	SDL_Texture* credits_tex = nullptr;
+	SDL_Texture* sliders = nullptr;
 	p2List<Button*> menu_buttons;
 	p2List<Sprite*> lives;
 	SDL_Texture* lifes_sprite;
