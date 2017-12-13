@@ -169,7 +169,7 @@ bool j1Scene::Start()
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
 		
-		credits_slider = App->gui->AddSlider(0.9f * credits_window->content_rect.w, 0.1f * credits_window->content_rect.h, buttons, false, &button_idle, &Drag_Credits, &button_hover, &button_press, 0, credits_window);
+		credits_slider = App->gui->AddSlider(0.9f * credits_window->content_rect.w, 0, buttons, false, &button_idle, &Drag_Credits, &button_hover, &button_press, 0, credits_window);
 		start_button->culled = false;
 	}
 		
@@ -418,5 +418,5 @@ void Hide_Credits()
 
 void Drag_Credits()
 {
-	App->scene->credits_text->rel_pos.y = App->scene->credits_text->initial_pos.y + ((App->scene->credits_slider->initial_pos.y - App->scene->credits_slider->rel_pos.y));
+	App->scene->credits_text->rel_pos.y = App->scene->credits_text->initial_pos.y + ((App->scene->credits_slider->initial_pos.y - App->scene->credits_slider->rel_pos.y) * 2.3f);
 }
