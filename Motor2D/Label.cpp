@@ -16,6 +16,7 @@ Label::Label(int x, int y, const char* font_path, int pSize, RenderMode mode) : 
 	render_mode = mode;
 	psize = pSize;
 	path = font_path;
+	type = LABEL;
 	Font* aux = App->font->Load(font_path, pSize);
 	if (aux != nullptr)
 		setFont(aux);
@@ -34,10 +35,10 @@ bool Label::Start()
 
 bool Label::PreUpdate()
 {
-	bool ret = true;
+	bool ret = InterfaceElement::PreUpdate();
 
 
-	if (font != nullptr && text_changed) {
+	if (font != nullptr && text_changed && ret == true) {
 		if (font_changed) {
 			App->font->Unload(font);
 			font = nullptr;
@@ -53,7 +54,6 @@ bool Label::PreUpdate()
 		text_changed = false;
 	}
 
-	InterfaceElement::PreUpdate();
 	return ret;
 }
 

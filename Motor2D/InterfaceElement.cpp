@@ -43,9 +43,9 @@ bool InterfaceElement::PreUpdate()
 {
 	bool ret = true;
 
-	for (p2List_item<InterfaceElement*>* current_element = elements.start;
+	for (p2List_item<InterfaceElement*>* current_element = elements.end;
 		current_element != nullptr && ret == true;
-		current_element = current_element->next)
+		current_element = current_element->prev)
 	{
 		if (current_element->data->isEnabled())
 			ret = current_element->data->PreUpdate();
@@ -62,12 +62,12 @@ bool InterfaceElement::PostUpdate()
 
 	if (culled && parent != nullptr) {
 		int dx = 0, dy = 0, dw = 0, dh = 0;
-		if (parent != nullptr) {
-			dx = result_rect.x - rect.x;
-			dy = result_rect.y - rect.y;
-			dw = result_rect.w - rect.w;
-			dh = result_rect.h - rect.h;
-		}
+
+		dx = result_rect.x - rect.x;
+		dy = result_rect.y - rect.y;
+		dw = result_rect.w - rect.w;
+		dh = result_rect.h - rect.h;
+
 		SDL_Rect actual_anim_rect = { 0, 0, 0, 0 };
 		actual_anim_rect = (current_anim != nullptr) ? *current_anim : actual_anim_rect;
 		actual_anim_rect.w += dw;
@@ -213,7 +213,7 @@ void InterfaceElement::SetParent(InterfaceElement * parent)
 		App->gui->AddElement(this);
 }
 
-void InterfaceElement::SetFocus()
+/*void InterfaceElement::SetFocus()
 {
 	p2List_item<InterfaceElement*>* curr = nullptr;
 
@@ -228,9 +228,9 @@ void InterfaceElement::SetFocus()
 		curr = curr->next;
 	}
 	this->in_focus = true;
-}
+}*/
 
-InterfaceElement * InterfaceElement::NextElement(InterfaceElement* curr_child)
+/*InterfaceElement * InterfaceElement::NextElement(InterfaceElement* curr_child)
 {
 	if (elements.start == nullptr) {
 		return parent->NextElement(this);
@@ -246,7 +246,7 @@ InterfaceElement * InterfaceElement::NextElement(InterfaceElement* curr_child)
 		return elements.At(0)->data;
 	}
 	else return elements.At(index)->data;
-}
+}*/
 
 void InterfaceElement::ComputeRects()
 {

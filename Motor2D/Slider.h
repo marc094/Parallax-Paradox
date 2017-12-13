@@ -14,9 +14,9 @@ public:
 
 	void Focus();
 
-
 	InterfaceElement* onfocus = nullptr;
 	bool axis;
+	bool dragging = false;
 	SDL_Rect Mouse;
 	bool locked = false;
 	iPoint delta_pos_mouse;

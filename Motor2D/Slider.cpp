@@ -16,13 +16,14 @@ Slider::~Slider()
 
 bool Slider::PreUpdate()
 {
-	ComputeRects();
+	bool ret = InterfaceElement::PreUpdate();
+	//ComputeRects();
 
 	App->input->GetMousePosition(Mouse.x, Mouse.y);
 	Mouse.w = CURSOR_WIDTH;
 	Mouse.h = CURSOR_WIDTH;
 
-	Focus();
+	//Focus();
 
 	SDL_Rect result, r;
 	r = (parent == nullptr) ? rect : result_rect;
@@ -31,22 +32,25 @@ bool Slider::PreUpdate()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			App->gui->setFocus(this);
+			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };
 			delta_pos_mouse = abs_pos - m;
+			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
 	}
 
-
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true/*prev_mouse.x != Mouse.x && prev_mouse.y != Mouse.y*/)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true && dragging == true)
 	{
 		DragSlider();
 		OnClick();
+		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && in_focus == true)
-		App->gui->setFocus(nullptr);
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging == true)
+		dragging = false;
 
-	return true;
+	//App->input->BlockMouse();
+
+	return ret;
 }
 
 void Slider::DragSlider()
@@ -56,16 +60,12 @@ void Slider::DragSlider()
 		rel_pos.x = Mouse.x + delta_pos_mouse.x - (abs_pos.x - rel_pos.x);
 		rel_pos.x = CLAMP(rel_pos.x, 0, parent->content_rect.w);
 	}
-	
 
 	else if (!axis)
 	{
 		rel_pos.y = Mouse.y + delta_pos_mouse.y - (abs_pos.y - rel_pos.y);
 		rel_pos.y = CLAMP(rel_pos.y, 0, parent->content_rect.h);
 	}
-
-
-
 }
 
 

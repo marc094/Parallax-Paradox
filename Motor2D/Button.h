@@ -21,7 +21,7 @@ public:
 	
 	void OnHover();
 	Callback_v OnClick = nullptr;
-	bool PostUpdate() override;
+	bool PreUpdate() override;
 	void setLabel(Label* label);
 
 private:

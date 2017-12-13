@@ -44,12 +44,12 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	p2List_item<InterfaceElement*>* current_element = elements.start;
+	p2List_item<InterfaceElement*>* current_element = elements.end;
 	while (current_element != NULL)
 	{
 		if (current_element->data->isEnabled())
 			current_element->data->PreUpdate();
-		current_element = current_element->next;
+		current_element = current_element->prev;
 	}
 
 	/*if (focused_item != nullptr && (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN))
@@ -173,9 +173,10 @@ Slider* j1Gui::AddSlider(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_R
 	Slider* aux = new Slider(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim,_axis, parent);
 	
 	if (parent != NULL)
-	aux->SetParent(parent);
+		aux->SetParent(parent);
+	else
+		elements.add(aux);
 
-	elements.add(aux);
 	return aux;
 }
 

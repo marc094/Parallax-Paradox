@@ -36,12 +36,12 @@ Sprite::~Sprite()
 
 bool Sprite::PostUpdate()
 {
-	current_anim = &idle_anim;
+	//current_anim = &idle_anim;
 
 	//if (in_focus) {
-		ComputeRects();
+		/*ComputeRects();
 		rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
-		rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
+		rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;*/
 
 		/*int dx = 0, dy = 0, dw = 0, dh = 0;
 		if (parent != nullptr) {

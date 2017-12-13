@@ -21,13 +21,15 @@ Window::~Window()
 
 bool Window::PreUpdate()
 {
-	ComputeRects();
+	//ComputeRects();
+	
+	bool ret = InterfaceElement::PreUpdate();
+
+	//Focus();
 
 	App->input->GetMousePosition(Mouse.x, Mouse.y);
 	Mouse.w = CURSOR_WIDTH;
 	Mouse.h = CURSOR_WIDTH;
-
-	//Focus();
 
 	SDL_Rect result, r;
 	r = (parent == nullptr) ? rect : result_rect;
@@ -39,24 +41,28 @@ bool Window::PreUpdate()
 			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };
 			delta_pos_mouse = abs_pos - m;
+			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
-	}
+			}
 
-	for (p2List_item<InterfaceElement*>* current_element = elements.start;
+	/*for (p2List_item<InterfaceElement*>* current_element = elements.end;
 		current_element != nullptr;
-		current_element = current_element->next)
+		current_element = current_element->prev)
 	{
 		current_element->data->PreUpdate();
-	}
+	}*/
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true && dragging == true)
 	{
+		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		DragWindow();
 	}
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging == true)
 		dragging = false;
 
-	return true;
+	App->input->BlockMouse();
+
+	return ret;
 }
 
 void Window::DragWindow()
