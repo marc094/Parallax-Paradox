@@ -5,6 +5,7 @@
 Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim, bool _axis, InterfaceElement* parent) : Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim)
 {
 	axis = _axis;
+	initial_pos = { (int)_x, (int)_y };
 }
 
 
