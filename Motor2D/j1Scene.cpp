@@ -90,12 +90,26 @@ bool j1Scene::Start()
 		if (jump_sound == 0 || change_sound == 0 || hit_sound == 0 || level_sound == 0)
 			LOG("Error loading sound fx: %s\n", Mix_GetError());
 
+		if (!playing)
+		{
+			if (level == 1)
+				App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+			else if (level == 2)
+				App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
+			else {
+				App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+			}
+
+			playing = true;
+		}
+
 		App->audio->PlayFx(level_sound);
 
 		App->entities->active = true;
 	}
 	else if (current_state == IN_MENU)
 	{
+		App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
 		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background2.png");
 		title = App->tex->Load("textures/title2.png");
@@ -235,18 +249,7 @@ bool j1Scene::Start()
 	}
 		
 
-	if (!playing)
-	{
-		if (level == 1)
-			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-		else if (level == 2)
-			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
-		else {
-			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-		}
 
-		playing = true;
-	}
 
 	return true;
 }
@@ -426,6 +429,7 @@ void Game_start(int, ...)
 {
 	App->Reload();
 	App->scene->state = App->scene->IN_GAME;
+
 }
 
 void Game_continue(int, ...)
