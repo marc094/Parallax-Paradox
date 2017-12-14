@@ -50,8 +50,8 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	volumeFX = config.attribute("volumeFX").as_float();
-	volumeMusic = config.attribute("volumeMusic").as_float();
+	SetVolumeFX(config.attribute("volumeFX").as_float(1.0f));
+	SetVolumeMusic(config.attribute("volumeMusic").as_float(1.0f));
 
 	return ret;
 }
