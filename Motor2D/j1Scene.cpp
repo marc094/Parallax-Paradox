@@ -389,8 +389,7 @@ void j1Scene::CheckEnd() {
 bool j1Scene::Load(pugi::xml_node& data) 
 {
 	level = data.child("level").attribute("current_level").as_int();
-	float loaded_time = data.child("time").attribute("sec").as_float();
-	time.Set(loaded_time);
+	time.loaded_time = data.child("time").attribute("sec").as_int();
 	return true;
 }
 

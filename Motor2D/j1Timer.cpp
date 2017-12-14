@@ -21,19 +21,19 @@ void j1Timer::Start()
 // ---------------------------------------------
 uint32 j1Timer::Read() const
 {
-	return SDL_GetTicks() - started_at;
+	return SDL_GetTicks() - started_at + loaded_time;
 }
 
 // ---------------------------------------------
 float j1Timer::ReadSec() const
 {
-	return float(SDL_GetTicks() - started_at) / 1000.0f;
+	return float(SDL_GetTicks() - started_at + loaded_time) / 1000.0f;
 }
 
 bool j1Timer::Count(float num)
 {
 	bool ret = false;
-	if (num <= ((SDL_GetTicks() - started_at) / 1000.0f))
+	if (num <= ((SDL_GetTicks() - started_at + loaded_time) / 1000.0f))
 	{
 		ret = true;
 	}
@@ -50,3 +50,5 @@ uint32 j1Timer::Started() const
 {
 	return started_at;
 }
+
+
