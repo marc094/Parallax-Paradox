@@ -6,16 +6,16 @@
 	<audio />
 	<map />
 	<scene>
-		<level current_level="1" />
+		<level current_level="2" />
 	</scene>
 	<entities>
-		<position x="1014.85706" y="1026.18298" />
+		<position x="438.666077" y="914.064575" />
 	</entities>
 	<collision />
 	<pathfinding />
 	<fonts />
 	<gui />
 	<renderer>
-		<camera x="502" y="642" />
+		<camera x="-73.3339233" y="530.064575" />
 	</renderer>
 </game_state>
