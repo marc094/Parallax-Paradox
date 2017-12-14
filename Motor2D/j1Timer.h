@@ -14,6 +14,8 @@ public:
 	uint32 Read() const;
 	float ReadSec() const;
 	bool Count(float num);
+	void Set(float num);
+	uint32 Started() const;
 
 private:
 	uint32	started_at;

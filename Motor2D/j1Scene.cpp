@@ -72,7 +72,7 @@ bool j1Scene::Start()
 
 		time_lab = App->gui->AddLabel(w - 150, h  - 50, 40, "gui/Earth 2073.ttf", { 255,255,255,255 },Label::BLENDED);
 		time_lab->SetAnchor(0.0f, 0.5f);
-		time.Start();
+
 
 		Sprite* Coin = App->gui->AddSprite(270, h - 50, lifes_sprite, true, &coin_rect);
 
@@ -126,9 +126,9 @@ bool j1Scene::Start()
 		SDL_Rect slider_hover = { 33,212,16,94 };
 
 		SDL_Rect h_slider_bar = { 54,0,326,7 };
-		SDL_Rect h_slider_idle = { 58,14,10,21 };
+		SDL_Rect h_slider_pressed = { 58,14,10,21 };
 		SDL_Rect h_slider_hovered = { 72,14,10,21 };
-		SDL_Rect h_slider_pressed = { 86,14,10,21 };
+		SDL_Rect h_slider_idle = { 86,14,10,21 };
 
 		uint w;
 		uint h;
@@ -389,6 +389,8 @@ void j1Scene::CheckEnd() {
 bool j1Scene::Load(pugi::xml_node& data) 
 {
 	level = data.child("level").attribute("current_level").as_int();
+	float loaded_time = data.child("time").attribute("sec").as_float();
+	time.Set(loaded_time);
 	return true;
 }
 
@@ -397,6 +399,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	pugi::xml_node pos = data.append_child("level");
 
 	pos.append_attribute("current_level") = level;
+
+	pugi::xml_node time_node = data.append_child("time");
+	time_node.append_attribute("sec") = time.Read();
 
 	return true;
 }

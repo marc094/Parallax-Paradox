@@ -40,3 +40,13 @@ bool j1Timer::Count(float num)
 
 	return ret;
 }
+
+void j1Timer::Set(float num)
+{
+	started_at = num;
+}
+
+uint32 j1Timer::Started() const
+{
+	return started_at;
+}
