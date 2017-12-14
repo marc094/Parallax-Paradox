@@ -3,19 +3,20 @@
 	<input />
 	<window />
 	<textures />
-	<audio />
+	<audio volumeFX="1" volumeMusic="1" />
 	<map />
 	<scene>
-		<level current_level="2" />
+		<level current_level="1" />
 	</scene>
 	<entities>
-		<position x="438.666077" y="914.064575" />
+		<position x="1409.40393" y="962.140625" />
+		<coins amount="1" />
 	</entities>
 	<collision />
 	<pathfinding />
 	<fonts />
 	<gui />
 	<renderer>
-		<camera x="-73.3339233" y="530.064575" />
+		<camera x="897.403931" y="578.140625" />
 	</renderer>
 </game_state>

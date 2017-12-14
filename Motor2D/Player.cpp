@@ -121,10 +121,15 @@ bool Player::Update(float dt)
 	{
 		App->Reload();
 		App->audio->PlayFx(App->scene->hit_sound);
+		coins = 0;
 	}
 
 	if (lives <= 0)
+	{
+		coins = 0;
 		App->Reload();
+	}
+		
 
 	return true;
 }
@@ -193,6 +198,8 @@ bool Player::Load(pugi::xml_node& data)
 {
 	position.x = data.child("position").attribute("x").as_float();
 	position.y = data.child("position").attribute("y").as_float();
+	coins = data.child("coins").attribute("amount").as_int();
+	App->scene->SumCoin();
 	speed_vect = { 0, 0 };
 	return true;
 }
@@ -203,6 +210,9 @@ bool Player::Save(pugi::xml_node& data) const
 
 	pos.append_attribute("x") = position.x;
 	pos.append_attribute("y") = position.y;
+
+	pugi::xml_node coin = data.append_child("coins");
+	coin.append_attribute("amount") = coins;
 
 	return true;
 }

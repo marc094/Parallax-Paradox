@@ -421,6 +421,7 @@ void j1Scene::SumCoin()
 	coin_lab->setString("X%d", App->entities->player.coins);
 }
 
+
 void button_callback(const char* text) {
 	LOG("%s", text);
 }

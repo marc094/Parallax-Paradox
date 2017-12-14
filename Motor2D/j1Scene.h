@@ -72,7 +72,7 @@ public:
 	uint level_sound = 0;
 	uint coin_sound = 0;
 	uint button_sound = 0;
-
+	State current_state = state;
 private:
 	uint level;
 	uint max_level;
@@ -91,7 +91,7 @@ private:
 	j1Timer time;
 	Label* time_lab;
 	Label* coin_lab;
-	State current_state = state;
+
 };
 
 void Game_start(int, ...);
