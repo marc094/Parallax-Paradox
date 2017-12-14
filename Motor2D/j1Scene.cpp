@@ -108,8 +108,8 @@ bool j1Scene::Start()
 
 		SDL_Rect slider_bar = { 0,0,20,435 };
 		SDL_Rect slider_idle = { 33,0,16,94 };
-		SDL_Rect slider_hover = { 33,103,16,94 };
-		SDL_Rect slider_pressed = { 33,212,16,94 };
+		SDL_Rect slider_pressed = { 33,103,16,94 };
+		SDL_Rect slider_hover = { 33,212,16,94 };
 
 		SDL_Rect h_slider_bar = { 54,0,326,7 };
 		SDL_Rect h_slider_idle = { 58,14,10,21 };
@@ -126,7 +126,6 @@ bool j1Scene::Start()
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
 		Sprite* title_spr = App->gui->AddSprite(w / 2, (h / 2 - 100), title);
-
 
 		//START BUTTON
 		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
@@ -159,10 +158,7 @@ bool j1Scene::Start()
 
 
 		//SETTINGS BUTTON
-		Button* settings_button = App->gui->AddButton(w / 2, 240 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
-			App->scene->settings_window->Enable(true);
-			App->scene->settings_bool = true;
-		}, &button_hover, &button_press);
+		Button* settings_button = App->gui->AddButton(w / 2, 240 + (h / 2), buttons, true, &button_idle, &ShowSettings, &button_hover, &button_press);
 
 		Label* settings = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		settings->setString("SETTINGS");
@@ -172,9 +168,7 @@ bool j1Scene::Start()
 
 		
 		//EXIT BUTTON
-		Button* exit_button = App->gui->AddButton(w / 2, 300 + (h / 2), buttons, true, &button_idle, /*Anonimous function callback*/[]() {
-			App->scene->ret = false;
-		}, &button_hover, &button_press);
+		Button* exit_button = App->gui->AddButton(w / 2, 300 + (h / 2), buttons, true, &button_idle, &exit, &button_hover, &button_press);
 
 		Label* exit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
@@ -185,7 +179,8 @@ bool j1Scene::Start()
 
 		//CREDITS WINDOW
 		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
-		credits_window->SetContentRect(10, 86, 0, 15);
+		credits_window->SetContentRect(10, 87, 0, 15);
+		credits_window->locked = true;
 
 		credits_text = App->gui->AddSprite(0, 0, credits_tex);
 		credits_text->SetAnchor(0.0f, 0.0f);
@@ -202,64 +197,56 @@ bool j1Scene::Start()
 		//SETTINGS WINDOW
 		settings_window = App->gui->AddWindow(w / 2, h / 2, settings_win, false);
 		settings_window->SetContentRect(10, 40, 10, 60);
+		settings_window->locked = true;
 
-		Label* music_set_lab = App->gui->AddLabel(15,30, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* music_set_lab = App->gui->AddLabel(15, 66, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		music_set_lab->SetParent(settings_window);
-		music_set_lab->SetAnchor(0, 0);
+		music_set_lab->SetAnchor(0, 0.5f);
 		music_set_lab->setString("Music:");
 
-		Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2,66 , sliders, true, &h_slider_bar);
+		Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2, 66, sliders, true, &h_slider_bar);
 		music_set_slid->SetParent(settings_window);
 		music_set_slid->SetContentRect(5, 0, 5, 0);
+		music_set_slid->culled = false;
 
-		set_mus_slider = App->gui->AddSlider(music_set_slid->content_rect.w / 2, 0, sliders, true, &h_slider_idle, nullptr, &h_slider_hovered, &h_slider_pressed, 1, music_set_slid);
+		set_mus_slider = App->gui->AddSlider(music_set_slid->content_rect.w / 2, 0, sliders, true, &h_slider_idle, &SetVolumeMusic, &h_slider_hovered, &h_slider_pressed, 1, music_set_slid);
 		set_mus_slider->culled = false;
+		set_mus_slider->rel_pos.x = (App->audio->GetVolumeMusic() * music_set_slid->content_rect.w) + set_mus_slider->initial_pos.x - music_set_slid->content_rect.w * music_set_slid->GetAnchorX();
 
-		Label* fx_set_lab = App->gui->AddLabel(15, 100, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* fx_set_lab = App->gui->AddLabel(15, 132, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		fx_set_lab->SetParent(settings_window);
-		fx_set_lab->SetAnchor(0, 0);
+		fx_set_lab->SetAnchor(0, 0.5f);
 		fx_set_lab->setString("SFX:");
 
+		Sprite* fx_set_slid = App->gui->AddSprite(0.5f * settings_window->content_rect.w, 132, sliders, true, &h_slider_bar);
+		fx_set_slid->SetParent(settings_window);
+		fx_set_slid->SetContentRect(5, 0, 5, 0);
+		fx_set_slid->culled = false;
+
+		Slider* set_fx_slider = App->gui->AddSlider(fx_set_slid->content_rect.w / 2, 0, sliders, true, &h_slider_idle, &SetVolumeFX, &h_slider_hovered, &h_slider_pressed, 1, fx_set_slid);
+		set_fx_slider->culled = false;
+		set_fx_slider->rel_pos.x = (App->audio->GetVolumeFX() * fx_set_slid->content_rect.w) + set_fx_slider->initial_pos.x - fx_set_slid->content_rect.w * fx_set_slid->GetAnchorX();
 
 		Label* fps_set_lab = App->gui->AddLabel(15, 170, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		fps_set_lab->SetParent(settings_window);
-		fps_set_lab->SetAnchor(0, 0);
+		fps_set_lab->SetAnchor(0, 0.5f);
 		fps_set_lab->setString("Framerate:");
 
 	}
 		
 
-	//if (!playing)
-	//{
-	//	if (level == 1)
-	//		App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-	//	else if (level == 2)
-	//		App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
+	if (!playing)
+	{
+		if (level == 1)
+			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+		else if (level == 2)
+			App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
+		else {
+			App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
+		}
 
-	//	playing = true;
-	//}
-
-	/*SDL_Rect win_rect{ 0, 512, 484, 512 };
-	SDL_Texture* tex = App->tex->Load("gui/atlas.png");
-	Window* win = App->gui->AddWindow(0.5f * App->gui->GetGuiSize().x, 0.5f * App->gui->GetGuiSize().y, tex, true, &win_rect);
-	win->SetContentRect(-100, 100);
-	Window* win2 = App->gui->AddWindow(0.0f * win->content_rect.w, 0.0f * win->content_rect.h, tex, true, &win_rect);
-	win2->SetParent(win);
-	win->SetContentRect(50, 50);
-	win2->culled = true;
-	SDL_Rect idle{ 0, 110, 230, 71 };
-	SDL_Rect hovered{ 411, 166, 230, 71 };
-	SDL_Rect pressed{ 641, 166, 230, 71 };
-	Button* butt = App->gui->AddButton(0.5f * win2->content_rect.w, 0.5f * win2->content_rect.h, tex, true, &idle, [win2]() {
-		win2->culled = !win2->culled;
-	}, &hovered, &pressed);
-	butt->SetParent(win2);
-	butt->SetAnchor(0.5f, 0.5f);
-	butt->type = InterfaceElement::Interfacetype::TEXT_INPUT;
-
-	Label* text = App->gui->AddLabel(0.5f * butt->content_rect.w, 0.5f * butt->content_rect.h,
-		30, "fonts/open_sans/OpenSans-Bold.ttf", { 200, 200, 200, 255 }, Label::RenderMode::BLENDED, "Button #%d", 1);
-	text->SetParent(butt);*/
+		playing = true;
+	}
 
 	return true;
 }
@@ -270,9 +257,9 @@ bool j1Scene::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		if (credits_bool && credits_window->enabled)
-			Hide_Credits();
+			Hide_Credits(0);
 		else if (settings_bool && settings_window->enabled)
-			Hide_Settings();
+			Hide_Settings(0);
 		else
 			ret = false;
 	}
@@ -435,38 +422,66 @@ void button_callback(const char* text) {
 	LOG("%s", text);
 }
 
-void Game_start()
+void Game_start(int, ...)
 {
 	App->Reload();
 	App->scene->state = App->scene->IN_GAME;
 }
 
-void Game_continue()
+void Game_continue(int, ...)
 {
 	App->LoadGame();
 	App->Reload();
 	App->scene->state = App->scene->IN_GAME;
 }
 
-void Show_Credits()
+void Show_Credits(int, ...)
 {
 	App->scene->credits_window->Enable(true);
 	App->gui->setFocus(App->scene->credits_window);
 	App->scene->credits_bool = true;
 }
 
-void Hide_Credits()
+void Hide_Credits(int, ...)
 {
 	App->scene->credits_window->Enable(false);
 	App->scene->credits_bool = false;
 }
-void Hide_Settings()
+void Hide_Settings(int, ...)
 {
 	App->scene->settings_window->Enable(false);
 	App->scene->settings_bool = false;
 }
 
-void Drag_Credits()
+void Drag_Credits(int, ...)
 {
 	App->scene->credits_text->rel_pos.y = App->scene->credits_text->initial_pos.y + (int)((App->scene->credits_slider->initial_pos.y - App->scene->credits_slider->rel_pos.y) * 2.3f);
+}
+
+void exit(int, ...)
+{
+	App->scene->ret = false;
+}
+
+void ShowSettings(int, ...) {
+	App->scene->settings_window->Enable(true);
+	App->scene->settings_bool = true;
+}
+
+void SetVolumeFX(int n, ...) {
+	va_list  ap;
+	va_start(ap, n);
+	double percent = va_arg(ap, double);
+	va_end(ap);
+
+	App->audio->SetVolumeFX((float)percent);
+}
+
+void SetVolumeMusic(int n, ...) {
+	va_list  ap;
+	va_start(ap, n);
+	double percent = va_arg(ap, double);
+	va_end(ap);
+
+	App->audio->SetVolumeMusic((float)percent);
 }

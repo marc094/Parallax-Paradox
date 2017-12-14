@@ -67,6 +67,8 @@ bool InterfaceElement::PostUpdate()
 		App->render->DrawQuad(r, 0, 255, 0, 255, 0.0f, false);
 		App->render->DrawLine(r.x, r.y + (int)(r.h * anchor_point.y), r.x + r.w, r.y + (int)(r.h * anchor_point.y), 0, 0, 255, 255, false);
 		App->render->DrawLine(r.x + (int)(r.w * anchor_point.x), r.y, r.x + (int)(r.w * anchor_point.x), r.y + r.h, 0, 0, 255, 255, false);
+		if (parent != nullptr)
+			App->render->DrawLine(parent->abs_pos.x, parent->abs_pos.y, abs_pos.x, abs_pos.y, 255, 255, 0, 255, false);
 	}
 
 	return ret;

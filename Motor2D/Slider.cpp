@@ -2,7 +2,7 @@
 #include "Button.h"
 #include "j1Input.h"
 
-Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim, bool _axis, InterfaceElement* parent) : Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim)
+Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim, bool _axis, InterfaceElement* parent) : Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim)
 {
 	axis = _axis;
 	initial_pos = { (int)_x, (int)_y };
@@ -29,16 +29,15 @@ bool Slider::PreUpdate()
 	r = (parent == nullptr) ? rect : result_rect;
 	if (SDL_IntersectRect(&r, &Mouse, &result) == SDL_TRUE)
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+			current_anim = &pressed_anim;
 			App->gui->setFocus(this);
 			dragging = true;
 			iPoint m = { Mouse.x, Mouse.y };
 			delta_pos_mouse = abs_pos - m;
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
-		{
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE) {
 			current_anim = &hovered_anim;
 
 			if (label != nullptr)
@@ -46,12 +45,18 @@ bool Slider::PreUpdate()
 			OnHover();
 		}
 	}
+	else {
+		current_anim = &idle_anim;
+	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging)
 	{
 		DragSlider();
-		if (OnClick != nullptr)
-			OnClick();
+		if (OnClick != nullptr) {
+			float percent = (axis) ? (float)(rel_pos.x - initial_pos.x + parent->content_rect.w * parent->GetAnchorX()) / (float)parent->content_rect.w :
+				(float)(rel_pos.y - initial_pos.y + parent->content_rect.h * parent->GetAnchorY()) / (float)parent->content_rect.h;
+			OnClick(1, percent);
+		}
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 	}
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging)

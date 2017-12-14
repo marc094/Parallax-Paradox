@@ -10,6 +10,8 @@
     <vsync value="false"/>
   </renderer>
 
+  <audio volumeFX = "1.0f" volumeMusic = "1.0f"/>
+
   <window>
     <resolution width="1024" height="768" scale="1"/>
     <fullscreen value="false"/>

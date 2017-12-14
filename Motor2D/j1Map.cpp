@@ -46,7 +46,7 @@ void j1Map::Draw()
 	bool player_blit = false;
 	if(map_loaded == false)
 		return;
-	App->render->Blit(background, 0, 0,0,0.7f);
+	App->render->Blit(background, 0, 0, 0, 0.7f);
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
 	LayerID layer = BACK_LAYER;
 	Uint8 alpha = 255;
@@ -79,10 +79,6 @@ void j1Map::Draw()
 	SDL_SetTextureAlphaMod(data.tilesets[0]->texture, 255);
 
 }
-
-//iPoint getWorldPositionFromMap(int x, int y, uint tile_width) {
-//	return{ x * (int)tile_width, y * (int)tile_width };
-//}
 
 iPoint j1Map::MapToWorld(int x, int y) const
 {

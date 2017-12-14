@@ -34,10 +34,27 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	// Set the fx volume (0.0f - 1.0f)
+	void SetVolumeFX(float percent = 1.0f);
+
+	// Get the fx volume (0.0f - 1.0f)
+	float GetVolumeFX();
+
+	// Set the fx volume (0.0f - 1.0f)
+	void SetVolumeMusic(float percent = 1.0f);
+
+	// Get the fx volume (0.0f - 1.0f)
+	float GetVolumeMusic();
+
+	bool Load(pugi::xml_node& config) override;
+
+	bool Save(pugi::xml_node& config) const override;
+
 private:
 
 	_Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+	float volumeFX = 1.0f, volumeMusic = 1.0f;
 };
 
 #endif // __j1AUDIO_H__

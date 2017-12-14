@@ -47,8 +47,11 @@ typedef unsigned __int64 uint64;
 typedef unsigned char uchar;
 
 //typedef void(*Callback_v)(void);
-typedef std::function<void(void)> Callback_v;
-typedef void(*Callback_c)(const char*);
+typedef /*std::function<*/void(*Callback)(int n, ...)/*> Callback*/;
+//template <class Cb> void(*Callback)(void);
+//typedef void(*Callback_c)(const char*);
+
+//template <class ARG_TYPE> class std::function<void(ARG_TYPE)> Callback;
 
 template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 {

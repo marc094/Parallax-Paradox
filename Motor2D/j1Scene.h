@@ -94,11 +94,14 @@ private:
 	State current_state = state;
 };
 
-void button_callback(const char*);
-void Game_start();
-void Game_continue();
-void Show_Credits();
-void Hide_Credits();
-void Hide_Settings();
-void Drag_Credits();
+void Game_start(int, ...);
+void Game_continue(int, ...);
+void Show_Credits(int, ...);
+void Hide_Credits(int, ...);
+void Hide_Settings(int, ...);
+void Drag_Credits(int, ...);
+void exit(int, ...);
+void ShowSettings(int, ...);
+void SetVolumeFX(int, ...);
+void SetVolumeMusic(int, ...);
 #endif // __j1SCENE_H__

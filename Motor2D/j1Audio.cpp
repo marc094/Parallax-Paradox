@@ -31,7 +31,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
-	// load support for the JPG and PNG image formats
+	// load support for the OGG sound format
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 
@@ -49,6 +49,9 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		active = false;
 		ret = true;
 	}
+
+	volumeFX = config.attribute("volumeFX").as_float();
+	volumeMusic = config.attribute("volumeMusic").as_float();
 
 	return ret;
 }
@@ -170,4 +173,40 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void j1Audio::SetVolumeFX(float percent)
+{
+	Mix_Volume(-1, 128 * percent);
+	volumeFX = percent;
+}
+
+float j1Audio::GetVolumeFX()
+{
+	return volumeFX;
+}
+
+void j1Audio::SetVolumeMusic(float percent)
+{
+	Mix_VolumeMusic(128 * percent);
+	volumeMusic = percent;
+}
+
+float j1Audio::GetVolumeMusic()
+{
+	return volumeMusic;
+}
+
+bool j1Audio::Load(pugi::xml_node & config)
+{
+	volumeFX = config.attribute("volumeFX").as_float(1.0f);
+	volumeMusic = config.attribute("volumeMusic").as_float(1.0f);
+	return true;
+}
+
+bool j1Audio::Save(pugi::xml_node & config) const
+{
+	config.append_attribute("volumeFX") = volumeFX;
+	config.append_attribute("volumeMusic") = volumeMusic;
+	return true;
 }

@@ -6,7 +6,7 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 
-Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback_v callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
+Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
 	: Sprite(_x, _y, _tex, _enabled, _anim)
 {
 	type = BUTTON;
@@ -26,7 +26,6 @@ Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	OnClick = callback;
 	interactuable = true;
 }
-
 
 Button::~Button()
 {
@@ -66,7 +65,7 @@ bool Button::PreUpdate()
 			//SetFocus();
 			if (OnClick != nullptr)
 			{
-				OnClick();
+				OnClick(0);
 				if (type != SLIDER)
 					App->audio->PlayFx(App->scene->button_sound);
 			}
@@ -78,7 +77,7 @@ bool Button::PreUpdate()
 			current_anim = &pressed_anim;
 
 			if (OnClick != nullptr)
-				OnClick();
+				OnClick(0);
 		}
 		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 		{
