@@ -61,11 +61,6 @@ bool Label::PostUpdate()
 {
 	ComputeRects();
 
-	rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
-	rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
-	
-
-
 	if (font != nullptr) {
 		int d_x = 0, d_y = 0;
 		/*switch (alignment)

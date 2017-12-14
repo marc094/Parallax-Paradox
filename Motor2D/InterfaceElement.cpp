@@ -20,12 +20,6 @@ bool InterfaceElement::Enable(bool enable)
 	this->enabled = enable;
 	if (!enabled && in_focus)
 		App->gui->setFocus(nullptr);
-	/*p2List_item<InterfaceElement*>* current_element = elements.start;
-	while (current_element != nullptr)
-	{
-		current_element->data->Enable(enable);
-		current_element = current_element->next;
-	}*/
 	return this->enabled;
 }
 
@@ -57,27 +51,6 @@ bool InterfaceElement::PostUpdate()
 {
 	bool ret = true;
 	ComputeRects();
-	rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
-	rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
-
-	if (culled && parent != nullptr) {
-		int dx = 0, dy = 0, dw = 0, dh = 0;
-
-		dx = result_rect.x - rect.x;
-		dy = result_rect.y - rect.y;
-		dw = result_rect.w - rect.w;
-		dh = result_rect.h - rect.h;
-
-		SDL_Rect actual_anim_rect = { 0, 0, 0, 0 };
-		actual_anim_rect = (current_anim != nullptr) ? *current_anim : actual_anim_rect;
-		actual_anim_rect.w += dw;
-		actual_anim_rect.h += dh;
-		actual_anim_rect.x += dx;
-		actual_anim_rect.y += dy;
-
-		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect);
-	}
-	else if (current_anim != nullptr) App->render->BlitGui(tex, rect.x, rect.y, current_anim);
 
 	for (p2List_item<InterfaceElement*>* current_element = elements.start;
 		current_element != nullptr && ret == true;
@@ -265,4 +238,7 @@ void InterfaceElement::ComputeRects()
 		SetContentRect();
 		result_rect = content_rect;
 	}
+
+	rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
+	rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;
 }

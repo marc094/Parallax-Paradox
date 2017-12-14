@@ -36,30 +36,17 @@ Sprite::~Sprite()
 
 bool Sprite::PostUpdate()
 {
-	//current_anim = &idle_anim;
+	if (culled && parent != nullptr) {
+		SDL_Rect actual_anim_rect = { 0, 0, 0, 0 };
+		actual_anim_rect = (current_anim != nullptr) ? *current_anim : actual_anim_rect;
+		actual_anim_rect.x += result_rect.x - rect.x;
+		actual_anim_rect.y += result_rect.y - rect.y;
+		actual_anim_rect.w += result_rect.w - rect.w;
+		actual_anim_rect.h += result_rect.h - rect.h;
 
-	//if (in_focus) {
-		/*ComputeRects();
-		rect.x = (int)(-anchor_point.x * rect.w) + abs_pos.x;
-		rect.y = (int)(-anchor_point.y * rect.h) + abs_pos.y;*/
-
-		/*int dx = 0, dy = 0, dw = 0, dh = 0;
-		if (parent != nullptr) {
-			//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
-			dx = result_rect.x - rect.x;
-			dy = result_rect.y - rect.y;
-			dw = result_rect.w - rect.w;
-			dh = result_rect.h - rect.h;
-		}
-
-		SDL_Rect actual_anim_rect = *current_anim;
-		actual_anim_rect.w += dw;
-		actual_anim_rect.h += dh;
-		actual_anim_rect.x += dx;
-		actual_anim_rect.y += dy;
-
-		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect);*/
-	//}
+		App->render->BlitGui(tex, result_rect.x, result_rect.y, &actual_anim_rect);
+	}
+	else App->render->BlitGui(tex, rect.x, rect.y, current_anim);
 
 	bool ret = InterfaceElement::PostUpdate();
 	return ret;

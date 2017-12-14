@@ -43,14 +43,7 @@ bool Window::PreUpdate()
 			delta_pos_mouse = abs_pos - m;
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
-			}
-
-	/*for (p2List_item<InterfaceElement*>* current_element = elements.end;
-		current_element != nullptr;
-		current_element = current_element->prev)
-	{
-		current_element->data->PreUpdate();
-	}*/
+	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true && dragging == true)
 	{
