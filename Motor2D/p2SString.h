@@ -362,7 +362,7 @@ public:
 		uint i = 0;
 		int result = 0;
 		bool err = false;
-		while (str[i] != '\0' && err == false) {
+		while (str[i] != '\0' && !err) {
 			switch (str[i]) {
 			case '0':
 			case '1':
@@ -387,6 +387,7 @@ public:
 		}
 		return result;
 	}
+
 private:
 
 	void Alloc(unsigned int requiered_memory)

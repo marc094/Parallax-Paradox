@@ -41,7 +41,7 @@ public:
 	bool hit;
 	bool invulnerable;
 
-	void BlitPlayer(float dt);
+	void BlitPlayer();
 
 private:
 	float		scale = 1.0f;

@@ -45,12 +45,12 @@ bool Window::PreUpdate()
 		}
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true && dragging == true)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging && !locked)
 	{
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		DragWindow();
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging == true)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging)
 		dragging = false;
 
 	App->input->BlockMouse();

@@ -39,7 +39,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-void j1Map::Draw(float dt)
+void j1Map::Draw()
 {
 	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::SlateBlue);
 
@@ -71,7 +71,7 @@ void j1Map::Draw(float dt)
 		item_layer = item_layer->next;
 		if (!player_blit)
 		{
-			App->entities->player.BlitPlayer(dt);
+			App->entities->player.BlitPlayer();
 			player_blit = true;
 		}
 	}
@@ -256,7 +256,7 @@ bool j1Map::Load(const char* file_name)
 						type = object2.attribute("value").as_int();
 				}
 		
-				App->entities->Add_Enemy(static_cast<BaseEnemy::Type>(type), { x,y }, static_cast<LayerID>(layer));
+				App->entities->Add_Enemy(static_cast<BaseEnemy::Type>(type), { x, y }, static_cast<LayerID>(layer));
 			}
 		}
 	}

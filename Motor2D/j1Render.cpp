@@ -28,7 +28,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if(config.child("vsync").attribute("value").as_bool(true) == true)
+	if(config.child("vsync").attribute("value").as_bool(true))
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
@@ -131,7 +131,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	float scale = App->win->GetScale();
 	SDL_Rect rect;
-	if (scaling == true)
+	if (scaling)
 	{
 		if (use_camera)
 		{

@@ -48,10 +48,9 @@ bool j1Scene::Start()
 	if (level > max_level)
 		level = 1;
 
-
 	button_sound = App->audio->LoadFx("audio/FX/Button.wav");
 
-	if (state == IN_GAME)
+	if (current_state == IN_GAME)
 	{
 		uint w;
 		uint h;
@@ -95,7 +94,7 @@ bool j1Scene::Start()
 
 		App->entities->active = true;
 	}
-	else
+	else if (current_state == IN_MENU)
 	{
 		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background2.png");
@@ -192,7 +191,7 @@ bool j1Scene::Start()
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
 
-		Sprite* slider = App->gui->AddSprite(0.97f * credits_window->content_rect.w, credits_window->content_rect.h / 2 - 15, sliders, true, &slider_bar);
+		Sprite* slider = App->gui->AddSprite((int)(0.97f * credits_window->content_rect.w), credits_window->content_rect.h / 2 - 20, sliders, true, &slider_bar);
 		slider->culled = false;
 		slider->SetParent(credits_window);
 		slider->SetContentRect(0, 48, 0, 48);
@@ -268,47 +267,13 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-
-	return true;
-}
-
-// Called each loop iteration
-bool j1Scene::Update(float dt)
-{
-	if (state == IN_GAME && !App->entities->player.hit)
-	{
-		CheckInput(dt);
-	}
-
-	//App->render->Blit(img, 0, 0);
-	if (state == IN_GAME)
-	{
-		App->map->Draw(dt);
-
-		time_lab->setString("%.2f", time.ReadSec());
-	}
-
-	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count());
-
-	//App->win->SetTitle(title.GetString());
-	return true;
-}
-
-// Called each loop iteration
-bool j1Scene::PostUpdate()
-{
-
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		if (credits_bool && credits_window->enabled)
 			Hide_Credits();
 		else if (settings_bool && settings_window->enabled)
 			Hide_Settings();
-		else		
+		else
 			ret = false;
 	}
 
@@ -341,7 +306,7 @@ bool j1Scene::PostUpdate()
 		else App->SetFramerateCap(-1);
 	}
 
-	if (state == IN_GAME)
+	if (current_state == IN_GAME)
 		CheckEnd();
 
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
@@ -350,6 +315,33 @@ bool j1Scene::PostUpdate()
 		state = IN_GAME;
 	}
 	return ret;
+}
+
+// Called each loop iteration
+bool j1Scene::Update(float dt)
+{
+	if (current_state == IN_GAME && !App->entities->player.hit)
+	{
+		CheckInput(dt);
+		App->map->Draw();
+		time_lab->setString("%.2f", time.ReadSec());
+	}
+
+	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
+	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+					App->map->data.width, App->map->data.height,
+					App->map->data.tile_width, App->map->data.tile_height,
+					App->map->data.tilesets.count());
+
+	//App->win->SetTitle(title.GetString());
+	return true;
+}
+
+// Called each loop iteration
+bool j1Scene::PostUpdate()
+{
+	current_state = state;
+	return true;
 }
 
 // Called before quitting
@@ -371,20 +363,15 @@ void j1Scene::ChangeScene(uint _level) {
 void j1Scene::CheckInput(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
-		//App->player->Accelerate(0, -1);
-		//App->render->camera.y -= 1;
 		App->entities->player.SwapLayer();
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		//App->render->camera.y += 1;
 		App->entities->player.Accelerate(0, ACCELERATION, dt);
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		//App->render->camera.x -= 1;
 		App->entities->player.Accelerate(-ACCELERATION, 0, dt);
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		//App->render->camera.x += 1;
 		App->entities->player.Accelerate(ACCELERATION, 0, dt);
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping() && !App->entities->player.god_mode)
@@ -404,7 +391,7 @@ void j1Scene::CheckInput(float dt)
 }
 
 void j1Scene::CheckEnd() {
-	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 30)
+	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 25)
 		App->scene->ChangeScene(level + 1);
 }
 
@@ -481,5 +468,5 @@ void Hide_Settings()
 
 void Drag_Credits()
 {
-	App->scene->credits_text->rel_pos.y = App->scene->credits_text->initial_pos.y + ((App->scene->credits_slider->initial_pos.y - App->scene->credits_slider->rel_pos.y) * 2.3f);
+	App->scene->credits_text->rel_pos.y = App->scene->credits_text->initial_pos.y + (int)((App->scene->credits_slider->initial_pos.y - App->scene->credits_slider->rel_pos.y) * 2.3f);
 }

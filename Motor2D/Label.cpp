@@ -38,7 +38,7 @@ bool Label::PreUpdate()
 	bool ret = InterfaceElement::PreUpdate();
 
 
-	if (font != nullptr && text_changed && ret == true) {
+	if (font != nullptr && text_changed && ret) {
 		if (font_changed) {
 			App->font->Unload(font);
 			font = nullptr;

@@ -159,7 +159,7 @@ bool BaseEnemy::Update(float dt)
 	Break(dt);
 
 	//Gravity
-	if (gravity == true)
+	if (gravity)
 		Accelerate(0, GRAVITY, dt);
 	else speed_vect.y = 0.0f;
 
@@ -228,7 +228,7 @@ void BaseEnemy::FollowPath(float delta_time)
 		if (path_point == position.to_iPoint())
 			current_path_index++;
 
-		if (App->debug == true) {
+		if (App->debug) {
 			for (uint i = 0; i < path_length; i++) {
 				iPoint pos = App->map->MapToWorld(path[i]);
 				iRect aux_rect;

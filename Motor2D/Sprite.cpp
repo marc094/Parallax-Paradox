@@ -18,7 +18,7 @@ Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	{
 		idle_anim.x = 0;
 		idle_anim.y = 0;
-		SDL_QueryTexture(tex, NULL, NULL, &idle_anim.w, &idle_anim.h);
+		assert(SDL_QueryTexture(tex, NULL, NULL, &idle_anim.w, &idle_anim.h) == 0);
 	}
 
 	rect.w = idle_anim.w;
@@ -36,9 +36,12 @@ Sprite::~Sprite()
 
 bool Sprite::PostUpdate()
 {
+	if (current_anim == nullptr)
+		return false;
+
 	if (culled && parent != nullptr) {
 		SDL_Rect actual_anim_rect = { 0, 0, 0, 0 };
-		actual_anim_rect = (current_anim != nullptr) ? *current_anim : actual_anim_rect;
+		actual_anim_rect = *current_anim;
 		actual_anim_rect.x += result_rect.x - rect.x;
 		actual_anim_rect.y += result_rect.y - rect.y;
 		actual_anim_rect.w += result_rect.w - rect.w;

@@ -18,7 +18,7 @@ public:
 
 	j1Scene();
 
-	enum state {
+	enum State {
 		IN_GAME,
 		IN_MENU,
 		TRANSITION
@@ -91,7 +91,7 @@ private:
 	j1Timer time;
 	Label* time_lab;
 	Label* coin_lab;
-
+	State current_state = state;
 };
 
 void button_callback(const char*);

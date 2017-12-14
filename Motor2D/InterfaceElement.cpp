@@ -38,7 +38,7 @@ bool InterfaceElement::PreUpdate()
 	bool ret = true;
 
 	for (p2List_item<InterfaceElement*>* current_element = elements.end;
-		current_element != nullptr && ret == true;
+		current_element != nullptr && ret;
 		current_element = current_element->prev)
 	{
 		if (current_element->data->isEnabled())
@@ -53,7 +53,7 @@ bool InterfaceElement::PostUpdate()
 	ComputeRects();
 
 	for (p2List_item<InterfaceElement*>* current_element = elements.start;
-		current_element != nullptr && ret == true;
+		current_element != nullptr && ret;
 		current_element = current_element->next)
 	{
 		if (current_element->data->isEnabled())

@@ -90,7 +90,7 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 
 bool j1PathFinding::Update(float dt)
 {
-	if (App->debug == true)
+	if (App->debug)
 		DebugBlitMap();
 	return true;
 }
@@ -105,7 +105,7 @@ bool j1PathFinding::CheckBoundaries(const iPoint& pos) const
 // Utility: returns true is the tile is walkable
 bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer, bool ground) const
 {
-	if (ground == true)
+	if (ground)
 		return (GetTileAtGround(pos, layer) == 0);
 	else
 		return true;

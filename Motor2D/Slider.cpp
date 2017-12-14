@@ -37,18 +37,25 @@ bool Slider::PreUpdate()
 			delta_pos_mouse = abs_pos - m;
 			App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_IDLE && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
+		{
+			current_anim = &hovered_anim;
+
+			if (label != nullptr)
+				label->setColor({ 228, 204, 42, 255 });
+			OnHover();
+		}
 	}
 
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus == true && dragging == true)
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT && in_focus && dragging)
 	{
 		DragSlider();
-		OnClick();
+		if (OnClick != nullptr)
+			OnClick();
 		App->input->BlockMouseEvent(SDL_BUTTON_LEFT);
 	}
-	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging == true)
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging)
 		dragging = false;
-
-	//App->input->BlockMouse();
 
 	return ret;
 }

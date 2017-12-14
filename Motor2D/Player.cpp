@@ -77,6 +77,8 @@ bool Player::Update(float dt)
 {
 	SelectAnim(speed_vect);
 
+	current_animation->GetCurrentFrame(dt);
+	god_mode_aura.GetCurrentFrame(dt);
 	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
 	if (onhit_timer.Count(0.2f))
@@ -88,7 +90,7 @@ bool Player::Update(float dt)
 
 	}
 
-	if (grounded == true && is_jumping == true)
+	if (grounded && is_jumping)
 	{
 		is_jumping = false;
 		landing_anim.Reset();
@@ -100,7 +102,9 @@ bool Player::Update(float dt)
 
 	//Gravity
 	Accelerate(0, GRAVITY, dt);
-	
+
+	aura_angle += 90.0f * dt;
+
 	float camera_speed = 310.0f * dt;
 	fPoint cam_vec, c;
 	c.x = (position.x * scale) - (App->render->camera.w / 2.0f);
@@ -143,7 +147,7 @@ bool Player::CleanUp()
 
 void Player::SelectAnim(fPoint speed_vect)
 {
-	if (is_jumping == true)
+	if (is_jumping)
 	{
 		current_animation = &jumping_anim;
 
@@ -181,7 +185,6 @@ void Player::SelectAnim(fPoint speed_vect)
 	else 
 	{		
 		current_animation = &idle_anim;
-
 	}
 		
 }
@@ -238,14 +241,13 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 	//speed_vect = sp * 30;
 }
 
-void Player::BlitPlayer(float dt) 
+void Player::BlitPlayer() 
 {
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->GetCurrentFrame(dt).rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped, true, color);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->CurrentFrame().rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, true, flipped, true, color);
 	
 	if (god_mode)
 	{
-		aura_angle += 90.0f * dt;
-		iRect frame_rect = god_mode_aura.GetCurrentFrame(dt).rect;
+		iRect frame_rect = god_mode_aura.CurrentFrame().rect;
 		App->render->Blit(App->entities->texture, (int)position.x + (collider.w / 2) - (frame_rect.w / 2), (int)position.y + (collider.h / 2) - (frame_rect.h / 2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
 	}
 
