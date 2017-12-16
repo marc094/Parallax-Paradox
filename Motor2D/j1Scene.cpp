@@ -21,6 +21,7 @@ j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
 	level = 1;
+
 }
 
 // Destructor
@@ -49,8 +50,20 @@ bool j1Scene::Start()
 		level = 1;
 
 	button_sound = App->audio->LoadFx("audio/FX/Button.wav");
+	if (current_state == INTRO)
+	{
+		uint w;
+		uint h;
+		App->win->GetWindowSize(w, h);
+		App->entities->active = false;
+		logo_back = App->tex->Load("textures/intro background.png");
+		logo = App->tex->Load("textures/Marcopolo logo.png");
+		Sprite* logo_b_spr = App->gui->AddSprite(w / 2, h / 2, logo_back);
+		Sprite* logo_spr = App->gui->AddSprite(w / 2, h / 2, logo);
 
-	if (current_state == IN_GAME)
+	
+	}
+	else if (current_state == IN_GAME)
 	{
 		uint w;
 		uint h;
@@ -298,6 +311,14 @@ bool j1Scene::PreUpdate()
 
 	if (current_state == IN_GAME)
 		CheckEnd();
+	else if (current_state == INTRO)
+	{
+		if (intro_time.Count(4))
+		{
+			App->Reload();
+			state = IN_MENU;
+		}
+	}
 
 	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{

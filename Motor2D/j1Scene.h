@@ -21,8 +21,9 @@ public:
 	enum State {
 		IN_GAME,
 		IN_MENU,
-		TRANSITION
-	}state = IN_MENU;
+		TRANSITION,
+		INTRO
+	}state = INTRO;
 
 	// Destructor
 	virtual ~j1Scene();
@@ -85,10 +86,13 @@ private:
 	SDL_Texture* settings_win = nullptr;
 	SDL_Texture* credits_tex = nullptr;
 	SDL_Texture* sliders = nullptr;
+	SDL_Texture* logo = nullptr;
+	SDL_Texture* logo_back = nullptr;
 	p2List<Button*> menu_buttons;
 	p2List<Sprite*> lives;
 	SDL_Texture* lifes_sprite;
 	j1Timer time;
+	j1Timer intro_time;
 	Label* time_lab;
 	Label* coin_lab;
 

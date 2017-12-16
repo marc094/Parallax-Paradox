@@ -15,7 +15,6 @@ public:
 	float ReadSec() const;
 	bool Count(float num);
 	void Set(float num);
-	void UpdateLoadedtime() const;
 	uint32 Started() const;
 	uint32  loaded_time = 0;
 
