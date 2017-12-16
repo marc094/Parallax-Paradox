@@ -85,6 +85,9 @@
     <ClCompile Include="Slider.cpp">
       <Filter>Desenvolupament  ========\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="j1Transition.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -194,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="Slider.h">
       <Filter>Desenvolupament  ========\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Transition.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ class j1Collision;
 class j1PathFinding;
 class j1Fonts;
 class j1Gui;
+class j1Transition;
 
 class j1App
 {
@@ -103,6 +104,7 @@ public:
 	j1PathFinding*		pathfinding = nullptr;
 	j1Fonts*			font = nullptr;
 	j1Gui*				gui = nullptr;
+	j1Transition*		transition = nullptr;
 
 	bool debug = false;
 
