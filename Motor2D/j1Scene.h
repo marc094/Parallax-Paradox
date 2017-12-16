@@ -74,6 +74,7 @@ public:
 	uint coin_sound = 0;
 	uint button_sound = 0;
 	State current_state = state;
+	j1Timer time;
 private:
 	uint level;
 	uint max_level;
@@ -91,7 +92,6 @@ private:
 	p2List<Button*> menu_buttons;
 	p2List<Sprite*> lives;
 	SDL_Texture* lifes_sprite;
-	j1Timer time;
 	j1Timer intro_time;
 	Label* time_lab;
 	Label* coin_lab;

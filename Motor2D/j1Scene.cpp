@@ -473,6 +473,7 @@ void button_callback(const char* text) {
 void Game_start(int, ...)
 {
 	App->Reload();
+	App->scene->time.Start();
 	App->scene->state = App->scene->IN_GAME;
 
 }
@@ -481,6 +482,7 @@ void Game_continue(int, ...)
 {
 	App->LoadGame();
 	App->Reload();
+	App->scene->time.Start();
 	App->scene->state = App->scene->IN_GAME;
 }
 
