@@ -108,4 +108,8 @@ void exit(int, ...);
 void ShowSettings(int, ...);
 void SetVolumeFX(int, ...);
 void SetVolumeMusic(int, ...);
+void Fps_30(int, ...);
+void Fps_60(int, ...);
+void Fps_Uncapped(int, ...);
+
 #endif // __j1SCENE_H__

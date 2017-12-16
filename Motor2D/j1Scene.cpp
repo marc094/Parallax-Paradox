@@ -226,13 +226,14 @@ bool j1Scene::Start()
 		settings_window->SetContentRect(10, 40, 10, 60);
 		settings_window->locked = true;
 
-		Label* music_set_lab = App->gui->AddLabel(15, 66, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* music_set_lab = App->gui->AddLabel(15, 80, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		music_set_lab->SetParent(settings_window);
 		music_set_lab->SetAnchor(0, 0.5f);
 		music_set_lab->setString("Music:");
 
-		Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2, 66, sliders, true, &h_slider_bar);
+		Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2, 80, sliders, true, &h_slider_bar);
 		music_set_slid->SetParent(settings_window);
+		music_set_slid->SetAnchor(0.5f, 0.0f);
 		music_set_slid->SetContentRect(5, 0, 5, 0);
 		music_set_slid->culled = false;
 
@@ -240,13 +241,14 @@ bool j1Scene::Start()
 		set_mus_slider->culled = false;
 		set_mus_slider->rel_pos.x = (App->audio->GetVolumeMusic() * music_set_slid->content_rect.w) + set_mus_slider->initial_pos.x - music_set_slid->content_rect.w * music_set_slid->GetAnchorX();
 
-		Label* fx_set_lab = App->gui->AddLabel(15, 132, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* fx_set_lab = App->gui->AddLabel(15, 160, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		fx_set_lab->SetParent(settings_window);
 		fx_set_lab->SetAnchor(0, 0.5f);
 		fx_set_lab->setString("SFX:");
 
-		Sprite* fx_set_slid = App->gui->AddSprite(0.5f * settings_window->content_rect.w, 132, sliders, true, &h_slider_bar);
+		Sprite* fx_set_slid = App->gui->AddSprite(0.5f * settings_window->content_rect.w, 160, sliders, true, &h_slider_bar);
 		fx_set_slid->SetParent(settings_window);
+		fx_set_slid->SetAnchor(0.5f, 0.0f);
 		fx_set_slid->SetContentRect(5, 0, 5, 0);
 		fx_set_slid->culled = false;
 
@@ -254,15 +256,32 @@ bool j1Scene::Start()
 		set_fx_slider->culled = false;
 		set_fx_slider->rel_pos.x = (App->audio->GetVolumeFX() * fx_set_slid->content_rect.w) + set_fx_slider->initial_pos.x - fx_set_slid->content_rect.w * fx_set_slid->GetAnchorX();
 
-		Label* fps_set_lab = App->gui->AddLabel(15, 170, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		Label* fps_set_lab = App->gui->AddLabel(15, 240, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		fps_set_lab->SetParent(settings_window);
 		fps_set_lab->SetAnchor(0, 0.5f);
 		fps_set_lab->setString("Framerate:");
 
+		Button* fps_button_30 = App->gui->AddButton(0.2f * settings_window->content_rect.w, 290, buttons, true, &button_idle, &Fps_30, &button_hover, &button_press);
+		fps_button_30->SetParent(settings_window);
+
+		Label* fps_label_30 = App->gui->AddLabel(0.5f * fps_button_30->content_rect.w, 0.5f * fps_button_30->content_rect.h, 33, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
+		fps_label_30->setString("30 fps");
+		fps_label_30->SetParent(fps_button_30);
+
+		Button* fps_button_60 = App->gui->AddButton(0.5f * settings_window->content_rect.w, 290, buttons, true, &button_idle, &Fps_60, &button_hover, &button_press);
+		fps_button_60->SetParent(settings_window);
+
+		Label* fps_label_60 = App->gui->AddLabel(0.5f * fps_button_60->content_rect.w, 0.5f * fps_button_60->content_rect.h, 33, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
+		fps_label_60->setString("60 fps");
+		fps_label_60->SetParent(fps_button_60);
+
+		Button* fps_button_Uncapped = App->gui->AddButton(0.8f * settings_window->content_rect.w, 290, buttons, true, &button_idle, &Fps_Uncapped, &button_hover, &button_press);
+		fps_button_Uncapped->SetParent(settings_window);
+
+		Label* fps_label_Uncapped = App->gui->AddLabel(0.5f * fps_button_Uncapped->content_rect.w, 0.5f * fps_button_Uncapped->content_rect.h, 33, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
+		fps_label_Uncapped->setString("Uncapped");
+		fps_label_Uncapped->SetParent(fps_button_Uncapped);
 	}
-		
-
-
 
 	return true;
 }
@@ -514,4 +533,19 @@ void SetVolumeMusic(int n, ...) {
 	va_end(ap);
 
 	App->audio->SetVolumeMusic((float)percent);
+}
+
+void Fps_30(int, ...)
+{
+	App->SetFramerateCap(30);
+}
+
+void Fps_60(int, ...)
+{
+	App->SetFramerateCap(60);
+}
+
+void Fps_Uncapped(int, ...)
+{
+	App->SetFramerateCap(-1);
 }
