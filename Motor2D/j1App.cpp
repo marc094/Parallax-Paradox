@@ -472,14 +472,14 @@ bool j1App::ReloadNow() {
 		map->CleanUp() &
 		scene->CleanUp() &
 		entities->CleanUp() &
-		audio->CleanUp() &
+		//audio->CleanUp() &
 		font->CleanUp() &
 		gui->CleanUp();
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
 		map->Awake(config.child(map->name.GetString())) &
-		audio->Awake(config.child(audio->name.GetString())) &
+		//audio->Awake(config.child(audio->name.GetString())) &
 		scene->Awake(config.child(scene->name.GetString())) &
 		entities->Awake(config.child(entities->name.GetString())) &
 		font->Awake(config.child(font->name.GetString())) &
@@ -488,7 +488,7 @@ bool j1App::ReloadNow() {
 	if (ret)
 		ret = tex->Start() &&
 		map->Start() &&
-		audio->Start() &&
+		//audio->Start() &&
 		scene->Start() &&
 		entities->Start() &&
 		font->Start() &&
