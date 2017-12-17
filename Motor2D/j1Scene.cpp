@@ -138,6 +138,17 @@ bool j1Scene::Start()
 		App->audio->PlayFx(level_sound);
 
 		App->entities->active = true;
+		if (level == 1)
+		{
+			App->entities->Add_Coin({ 1474, 856 });
+			App->entities->Add_Coin({ 900, 840 });
+			App->entities->Add_Coin({ 400, 1000 });
+			App->entities->Add_Coin({ 1000, 600 });
+			App->entities->Add_Coin({ 1480, 585 });
+			App->entities->Add_Coin({ 1185, 216 });
+
+		}
+	
 	}
 	else if (current_state == IN_MENU)
 	{
