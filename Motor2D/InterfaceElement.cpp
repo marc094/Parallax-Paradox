@@ -94,7 +94,18 @@ bool InterfaceElement::PostUpdate()
 
 bool InterfaceElement::CleanUp()
 {
-	return true;
+	bool ret = true;
+	for (p2List_item<InterfaceElement*>* current_element = elements.end;
+		current_element != nullptr && ret;
+		current_element = current_element->prev)
+	{
+		ret = current_element->data->CleanUp();
+		delete current_element->data;
+	}
+
+	elements.clear();
+
+	return ret;
 }
 
 SDL_Rect InterfaceElement::getRect() const

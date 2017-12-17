@@ -47,18 +47,18 @@ public:
 	Transition TransitionType(Transition t = Transition::NONE);
 	bool MakeTransition(Callback _cb, Transition _type = Transition::NONE, float time = 1.0f);
 
-private:
-
-	void Fade_To_Black();
-	void Scrolling();
-	void LoadScreen();
-
 	enum FadeState {
 		NOT_FADING = -1,
 		FADING_OUT,
 		FADING_IN
 	} fade_state = FadeState::NOT_FADING;
 
+private:
+
+	void Fade_To_Black();
+	void Scrolling();
+	void LoadScreen();
+	
 	enum ScrollState {
 		NOT_SCROLLING = -1,
 		SNAPSHOT,

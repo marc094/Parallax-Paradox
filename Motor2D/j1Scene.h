@@ -60,6 +60,9 @@ public:
 
 	void ChangeLifes();
 	void SumCoin();
+
+	Window* CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_Rect h_slider_idle, SDL_Rect h_slider_hovered, SDL_Rect h_slider_pressed, SDL_Rect button_idle, SDL_Rect button_hover, SDL_Rect button_press);
+
 	Window* credits_window = nullptr;
 	Window* settings_window = nullptr;
 	Slider* credits_slider;
@@ -75,6 +78,7 @@ public:
 	uint button_sound = 0;
 	State current_state = state;
 	j1Timer time;
+
 private:
 	uint level;
 	uint max_level;
@@ -111,5 +115,8 @@ void SetVolumeMusic(int, ...);
 void Fps_30(int, ...);
 void Fps_60(int, ...);
 void Fps_Uncapped(int, ...);
+void DoReload(int, ...);
+void DoLoadInGame(int, ...);
+void DoLoadMenu(int, ...);
 
 #endif // __j1SCENE_H__

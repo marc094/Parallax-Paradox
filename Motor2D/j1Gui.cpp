@@ -89,11 +89,12 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
-	p2List_item<InterfaceElement*>* current_element = elements.start;
+	p2List_item<InterfaceElement*>* current_element = elements.end;
 	while (current_element != NULL)
 	{
-			delete current_element->data;
-		current_element = current_element->next;
+		current_element->data->CleanUp();
+		delete current_element->data;
+		current_element = current_element->prev;
 	}
 	elements.clear();
 

@@ -127,7 +127,7 @@ bool j1Transition::Awake(pugi::xml_node &)
 
 bool j1Transition::Start()
 {
-	completed = true;
+	completed = false;
 	uint w = 0, h = 0;
 	App->win->GetWindowSize(w, h);
 	//float scale = App->win->GetScale();
