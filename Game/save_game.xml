@@ -7,18 +7,18 @@
 	<map />
 	<scene>
 		<level current_level="1" />
-		<time sec="29840" />
+		<time sec="10046" />
 	</scene>
 	<entities>
-		<position x="1469.48413" y="866.186768" />
-		<coins amount="2" />
+		<position x="1488.3988" y="962.457214" />
+		<coins amount="0" />
 	</entities>
 	<collision />
 	<pathfinding />
 	<fonts />
 	<gui />
-	<:anonymous />
+	<transition />
 	<renderer>
-		<camera x="957.484131" y="482.186768" />
+		<camera x="976.398804" y="578.457214" />
 	</renderer>
 </game_state>
