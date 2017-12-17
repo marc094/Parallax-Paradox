@@ -16,6 +16,7 @@
 #include "j1Gui.h"
 #include "Window.h"
 #include "Slider.h"
+#include "j1Transition.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -291,9 +292,9 @@ bool j1Scene::PreUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		if (credits_bool && credits_window->enabled)
+		if (credits_bool && credits_window->isEnabled())
 			Hide_Credits(0);
-		else if (settings_bool && settings_window->enabled)
+		else if (settings_bool && settings_window->isEnabled())
 			Hide_Settings(0);
 		else
 			ret = false;
@@ -384,9 +385,14 @@ bool j1Scene::CleanUp()
 	return true;
 }
 
+/*void DoReload(int, ...) {
+	App->Reload();
+}*/
+
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
 	playing = false;
+	//App->transition->MakeTransition(&DoReload, j1Transition::FADE_TO_BLACK);
 	App->Reload();
 }
 
@@ -450,7 +456,7 @@ void j1Scene::ChangeLifes()
 	p2List_item<Sprite*>* curr = lives.end;
 	while (curr->prev != NULL)
 	{
-		if (curr->data->enabled)
+		if (curr->data->isEnabled())
 		{
 			curr->data->Enable(false);
 			break;
@@ -470,20 +476,27 @@ void button_callback(const char* text) {
 	LOG("%s", text);
 }
 
-void Game_start(int, ...)
-{
+void StartAlready(int, ...) {
 	App->Reload();
 	App->scene->time.Start();
 	App->scene->state = App->scene->IN_GAME;
-
 }
 
-void Game_continue(int, ...)
+void Game_start(int, ...)
 {
+	App->transition->MakeTransition(&StartAlready, j1Transition::SCROLL_LEFT, 2.5f);
+}
+
+void ContinueAlready(int, ...) {
 	App->LoadGame();
 	App->Reload();
 	App->scene->time.Start();
 	App->scene->state = App->scene->IN_GAME;
+}
+
+void Game_continue(int, ...)
+{
+	App->transition->MakeTransition(&ContinueAlready, j1Transition::SCROLL_RIGHT, 2.5f);
 }
 
 void Show_Credits(int, ...)

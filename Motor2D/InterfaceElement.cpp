@@ -5,7 +5,7 @@
 
 
 
-InterfaceElement::InterfaceElement() : enabled(true), scale(App->win->GetScale())
+InterfaceElement::InterfaceElement() : enabled(true), next_frame_enabled(true), scale(App->win->GetScale())
 {
 }
 
@@ -17,10 +17,10 @@ InterfaceElement::~InterfaceElement()
 
 bool InterfaceElement::Enable(bool enable)
 {
-	this->enabled = enable;
+	next_frame_enabled = enable;
 	if (!enabled && in_focus)
 		App->gui->setFocus(nullptr);
-	return this->enabled;
+	return enabled;
 }
 
 bool InterfaceElement::isEnabled()
@@ -37,27 +37,30 @@ bool InterfaceElement::PreUpdate()
 {
 	bool ret = true;
 
+	ComputeRects();
+
 	for (p2List_item<InterfaceElement*>* current_element = elements.end;
 		current_element != nullptr && ret;
 		current_element = current_element->prev)
 	{
+		current_element->data->enabled = current_element->data->next_frame_enabled;
+
 		if (current_element->data->isEnabled())
 			ret = current_element->data->PreUpdate();
 	}
 	return ret;
 }
 
-bool InterfaceElement::PostUpdate()
+bool InterfaceElement::Update(float dt)
 {
 	bool ret = true;
-	ComputeRects();
 
 	for (p2List_item<InterfaceElement*>* current_element = elements.start;
 		current_element != nullptr && ret;
 		current_element = current_element->next)
 	{
 		if (current_element->data->isEnabled())
-			ret = current_element->data->PostUpdate();
+			ret = current_element->data->Update(dt);
 	}
 
 	if (App->debug) {
@@ -69,6 +72,21 @@ bool InterfaceElement::PostUpdate()
 		App->render->DrawLine(r.x + (int)(r.w * anchor_point.x), r.y, r.x + (int)(r.w * anchor_point.x), r.y + r.h, 0, 0, 255, 255, false);
 		if (parent != nullptr)
 			App->render->DrawLine(parent->abs_pos.x, parent->abs_pos.y, abs_pos.x, abs_pos.y, 255, 255, 0, 255, false);
+	}
+
+	return ret;
+}
+
+bool InterfaceElement::PostUpdate()
+{
+	bool ret = true;
+
+	for (p2List_item<InterfaceElement*>* current_element = elements.start;
+		current_element != nullptr && ret;
+		current_element = current_element->next)
+	{
+		if (current_element->data->isEnabled())
+			ret = current_element->data->PostUpdate();
 	}
 
 	return ret;

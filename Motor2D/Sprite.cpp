@@ -8,7 +8,8 @@ Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _an
 	rel_pos.x = _x;
 	rel_pos.y = _y;
 	initial_pos = rel_pos;
-	enabled = _enabled;
+
+	enabled = next_frame_enabled = _enabled;
 
 	if (_anim != NULL)
 	{
@@ -34,7 +35,7 @@ Sprite::~Sprite()
 {
 }
 
-bool Sprite::PostUpdate()
+bool Sprite::Update(float dt)
 {
 	if (current_anim == nullptr)
 		return false;
@@ -51,6 +52,6 @@ bool Sprite::PostUpdate()
 	}
 	else App->render->BlitGui(tex, rect.x, rect.y, current_anim);
 
-	bool ret = InterfaceElement::PostUpdate();
+	bool ret = InterfaceElement::Update(dt);
 	return ret;
 }

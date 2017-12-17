@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Textures.h"
 #include "Brofiler\Brofiler.h"
 
 #define VSYNC true
@@ -112,6 +113,15 @@ bool j1Render::Save(pugi::xml_node& data) const
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
+}
+
+SDL_Texture* j1Render::Snapshot()
+{
+	SDL_Surface* surf = SDL_CreateRGBSurface(0, (int)camera.w, (int)camera.h, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+	SDL_RenderReadPixels(renderer, nullptr, SDL_PIXELFORMAT_ARGB8888, surf->pixels, surf->pitch);
+	SDL_Texture* ret = SDL_CreateTextureFromSurface(renderer, surf);//App->tex->LoadSurface(surf);
+	SDL_FreeSurface(surf);
+	return ret;
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)

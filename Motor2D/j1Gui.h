@@ -34,6 +34,9 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
+	// Called every frame
+	bool Update(float dt) override;
+
 	// Called after all Updates
 	bool PostUpdate();
 

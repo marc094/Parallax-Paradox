@@ -37,7 +37,6 @@ bool Label::PreUpdate()
 {
 	bool ret = InterfaceElement::PreUpdate();
 
-
 	if (font != nullptr && text_changed && ret) {
 		if (font_changed) {
 			App->font->Unload(font);
@@ -49,7 +48,7 @@ bool Label::PreUpdate()
 			}
 			font_changed = false;
 		}
-			
+		
 		ret = RenderFont();
 		text_changed = false;
 	}
@@ -57,10 +56,8 @@ bool Label::PreUpdate()
 	return ret;
 }
 
-bool Label::PostUpdate()
+bool Label::Update(float dt)
 {
-	ComputeRects();
-
 	if (font != nullptr) {
 		int d_x = 0, d_y = 0;
 		/*switch (alignment)
@@ -84,7 +81,6 @@ bool Label::PostUpdate()
 		SDL_Rect actual_anim_rect;
 
 		if (parent != nullptr) {
-			//SDL_IntersectRect(&parent->content_rect, &rect, &result_rect);
 			dx = result_rect.x - rect.x;
 			dy = result_rect.y - rect.y;
 			dw = result_rect.w;
@@ -94,7 +90,6 @@ bool Label::PostUpdate()
 			actual_anim_rect.h = dh;
 			actual_anim_rect.x = dx;
 			actual_anim_rect.y = dy;
-
 		}
 		else
 		{
@@ -103,12 +98,10 @@ bool Label::PostUpdate()
 			actual_anim_rect.y = 0;
 		}
 
-
-
 		App->render->BlitGui(tex, result_rect.x + d_x, result_rect.y + d_y, &actual_anim_rect);
 	}
 
-	bool ret = InterfaceElement::PostUpdate();
+	bool ret = InterfaceElement::Update(dt);
 	return ret;
 }
 

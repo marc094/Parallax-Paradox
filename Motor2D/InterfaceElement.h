@@ -29,6 +29,7 @@ public:
 	bool isEnabled();
 	virtual bool Start();
 	virtual bool PreUpdate();
+	virtual bool Update(float dt);
 	virtual bool PostUpdate();
 	virtual bool CleanUp();
 
@@ -59,12 +60,14 @@ public:
 	SDL_Rect content_rect, content_rect_margins;
 	SDL_Rect result_rect;
 	float scale = 1.0f;
-	bool enabled = true;
 	iPoint rel_pos;
 	iPoint abs_pos;
 	iPoint initial_pos;
 	bool in_focus = false;
 	bool culled = true;
+
+	bool next_frame_enabled = true;
+	bool enabled = true;
 
 protected:
 	InterfaceElement* AddElement(InterfaceElement* elem);

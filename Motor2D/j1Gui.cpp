@@ -47,6 +47,7 @@ bool j1Gui::PreUpdate()
 	p2List_item<InterfaceElement*>* current_element = elements.end;
 	while (current_element != NULL)
 	{
+		current_element->data->enabled = current_element->data->next_frame_enabled;
 		if (current_element->data->isEnabled())
 			current_element->data->PreUpdate();
 		current_element = current_element->prev;
@@ -55,6 +56,18 @@ bool j1Gui::PreUpdate()
 	/*if (focused_item != nullptr && (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN))
 		focused_item->NextElement(focused_item)->setFocus();*/
 
+	return true;
+}
+
+bool j1Gui::Update(float dt)
+{
+	p2List_item<InterfaceElement*>* current_element = elements.start;
+	while (current_element != NULL)
+	{
+		if (current_element->data->isEnabled())
+			current_element->data->Update(dt);
+		current_element = current_element->next;
+	}
 	return true;
 }
 

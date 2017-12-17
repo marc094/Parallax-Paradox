@@ -14,7 +14,8 @@ public:
 		NONE = -1,
 		FADE_TO_BLACK,
 		SCROLL_RIGHT,
-		SCROLL_LEFT
+		SCROLL_LEFT,
+		LOADING_SCREEN
 	};
 
 
@@ -43,17 +44,39 @@ public:
 	j1Transition();
 	~j1Transition();
 
-	Transition TransitionType(Transition t = NONE);
+	Transition TransitionType(Transition t = Transition::NONE);
+	bool MakeTransition(Callback _cb, Transition _type = Transition::NONE, float time = 1.0f);
 
 private:
 
-	float		transition_time = 0.0f;
-	uint		speed = 0;
+	void Fade_To_Black();
+	void Scrolling();
+	void LoadScreen();
 
-	SDL_Texture* transition_tex = nullptr;
-	SDL_Rect dst_rect;
+	enum FadeState {
+		NOT_FADING = -1,
+		FADING_OUT,
+		FADING_IN
+	} fade_state = FadeState::NOT_FADING;
 
-	Transition type;
+	enum ScrollState {
+		NOT_SCROLLING = -1,
+		SNAPSHOT,
+		SCROLLING
+	} scroll_state = NOT_SCROLLING;
+
+	bool			completed = true;
+	float			transition_time = 0.0f, transcurred_time = 0.0f;
+	int				speed = 0;
+	float			fade_alpha = 0;
+
+	SDL_Texture*	scroll_transition_texture = nullptr;
+	SDL_Texture*	loading_transition_texture = nullptr;
+	SDL_Rect		dst_rect;
+
+	Transition type = NONE;
+
+	Callback cb = nullptr;
 };
 
 #endif

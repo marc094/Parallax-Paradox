@@ -56,6 +56,9 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	// Returns a texture containing the current image of the program
+	SDL_Texture* Snapshot();
+
 	
 public:
 
