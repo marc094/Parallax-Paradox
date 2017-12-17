@@ -1,7 +1,9 @@
 # Parallax-Paradox
 
-PARALLAX PARADOX v0.5.1
+PARALLAX PARADOX v0.9
 by Pol Carrera and Marc Moreno
+
+Webpage link: https://marc094.github.io/Parallax-Paradox/
 
 Github link: https://github.com/marc094/Parallax-Paradox
 
