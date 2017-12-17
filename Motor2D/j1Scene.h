@@ -79,6 +79,8 @@ public:
 	State current_state = state;
 	j1Timer time;
 
+	bool transitioninig = false;
+
 private:
 	uint level;
 	uint max_level;
@@ -99,7 +101,6 @@ private:
 	j1Timer intro_time;
 	Label* time_lab;
 	Label* coin_lab;
-
 };
 
 void Game_start(int, ...);
@@ -109,6 +110,7 @@ void Hide_Credits(int, ...);
 void Hide_Settings(int, ...);
 void Drag_Credits(int, ...);
 void exit(int, ...);
+void toMenu(int, ...);
 void ShowSettings(int, ...);
 void SetVolumeFX(int, ...);
 void SetVolumeMusic(int, ...);
