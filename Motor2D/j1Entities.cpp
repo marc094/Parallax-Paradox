@@ -114,6 +114,14 @@ bool j1Entities::CleanUp()
 	}
 	Enemies.clear();
 
+	p2List_item<Coin*>* current_coin = Coins.start;
+	while (current_coin != NULL)
+	{
+		RELEASE(current_coin->data)
+		current_coin = current_coin->next;
+	}
+	Coins.clear();
+
 	return true;
 }
 bool j1Entities::Load(pugi::xml_node& data)
