@@ -7,6 +7,13 @@
 
 InterfaceElement::InterfaceElement() : enabled(true), next_frame_enabled(true), scale(App->win->GetScale())
 {
+	rect = { 0,0,0,0 };
+	rel_pos = { 0,0 };
+	abs_pos = { 0,0 };
+	content_rect = { 0,0,0,0 };
+	content_rect_margins = { 0,0,0,0 };
+	result_rect = { 0,0,0,0 };
+	initial_pos = { 0,0 };
 }
 
 

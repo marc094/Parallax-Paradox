@@ -330,6 +330,18 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
+	/*App->tex->UnLoad(buttons);
+	App->tex->UnLoad(credits_win);
+	App->tex->UnLoad(settings_win);
+	App->tex->UnLoad(credits_tex);
+	App->tex->UnLoad(sliders);
+
+	buttons = nullptr;
+	credits_win = nullptr;
+	settings_win = nullptr;
+	credits_tex = nullptr;
+	sliders = nullptr;*/
+
 	xml_file_name.Clear();
 
 	return true;
