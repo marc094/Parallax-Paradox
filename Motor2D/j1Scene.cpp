@@ -326,6 +326,7 @@ bool j1Scene::CleanUp()
 
 void DoReload(int, ...) {
 	App->Reload();
+	App->scene->transitioninig = false;
 }
 
 void DoLoadInGame(int, ...) {
@@ -376,8 +377,10 @@ void j1Scene::CheckInput(float dt)
 }
 
 void j1Scene::CheckEnd() {
-	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 25)
+	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 25 && !transitioninig) {
+		transitioninig = true;
 		App->scene->ChangeScene(level + 1);
+	}
 }
 
 
@@ -483,13 +486,21 @@ Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_R
 	fps_label_Uncapped->SetParent(fps_button_Uncapped);
 
 	if (state == IN_GAME) {
-		Button* exit_button = App->gui->AddButton(0.5f * settings_window->content_rect.w, 360, buttons, true, &button_idle, &exit, &button_hover, &button_press);
+		Button* exit_button = App->gui->AddButton(0.75f * settings_window->content_rect.w, 360, buttons, true, &button_idle, &exit, &button_hover, &button_press);
 
-		Label* exit = App->gui->AddLabel(exit_button->content_rect.w / 2, (exit_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
-		exit->setString("EXIT");
-		exit->SetParent(exit_button);
+		Label* exit_label = App->gui->AddLabel(exit_button->content_rect.w / 2, (exit_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		exit_label->setString("EXIT");
+		exit_label->SetParent(exit_button);
 
 		exit_button->SetParent(settings_window);
+
+		Button* menu_button = App->gui->AddButton(0.25f * settings_window->content_rect.w, 360, buttons, true, &button_idle, &toMenu, &button_hover, &button_press);
+
+		Label* menu_label = App->gui->AddLabel(menu_button->content_rect.w / 2, (menu_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
+		menu_label->setString("To Menu");
+		menu_label->SetParent(menu_button);
+
+		menu_button->SetParent(settings_window);
 	}
 
 	return settings_window;
@@ -549,6 +560,11 @@ void Drag_Credits(int, ...)
 void exit(int, ...)
 {
 	App->scene->ret = false;
+}
+
+void toMenu(int, ...)
+{
+	App->transition->MakeTransition(&DoLoadMenu, j1Transition::FADE_TO_BLACK);
 }
 
 void ShowSettings(int, ...) {
