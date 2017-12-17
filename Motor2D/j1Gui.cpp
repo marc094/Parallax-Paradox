@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "Window.h"
 #include "Slider.h"
+#include "Brofiler\Brofiler.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -44,6 +45,7 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::DarkKhaki);
 	p2List_item<InterfaceElement*>* current_element = elements.end;
 	while (current_element != NULL)
 	{
@@ -61,6 +63,7 @@ bool j1Gui::PreUpdate()
 
 bool j1Gui::Update(float dt)
 {
+	BROFILER_CATEGORY(__FUNCTION__, Profiler::Color::DarkMagenta);
 	p2List_item<InterfaceElement*>* current_element = elements.start;
 	while (current_element != NULL)
 	{
