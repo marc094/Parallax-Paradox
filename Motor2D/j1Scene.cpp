@@ -244,9 +244,12 @@ bool j1Scene::PreUpdate()
 		else if (settings_bool && settings_window->isEnabled())
 			Hide_Settings(0);
 		else if (state == IN_GAME) {
-			if (!settings_bool && !settings_window->isEnabled())
+			if (!settings_bool && !settings_window->isEnabled()) {
 				ShowSettings(0);
-			else Hide_Settings(0);
+			}
+			else {
+				Hide_Settings(0);
+			}
 		}
 		else
 			ret = false;
@@ -573,6 +576,7 @@ void Hide_Settings(int, ...)
 {
 	App->scene->settings_window->Enable(false);
 	App->scene->settings_bool = false;
+	App->SetTimeScale(1.0f);
 }
 
 void Drag_Credits(int, ...)
@@ -593,6 +597,7 @@ void toMenu(int, ...)
 void ShowSettings(int, ...) {
 	App->scene->settings_window->Enable(true);
 	App->scene->settings_bool = true;
+	App->SetTimeScale(0.0f);
 }
 
 void SetVolumeFX(int n, ...) {
