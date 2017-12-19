@@ -13,7 +13,7 @@ class Sprite :
 	public InterfaceElement
 {
 public:
-	Sprite(uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, bool _enabled = false, SDL_Rect* _anim = nullptr);
+	Sprite(uint _x = 0, uint _y = 0, SDL_Texture* _tex = nullptr, SDL_Rect _anim = { 0, 0, 0, 0 }, bool _enabled = false);
 	~Sprite();
 	bool Update(float dt) override;
 

@@ -1,15 +1,22 @@
 
 #include "Window.h"
+#include "Button.h"
+#include "Label.h"
 #include "j1Input.h"
 #include "j1Window.h"
 
 
-Window::Window(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim) : Sprite(_x,_y, _tex, _enabled, _anim)
+Window::Window(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : Sprite(_x,_y, _tex, _anim, _enabled)
 {
 	type = Interfacetype::WINDOW;
-	initial_pos = {(int) _x,(int)_y };
 	culled = false;
 	interactuable = true;
+}
+
+Window::Window(const Window_Info & info) : Window(info.x, info.y, info.tex, info.anim, info.enabled)
+{
+	OnClose = info.OnClose;
+	SetContentRect(info.content_rect_margins.x, info.content_rect_margins.y, info.content_rect_margins.w, info.content_rect_margins.h);
 }
 
 
@@ -53,7 +60,14 @@ bool Window::PreUpdate()
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP && dragging)
 		dragging = false;
 
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		Enable(false);
+		if (OnClose != nullptr)
+			OnClose(0);
+	}
+
 	App->input->BlockMouse();
+	App->input->BlockKeyboard();
 
 	return ret;
 }

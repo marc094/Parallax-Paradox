@@ -2,10 +2,10 @@
 #include "Button.h"
 #include "j1Input.h"
 
-Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim, bool _axis, InterfaceElement* parent) : Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim)
+Slider::Slider(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis)
+	: Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim)
 {
 	axis = _axis;
-	initial_pos = { (int)_x, (int)_y };
 	type = SLIDER;
 }
 

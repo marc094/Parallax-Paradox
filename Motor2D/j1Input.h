@@ -5,6 +5,7 @@
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
+#define MAX_KEYS 300
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
@@ -93,6 +94,12 @@ public:
 
 	void BlockMouse() {
 			mouse_x = mouse_y = INT_MAX - 2;
+	}
+
+	void BlockKeyboard() {
+		for (uint i = 0; i < MAX_KEYS; i++) {
+			keyboard[i].blocked = true;
+		}
 	}
 
 private:

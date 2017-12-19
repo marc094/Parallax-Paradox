@@ -48,7 +48,7 @@ bool Label::PreUpdate()
 			}
 			font_changed = false;
 		}
-		
+
 		ret = RenderFont();
 		text_changed = false;
 	}
@@ -107,6 +107,13 @@ bool Label::Update(float dt)
 
 bool Label::CleanUp()
 {
+	if (tex != nullptr) {
+		SDL_DestroyTexture(tex);
+		tex = nullptr;
+	}
+	App->font->Unload(font);
+
+	InterfaceElement::CleanUp();
 	return true;
 }
 

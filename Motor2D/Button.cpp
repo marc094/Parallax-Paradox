@@ -6,20 +6,20 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 
-Button::Button(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
-	: Sprite(_x, _y, _tex, _enabled, _anim)
+Button::Button(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
+	: Sprite(_x, _y, _tex, _anim, _enabled)
 {
 	type = BUTTON;
 
-	if (_hovered_anim == nullptr)
-		hovered_anim = *_anim;
+	if (_hovered_anim.w == 0 && _hovered_anim.h == 0)
+		hovered_anim = _anim;
 	else
-		hovered_anim = *_hovered_anim;
+		hovered_anim = _hovered_anim;
 
-	if (_pressed_anim == nullptr)
-		pressed_anim = *_anim;
+	if (_pressed_anim.w == 0 && _pressed_anim.h == 0)
+		pressed_anim = _anim;
 	else
-		pressed_anim = *_pressed_anim;
+		pressed_anim = _pressed_anim;
 
 	current_anim = &idle_anim;
 

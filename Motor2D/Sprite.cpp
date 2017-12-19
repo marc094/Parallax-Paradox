@@ -1,19 +1,19 @@
 #include "Sprite.h"
 #include "j1Render.h"
 
-Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim) : InterfaceElement()
+Sprite::Sprite(uint _x, uint _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled) : InterfaceElement()
 {
 	type = SPRITE;
 	tex = _tex;
-	rel_pos.x = _x;
-	rel_pos.y = _y;
+	rel_pos.x = (int)_x;
+	rel_pos.y = (int)_y;
 	initial_pos = rel_pos;
 
 	enabled = next_frame_enabled = _enabled;
 
-	if (_anim != NULL)
+	if (_anim.w != 0 && _anim.h != 0)
 	{
-		idle_anim = *_anim;
+		idle_anim = _anim;
 	}
 	else
 	{

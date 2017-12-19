@@ -92,11 +92,11 @@ bool j1Scene::Start()
 		lifes_sprite = App->tex->Load("textures/Lifeicon.png");
 		SDL_Rect life = { 0,0,45,48 };
 		SDL_Rect coin_rect = { 45,0,36,48 };
-		Sprite* first_life = App->gui->AddSprite(50, h - 50, lifes_sprite, true,&life);
+		Sprite* first_life = App->gui->AddSprite(50, h - 50, lifes_sprite, life);
 
-		Sprite* second_life = App->gui->AddSprite(110, h - 50, lifes_sprite, true, &life);
+		Sprite* second_life = App->gui->AddSprite(110, h - 50, lifes_sprite, life);
 
-		Sprite* third_life = App->gui->AddSprite(170, h - 50, lifes_sprite, true, &life);
+		Sprite* third_life = App->gui->AddSprite(170, h - 50, lifes_sprite, life);
 
 		lives.add(first_life);
 		lives.add(second_life);
@@ -106,7 +106,7 @@ bool j1Scene::Start()
 		time_lab->SetAnchor(0.0f, 0.5f);
 
 
-		Sprite* Coin = App->gui->AddSprite(270, h - 50, lifes_sprite, true, &coin_rect);
+		Sprite* Coin = App->gui->AddSprite(270, h - 50, lifes_sprite, coin_rect);
 
 		coin_lab = App->gui->AddLabel(300, h - 50,40, "gui/Earth 2073.ttf", { 255,255,255,255 }, Label::BLENDED);
 		coin_lab->SetAnchor(0.0f, 0.5f);
@@ -138,6 +138,7 @@ bool j1Scene::Start()
 		App->audio->PlayFx(level_sound);
 
 		App->entities->active = true;
+
 		if (level == 1)
 		{
 			App->entities->Add_Coin({ 1474, 856 });
@@ -161,7 +162,7 @@ bool j1Scene::Start()
 		Sprite* title_spr = App->gui->AddSprite(w / 2, (h / 2 - 100), title);
 
 		//START BUTTON
-		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, true, &button_idle, &Game_start, &button_hover, &button_press);
+		Button* start_button = App->gui->AddButton((w / 2), 60 + (h / 2), buttons, button_idle, true, &Game_start, button_hover, button_press);
 		
 		Label* start = App->gui->AddLabel(start_button->content_rect.w/2, (start_button->content_rect.h/2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		start->setString("START");
@@ -171,7 +172,7 @@ bool j1Scene::Start()
 
 
 		//CONTINUE BUTTON
-		Button* continue_button = App->gui->AddButton(w / 2, 120+ (h / 2), buttons, true, &button_idle, &Game_continue, &button_hover, &button_press);
+		Button* continue_button = App->gui->AddButton(w / 2, 120+ (h / 2), buttons, button_idle, true, &Game_continue, button_hover, button_press);
 
 		Label* continue_label = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		continue_label->setString("CONTINUE");
@@ -181,7 +182,7 @@ bool j1Scene::Start()
 
 
 		//CREDITS BUTTON
-		Button* credits_button = App->gui->AddButton(w / 2, 180+ (h / 2), buttons, true, &button_idle, &Show_Credits, &button_hover, &button_press);
+		Button* credits_button = App->gui->AddButton(w / 2, 180+ (h / 2), buttons, button_idle, true, &Show_Credits, button_hover, button_press);
 
 		Label* credit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		credit->setString("CREDITS");
@@ -191,7 +192,7 @@ bool j1Scene::Start()
 
 
 		//SETTINGS BUTTON
-		Button* settings_button = App->gui->AddButton(w / 2, 240 + (h / 2), buttons, true, &button_idle, &ShowSettings, &button_hover, &button_press);
+		Button* settings_button = App->gui->AddButton(w / 2, 240 + (h / 2), buttons, button_idle, true, &ShowSettings, button_hover, button_press);
 
 		Label* settings = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		settings->setString("SETTINGS");
@@ -201,7 +202,7 @@ bool j1Scene::Start()
 
 		
 		//EXIT BUTTON
-		Button* exit_button = App->gui->AddButton(w / 2, 300 + (h / 2), buttons, true, &button_idle, &exit, &button_hover, &button_press);
+		Button* exit_button = App->gui->AddButton(w / 2, 300 + (h / 2), buttons, button_idle, true, &exit, button_hover, button_press);
 
 		Label* exit = App->gui->AddLabel(start_button->content_rect.w / 2, (start_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit->setString("EXIT");
@@ -211,20 +212,26 @@ bool j1Scene::Start()
 
 
 		//CREDITS WINDOW
-		credits_window = App->gui->AddWindow(w / 2, h / 2, credits_win, false);
-		credits_window->SetContentRect(10, 87, 0, 15);
-		credits_window->locked = true;
+		Window_Info w_info_credits;
+		w_info_credits.x = w / 2;
+		w_info_credits.y = h / 2;
+		w_info_credits.content_rect_margins = { 10, 87, 0, 15 };
+		w_info_credits.tex = credits_win;
+		w_info_credits.OnClose = &Hide_Credits;
+		w_info_credits.enabled = false;
+
+		credits_window = App->gui->AddWindow(w_info_credits);
 
 		credits_text = App->gui->AddSprite(0, 0, credits_tex);
 		credits_text->SetAnchor(0.0f, 0.0f);
 		credits_text->SetParent(credits_window);
 
-		Sprite* slider = App->gui->AddSprite((int)(0.97f * credits_window->content_rect.w), credits_window->content_rect.h / 2 - 20, sliders, true, &slider_bar);
+		Sprite* slider = App->gui->AddSprite((int)(0.97f * credits_window->content_rect.w), credits_window->content_rect.h / 2 - 20, sliders, slider_bar);
 		slider->culled = false;
 		slider->SetParent(credits_window);
 		slider->SetContentRect(0, 48, 0, 48);
 		
-		credits_slider = App->gui->AddSlider(slider->content_rect.w/2, 0, sliders, true, &slider_idle, &Drag_Credits, &slider_hover, &slider_pressed, 0, slider);
+		credits_slider = App->gui->AddSlider(slider->content_rect.w/2, 0, sliders, slider_idle, true, Drag_Credits, slider_hover, slider_pressed, 0, slider);
 		credits_slider->culled = false;
 	}
 
@@ -237,18 +244,17 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	return true;
+}
+
+// Called each loop iteration
+bool j1Scene::Update(float dt)
+{
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
-		if (credits_bool && credits_window->isEnabled())
-			Hide_Credits(0);
-		else if (settings_bool && settings_window->isEnabled())
-			Hide_Settings(0);
-		else if (state == IN_GAME) {
+		if (state == IN_GAME) {
 			if (!settings_bool && !settings_window->isEnabled()) {
 				ShowSettings(0);
-			}
-			else {
-				Hide_Settings(0);
 			}
 		}
 		else
@@ -298,12 +304,7 @@ bool j1Scene::PreUpdate()
 	{
 		App->transition->MakeTransition(&DoLoadInGame, j1Transition::FADE_TO_BLACK, 2.5f);
 	}
-	return ret;
-}
 
-// Called each loop iteration
-bool j1Scene::Update(float dt)
-{
 	if (current_state == IN_GAME && !App->entities->player.hit)
 	{
 		CheckInput(dt);
@@ -318,7 +319,7 @@ bool j1Scene::Update(float dt)
 					App->map->data.tilesets.count());
 
 	//App->win->SetTitle(title.GetString());
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
@@ -450,23 +451,30 @@ void j1Scene::SumCoin()
 }
 
 
-Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_Rect h_slider_idle, SDL_Rect h_slider_hovered, SDL_Rect h_slider_pressed, SDL_Rect button_idle, SDL_Rect button_hover, SDL_Rect button_press) {
-	Window* settings_window = App->gui->AddWindow(x, y, settings_win, false);
-	settings_window->SetContentRect(10, 40, 10, 60);
-	settings_window->locked = true;
+Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_Rect h_slider_idle, SDL_Rect h_slider_hovered, SDL_Rect h_slider_pressed, SDL_Rect button_idle, SDL_Rect button_hover, SDL_Rect button_press)
+{
+	Window_Info w_info;
+	w_info.x = x;
+	w_info.y = y;
+	w_info.content_rect_margins = { 10, 40, 10, 60 };
+	w_info.tex = settings_win;
+	w_info.enabled = false;
+	w_info.OnClose = &Hide_Settings;
+
+	Window* settings_window = App->gui->AddWindow(w_info);
 
 	Label* music_set_lab = App->gui->AddLabel(15, 80, 30, "gui/Earth 2073.ttf", { 255,255,255,255 });
 	music_set_lab->SetParent(settings_window);
 	music_set_lab->SetAnchor(0, 0.5f);
 	music_set_lab->setString("Music:");
 
-	Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2, 80, sliders, true, &h_slider_bar);
+	Sprite* music_set_slid = App->gui->AddSprite(settings_window->content_rect.w / 2, 80, sliders, h_slider_bar);
 	music_set_slid->SetParent(settings_window);
 	music_set_slid->SetAnchor(0.5f, 0.0f);
 	music_set_slid->SetContentRect(5, 0, 5, 0);
 	music_set_slid->culled = false;
 
-	Slider* set_mus_slider = App->gui->AddSlider(music_set_slid->content_rect.w / 2, 0, sliders, true, &h_slider_idle, &SetVolumeMusic, &h_slider_hovered, &h_slider_pressed, 1, music_set_slid);
+	Slider* set_mus_slider = App->gui->AddSlider(music_set_slid->content_rect.w / 2, 0, sliders, h_slider_idle, true, &SetVolumeMusic, h_slider_hovered, h_slider_pressed, 1, music_set_slid);
 	set_mus_slider->culled = false;
 	set_mus_slider->rel_pos.x = (App->audio->GetVolumeMusic() * music_set_slid->content_rect.w) + set_mus_slider->initial_pos.x - music_set_slid->content_rect.w * music_set_slid->GetAnchorX();
 
@@ -475,13 +483,13 @@ Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_R
 	fx_set_lab->SetAnchor(0, 0.5f);
 	fx_set_lab->setString("SFX:");
 
-	Sprite* fx_set_slid = App->gui->AddSprite(0.5f * settings_window->content_rect.w, 160, sliders, true, &h_slider_bar);
+	Sprite* fx_set_slid = App->gui->AddSprite(0.5f * settings_window->content_rect.w, 160, sliders, h_slider_bar);
 	fx_set_slid->SetParent(settings_window);
 	fx_set_slid->SetAnchor(0.5f, 0.0f);
 	fx_set_slid->SetContentRect(5, 0, 5, 0);
 	fx_set_slid->culled = false;
 
-	Slider* set_fx_slider = App->gui->AddSlider(fx_set_slid->content_rect.w / 2, 0, sliders, true, &h_slider_idle, &SetVolumeFX, &h_slider_hovered, &h_slider_pressed, 1, fx_set_slid);
+	Slider* set_fx_slider = App->gui->AddSlider(fx_set_slid->content_rect.w / 2, 0, sliders, h_slider_idle, true, &SetVolumeFX, h_slider_hovered, h_slider_pressed, 1, fx_set_slid);
 	set_fx_slider->culled = false;
 	set_fx_slider->rel_pos.x = (App->audio->GetVolumeFX() * fx_set_slid->content_rect.w) + set_fx_slider->initial_pos.x - fx_set_slid->content_rect.w * fx_set_slid->GetAnchorX();
 
@@ -490,21 +498,21 @@ Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_R
 	fps_set_lab->SetAnchor(0, 0.5f);
 	fps_set_lab->setString("Framerate:");
 
-	Button* fps_button_30 = App->gui->AddButton(0.2f * settings_window->content_rect.w, 290, buttons, true, &button_idle, &Fps_30, &button_hover, &button_press);
+	Button* fps_button_30 = App->gui->AddButton(0.2f * settings_window->content_rect.w, 290, buttons, button_idle, true, &Fps_30, button_hover, button_press);
 	fps_button_30->SetParent(settings_window);
 
 	Label* fps_label_30 = App->gui->AddLabel(0.5f * fps_button_30->content_rect.w, 0.5f * fps_button_30->content_rect.h, 33, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
 	fps_label_30->setString("30 fps");
 	fps_label_30->SetParent(fps_button_30);
 
-	Button* fps_button_60 = App->gui->AddButton(0.5f * settings_window->content_rect.w, 290, buttons, true, &button_idle, &Fps_60, &button_hover, &button_press);
+	Button* fps_button_60 = App->gui->AddButton(0.5f * settings_window->content_rect.w, 290, buttons, button_idle, true, &Fps_60, button_hover, button_press);
 	fps_button_60->SetParent(settings_window);
 
 	Label* fps_label_60 = App->gui->AddLabel(0.5f * fps_button_60->content_rect.w, 0.5f * fps_button_60->content_rect.h, 33, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
 	fps_label_60->setString("60 fps");
 	fps_label_60->SetParent(fps_button_60);
 
-	Button* fps_button_Uncapped = App->gui->AddButton(0.8f * settings_window->content_rect.w, 290, buttons, true, &button_idle, &Fps_Uncapped, &button_hover, &button_press);
+	Button* fps_button_Uncapped = App->gui->AddButton(0.8f * settings_window->content_rect.w, 290, buttons, button_idle, true, &Fps_Uncapped, button_hover, button_press);
 	fps_button_Uncapped->SetParent(settings_window);
 
 	Label* fps_label_Uncapped = App->gui->AddLabel(0.5f * fps_button_Uncapped->content_rect.w, 0.5f * fps_button_Uncapped->content_rect.h, 33, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
@@ -512,7 +520,7 @@ Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_R
 	fps_label_Uncapped->SetParent(fps_button_Uncapped);
 
 	if (state == IN_GAME) {
-		Button* exit_button = App->gui->AddButton(0.75f * settings_window->content_rect.w, 360, buttons, true, &button_idle, &exit, &button_hover, &button_press);
+		Button* exit_button = App->gui->AddButton(0.75f * settings_window->content_rect.w, 360, buttons, button_idle, true, &exit, button_hover, button_press);
 
 		Label* exit_label = App->gui->AddLabel(exit_button->content_rect.w / 2, (exit_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		exit_label->setString("EXIT");
@@ -520,7 +528,7 @@ Window* j1Scene::CreateSettingsWindow(int x, int y, SDL_Rect h_slider_bar, SDL_R
 
 		exit_button->SetParent(settings_window);
 
-		Button* menu_button = App->gui->AddButton(0.25f * settings_window->content_rect.w, 360, buttons, true, &button_idle, &toMenu, &button_hover, &button_press);
+		Button* menu_button = App->gui->AddButton(0.25f * settings_window->content_rect.w, 360, buttons, button_idle, true, &toMenu, button_hover, button_press);
 
 		Label* menu_label = App->gui->AddLabel(menu_button->content_rect.w / 2, (menu_button->content_rect.h / 2), 33, "gui/Earth 2073.ttf", { 255,255,255,255 });
 		menu_label->setString("To Menu");

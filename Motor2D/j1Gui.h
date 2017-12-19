@@ -10,6 +10,7 @@ class Label;
 class Button;
 class Window;
 class Slider;
+struct Window_Info;
 
 #define CURSOR_WIDTH 2
 
@@ -45,11 +46,12 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	Sprite* AddSprite(int x, int y, SDL_Texture* tex, bool enabled = true, SDL_Rect* anim = NULL);
+	Sprite* AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim = { 0, 0, 0, 0 }, bool enabled = true);
 	Label* AddLabel(int x, int y, int psize, const char* font_path = nullptr, SDL_Color color = {0,0,0,255}, Label::RenderMode mode = Label::BLENDED, const char* format = nullptr, ...);
-	Button* AddButton(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim = nullptr, SDL_Rect* _pressed_anim = nullptr);
-	Window* AddWindow(int x, int y, SDL_Texture* tex, bool enabled = true, SDL_Rect* anim = NULL);
-	Slider* AddSlider(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim = nullptr, SDL_Rect* _pressed_anim = nullptr, bool _axis = 1, InterfaceElement* parent = nullptr);
+	Button* AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim = { 0, 0, 0, 0 }, SDL_Rect _pressed_anim = { 0, 0, 0, 0 });
+	Window* AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled = true);
+	Window* AddWindow(const Window_Info& info);
+	Slider* AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim = { 0, 0, 0, 0 }, SDL_Rect _pressed_anim = { 0, 0, 0, 0 }, bool _axis = 1, InterfaceElement* parent = nullptr);
 	const SDL_Texture* GetAtlas() const;
 	p2SString atlas_file_name;
 

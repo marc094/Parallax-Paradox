@@ -148,9 +148,9 @@ bool j1Gui::RemoveElement(InterfaceElement * elem)
 	return (index > -1);
 }
 
-Sprite* j1Gui::AddSprite(int x, int y, SDL_Texture* tex, bool enabled, SDL_Rect* anim)
+Sprite* j1Gui::AddSprite(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
-	Sprite* aux = new Sprite(x, y, tex, enabled, anim);
+	Sprite* aux = new Sprite(x, y, tex, anim, enabled);
 	elements.add(aux);
 	return aux;
 }
@@ -178,16 +178,17 @@ Label* j1Gui::AddLabel(int x, int y, int psize, const char * font_path, SDL_Colo
 	return aux;
 }
 
-Button* j1Gui::AddButton(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim)
+Button* j1Gui::AddButton(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim)
 {
-	Button* aux = new Button(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim);
+	Button* aux = new Button(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim);
 
 	elements.add(aux);
 	return aux;
 }
-Slider* j1Gui::AddSlider(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_Rect* _anim, Callback callback, SDL_Rect* _hovered_anim, SDL_Rect* _pressed_anim,bool _axis, InterfaceElement* parent)
+
+Slider* j1Gui::AddSlider(int _x, int _y, SDL_Texture* _tex, SDL_Rect _anim, bool _enabled, Callback callback, SDL_Rect _hovered_anim, SDL_Rect _pressed_anim, bool _axis, InterfaceElement* parent)
 {
-	Slider* aux = new Slider(_x, _y, _tex, _enabled, _anim, callback, _hovered_anim, _pressed_anim,_axis, parent);
+	Slider* aux = new Slider(_x, _y, _tex, _anim, _enabled, callback, _hovered_anim, _pressed_anim, _axis);
 	
 	if (parent != NULL)
 		aux->SetParent(parent);
@@ -197,9 +198,17 @@ Slider* j1Gui::AddSlider(int _x, int _y, SDL_Texture* _tex, bool _enabled, SDL_R
 	return aux;
 }
 
-Window* j1Gui::AddWindow(int x, int y, SDL_Texture* tex, bool enabled, SDL_Rect* anim)
+Window* j1Gui::AddWindow(int x, int y, SDL_Texture* tex, SDL_Rect anim, bool enabled)
 {
-	Window* aux = new Window(x, y, tex, enabled, anim);
+	Window* aux = new Window(x, y, tex, anim, enabled);
+
+	elements.add(aux);
+	return aux;
+}
+
+Window * j1Gui::AddWindow(const Window_Info& info)
+{
+	Window* aux = new Window(info);
 
 	elements.add(aux);
 	return aux;
