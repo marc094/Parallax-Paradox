@@ -25,7 +25,7 @@ public:
 	~j1PathFinding();
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp(pugi::xml_node&) override;
 
 	// Sets up the walkability map
 	void SetMap(const MapLayer* layer_data);

@@ -126,7 +126,7 @@ public:
 	void Draw();
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp(pugi::xml_node&) override;
 
 	// Load new map
 	bool Load(const char* path);

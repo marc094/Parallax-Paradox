@@ -132,7 +132,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 }
 
 // Called before quitting
-bool j1Map::CleanUp()
+bool j1Map::CleanUp(pugi::xml_node&)
 {
 	LOG("Unloading map");
 

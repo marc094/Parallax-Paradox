@@ -89,7 +89,7 @@ bool j1Gui::PostUpdate()
 }
 
 // Called before quitting
-bool j1Gui::CleanUp()
+bool j1Gui::CleanUp(pugi::xml_node&)
 {
 	LOG("Freeing GUI");
 	p2List_item<InterfaceElement*>* current_element = elements.end;

@@ -1,44 +1,34 @@
-<!-- Config file for the game -->
-
+<?xml version="1.0"?>
 <config>
-  <app framerate_cap="60">
-    <title>Game Development Testbed</title>
-    <organization>UPC</organization>
-  </app>
-	
-  <renderer>
-    <vsync value="false"/>
-  </renderer>
-
-  <audio volumeFX = "1.0f" volumeMusic = "1.0f"/>
-
-  <window>
-    <resolution width="1024" height="768" scale="1"/>
-    <fullscreen value="false"/>
-    <borderless value="false"/>
-    <resizable value="false"/>
-    <fullscreen_window value="false"/>
-  </window>
-  
-  <scene>
-    <level name="map1.tmx"/>
-    <level name="map2.tmx"/>
-  </scene>
-
-  <file_system>
-    <path>data.zip</path>
-  </file_system>
-
-  <map>
-    <folder>maps/</folder>
-  </map>
-
-  <player>
-    <animations>animations.xml</animations>
-  </player>
-
-  <entities>
-    <animations>animations.xml</animations>
-  </entities>
-
+	<app framerate_cap="60">
+		<title>Parallax Paradox</title>
+		<organization>MarcoPoloProductions</organization>
+	</app>
+	<renderer>
+		<vsync value="false" />
+	</renderer>
+	<audio volumeFX="0.120253168" volumeMusic="0.110759497" />
+	<window>
+		<resolution width="1920" height="1080" scale="1.5" />
+		<fullscreen value="0" />
+		<borderless value="16" />
+		<resizable value="0" />
+		<fullscreen_window value="0" />
+	</window>
+	<scene>
+		<level name="map1.tmx" />
+		<level name="map2.tmx" />
+	</scene>
+	<file_system>
+		<path>data.zip</path>
+	</file_system>
+	<map>
+		<folder>maps/</folder>
+	</map>
+	<player>
+		<animations>animations.xml</animations>
+	</player>
+	<entities>
+		<animations>animations.xml</animations>
+	</entities>
 </config>

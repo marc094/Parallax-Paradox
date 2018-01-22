@@ -83,7 +83,7 @@ bool j1Render::PostUpdate()
 }
 
 // Called before quitting
-bool j1Render::CleanUp()
+bool j1Render::CleanUp(pugi::xml_node&)
 {
 	LOG("Destroying SDL render");
 	SDL_DestroyRenderer(renderer);
@@ -176,8 +176,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w *= (int)scale;
-	rect.h *= (int)scale;
+	rect.w = (int)(rect.w * scale);
+	rect.h = (int)(rect.h * scale);
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
@@ -215,7 +215,7 @@ bool j1Render::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * sec
 {
 	bool ret = true;
 
-	float scale = App->win->GetScale();
+	float scale = 1.f;//App->win->GetScale();
 	SDL_Rect rect;
 	if (use_camera)
 	{
@@ -238,8 +238,8 @@ bool j1Render::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * sec
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w *= (int)scale;
-	rect.h *= (int)scale;
+	rect.w = (int)(rect.w * scale);
+	rect.h = (int)(rect.h * scale);
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
@@ -276,10 +276,10 @@ bool j1Render::BlitGui(SDL_Texture * texture, int x, int y, const SDL_Rect * sec
 	return ret;
 }
 
-bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, float speed, bool filled, bool use_camera) const
+bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, float speed, bool filled, bool use_camera, bool scaled) const
 {
 	bool ret = true;
-	float scale = App->win->GetScale();
+	float scale = (scaled) ? App->win->GetScale() : 1.f;
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -304,10 +304,10 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	return ret;
 }
 
-bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera, bool scaled) const
 {
 	bool ret = true;
-	float scale = App->win->GetScale();
+	float scale = (scaled) ? App->win->GetScale() : 1.f;
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -328,10 +328,10 @@ bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 
 	return ret;
 }
 
-bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera, bool scaled) const
 {
 	bool ret = true;
-	float scale = App->win->GetScale();
+	float scale = (scaled) ? App->win->GetScale() : 1.f;
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);

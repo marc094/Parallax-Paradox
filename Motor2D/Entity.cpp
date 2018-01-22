@@ -4,6 +4,7 @@
 #include "p2Log.h"
 #include "BaseEnemy.h"
 #include "j1Entities.h"
+#include "j1Window.h"
 
 
 Entity::Entity()
@@ -15,6 +16,7 @@ Entity::~Entity()
 }
 
 void Entity::Move(float delta_time) {
+	float scale = App->win->GetScale();
 	position.x += speed_vect.x * delta_time;
 	position.y += speed_vect.y * delta_time;
 }

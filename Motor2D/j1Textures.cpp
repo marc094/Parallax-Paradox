@@ -43,7 +43,7 @@ bool j1Textures::Start()
 }
 
 // Called before quitting
-bool j1Textures::CleanUp()
+bool j1Textures::CleanUp(pugi::xml_node&)
 {
 	LOG("Freeing textures and Image library");
 	p2List_item<SDL_Texture*>* item;

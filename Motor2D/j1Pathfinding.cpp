@@ -30,7 +30,7 @@ j1PathFinding::~j1PathFinding()
 }
 
 // Called before quitting
-bool j1PathFinding::CleanUp()
+bool j1PathFinding::CleanUp(pugi::xml_node&)
 {
 	LOG("Freeing pathfinding library");
 	
@@ -297,6 +297,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 			iPoint neighbour_pos = neighbour_node->data.pos;
 			if (closed.Find(neighbour_pos) != nullptr)
 				continue;
+
 			if (neighbour_pos.DistanceNoSqrt(origin) > MAX_DISTANCE_ASTAR)
 				continue;
 

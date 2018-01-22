@@ -42,7 +42,7 @@ public:
 	bool PostUpdate();
 
 	// Called before quitting
-	bool CleanUp() override;
+	bool CleanUp(pugi::xml_node&) override;
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions

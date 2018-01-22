@@ -16,20 +16,8 @@ j1Collision::~j1Collision()
 {
 }
 
-bool j1Collision::Awake(pugi::xml_node&) {
-	scale = App->win->GetScale();
-	return true;
-}
-
 bool j1Collision::Start() {
-	return true;
-}
-
-bool j1Collision::PreUpdate() {
-	return true;
-}
-
-bool j1Collision::Update(float dt) {
+	scale = App->win->GetScale();
 	return true;
 }
 
@@ -37,18 +25,6 @@ bool j1Collision::PostUpdate() {
 	if (App->debug) {
 		BlitDebugColliders();
 	}
-	return true;
-}
-
-bool j1Collision::CleanUp() {
-	return true;
-}
-
-bool j1Collision::Load(pugi::xml_node&) {
-	return true;
-}
-
-bool j1Collision::Save(pugi::xml_node&) const {
 	return true;
 }
 
@@ -62,27 +38,27 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 			break;
 	}
 
+	iRect player_rect = rect_frame;
+	player_rect.x = (int)(position.x);
+	player_rect.y = (int)(position.y);
+	player_rect.w = (int)(player_rect.w);
+	player_rect.h = (int)(player_rect.h);
+
+	player_rect.x = (int)((player_rect.x) - (int)(App->render->camera.x));
+	player_rect.y = (int)((player_rect.y) - (int)(App->render->camera.y));
+
+	iPoint p1(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);
+
 	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 	{
-		iRect player_rect = rect_frame;
-		player_rect.x = (int)(position.x * scale);
-		player_rect.y = (int)(position.y * scale);
-		player_rect.w = (int)(player_rect.w * scale);
-		player_rect.h = (int)(player_rect.h * scale);
+		iRect aux = collider->data->rect;
+		aux.w = (int)(aux.w);
+		aux.h = (int)(aux.h);
 
-		iRect aux = collider->data->rect * scale;
-		aux.w = (int)(aux.w * scale);
-		aux.h = (int)(aux.h * scale);
+		aux.x = (int)((aux.x) - (int)(App->render->camera.x * map_layer->data->parallax_speed));
+		aux.y = (int)((aux.y) - (int)(App->render->camera.y * map_layer->data->parallax_speed));
 
-		aux.x = (int)(aux.x * scale) - (int)(App->render->camera.x * map_layer->data->parallax_speed * scale);
-		aux.y = (int)(aux.y * scale) - (int)(App->render->camera.y * map_layer->data->parallax_speed * scale);
-
-		player_rect.x = (int)(player_rect.x * scale) - (int)(App->render->camera.x * scale);
-		player_rect.y = (int)(player_rect.y * scale) - (int)(App->render->camera.y * scale);
-
-		iPoint p1, p2;
-		p1 = iPoint(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);
-		p2 = iPoint(aux.x + aux.w / 2, aux.y + aux.h / 2);
+		iPoint p2(aux.x + aux.w / 2, aux.y + aux.h / 2);
 		if (p1.DistanceNoSqrt(p2) > MAX_DISTANCE_COLLIDER_CULLING)
 			continue;
 

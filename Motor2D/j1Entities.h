@@ -29,7 +29,7 @@ public:
 
 	bool PostUpdate() override;
 	// Called before quitting
-	bool CleanUp() override;
+	bool CleanUp(pugi::xml_node&) override;
 
 	bool Load(pugi::xml_node&) override;
 

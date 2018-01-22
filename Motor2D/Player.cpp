@@ -4,7 +4,7 @@
 #include "j1Entities.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
-
+#include "j1Window.h"
 
 Player::Player()
 {
@@ -112,10 +112,10 @@ bool Player::Update(float dt)
 	cam_vec.x = c.x - App->render->camera.x;
 	cam_vec.y = c.y - App->render->camera.y;
 	float angle = cam_vec.angle();
+	float scale = App->win->GetScale();
 
-	App->render->camera.x = Interpolate(App->render->camera.x, c.x, abs(camera_speed * cos(angle)));
-	App->render->camera.y = Interpolate(App->render->camera.y, c.y, abs(camera_speed * sin(angle)));
-	//App->render->camera.y = (int)(-position.y *scale + App->render->camera.h / 2);
+	App->render->camera.x = Interpolate(App->render->camera.x, c.x * scale, abs(camera_speed * cos(angle) * scale));
+	App->render->camera.y = Interpolate(App->render->camera.y, c.y * scale, abs(camera_speed * sin(angle) * scale));
 
 	if (position.y > 1400)
 	{

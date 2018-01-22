@@ -12,9 +12,9 @@
 #define ACCELERATION 7.5f * 60
 #define DECELERATION 15.0f * 60
 #define GRAVITY 2.2f * 1.6f
-#define JUMP_FORCE 55.0f * 60
-#define MAX_SPEED_X 4.0f * 60
-#define MAX_SPEED_Y 8.0f * 60
+#define JUMP_FORCE 3300.f
+#define MAX_SPEED_X 240.f
+#define MAX_SPEED_Y 480.f
 #define ENEMY_MAX_SPEED_X 1.5f * 60
 #define ENEMY_MAX_SPEED_Y 3.0f * 60
 
