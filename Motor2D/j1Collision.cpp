@@ -39,27 +39,21 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 	}
 
 	iRect player_rect = rect_frame;
-	player_rect.x = (int)(position.x);
-	player_rect.y = (int)(position.y);
-	player_rect.w = (int)(player_rect.w);
-	player_rect.h = (int)(player_rect.h);
-
-	player_rect.x = (int)((player_rect.x) - (int)(App->render->camera.x));
-	player_rect.y = (int)((player_rect.y) - (int)(App->render->camera.y));
+	player_rect.x = (int)(position.x) - (int)(App->render->camera.x);
+	player_rect.y = (int)(position.y) - (int)(App->render->camera.y);
+	//player_rect = player_rect * scale;
 
 	iPoint p1(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);
 
 	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 	{
 		iRect aux = collider->data->rect;
-		aux.w = (int)(aux.w);
-		aux.h = (int)(aux.h);
-
-		aux.x = (int)((aux.x) - (int)(App->render->camera.x * map_layer->data->parallax_speed));
-		aux.y = (int)((aux.y) - (int)(App->render->camera.y * map_layer->data->parallax_speed));
+		aux.x -= (int)(App->render->camera.x * map_layer->data->parallax_speed);
+		aux.y -= (int)(App->render->camera.y * map_layer->data->parallax_speed);
+		//aux = aux * scale;
 
 		iPoint p2(aux.x + aux.w / 2, aux.y + aux.h / 2);
-		if (p1.DistanceNoSqrt(p2) > MAX_DISTANCE_COLLIDER_CULLING)
+		if (p1.DistanceNoSqrt(p2) > MAX_DISTANCE_COLLIDER_CULLING * scale)
 			continue;
 
 		SetSpVecToCollisions(aux, player_rect, speed_vector, grounded, delta_time);
@@ -78,7 +72,7 @@ void j1Collision::BlitDebugColliders() const
 		for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 		{
 			iRect aux(collider->data->rect);
-			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, 128, map_layer->data->parallax_speed);
+			App->render->DrawQuad(aux.toSDL_Rect(), 0, 255, 0, 128, map_layer->data->parallax_speed, true, true, true);
 		}
 	}
 

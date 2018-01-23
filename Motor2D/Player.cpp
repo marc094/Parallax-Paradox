@@ -107,15 +107,15 @@ bool Player::Update(float dt)
 
 	float camera_speed = 310.0f * dt;
 	fPoint cam_vec, c;
-	c.x = (position.x * scale) - (App->render->camera.w / 2.0f);
-	c.y = (position.y * scale) - (App->render->camera.h / 2.0f);
+	float scale = App->win->GetScale();
+	c.x = (position.x * scale) - ((App->render->camera.w) / 2.0f);
+	c.y = (position.y * scale) - ((App->render->camera.h) / 2.0f);
 	cam_vec.x = c.x - App->render->camera.x;
 	cam_vec.y = c.y - App->render->camera.y;
 	float angle = cam_vec.angle();
-	float scale = App->win->GetScale();
 
-	App->render->camera.x = Interpolate(App->render->camera.x, c.x * scale, abs(camera_speed * cos(angle) * scale));
-	App->render->camera.y = Interpolate(App->render->camera.y, c.y * scale, abs(camera_speed * sin(angle) * scale));
+	App->render->camera.x = Interpolate(App->render->camera.x, c.x, abs(camera_speed * cos(angle)));
+	App->render->camera.y = Interpolate(App->render->camera.y, c.y, abs(camera_speed * sin(angle)));
 
 	if (position.y > 1400)
 	{

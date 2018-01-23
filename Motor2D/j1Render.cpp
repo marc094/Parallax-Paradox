@@ -143,21 +143,19 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Rect rect;
 	if (scaling)
 	{
-		if (use_camera)
-		{
-			rect.x = (int)(x * scale) - (int)(camera.x * speed);
-			rect.y = (int)(y * scale) - (int)(camera.y * speed);
-		}
-		else
-		{
-			rect.x = (int)(x * scale);
-			rect.y = (int)(y * scale);
-		}
+		rect.x = (int)(x * scale);
+		rect.y = (int)(y * scale);
 	}
 	else
 	{
-		rect.x = (int)(x * scale) - (int)(camera.x * speed);
-		rect.y = (int)(y * scale) - (int)(camera.y * speed);
+		rect.x = x;
+		rect.y = y;
+	}
+
+	if (use_camera)
+	{
+		rect.x -= (int)(camera.x * speed);
+		rect.y -= (int)(camera.y * speed);
 	}
 
 
@@ -176,8 +174,10 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	rect.w = (int)(rect.w * scale);
-	rect.h = (int)(rect.h * scale);
+	if (scaling) {
+		rect.w = (int)(rect.w * scale);
+		rect.h = (int)(rect.h * scale);
+	}
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
