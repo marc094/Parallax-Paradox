@@ -13,7 +13,7 @@
   <audio volumeFX = "1.0f" volumeMusic = "1.0f"/>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1024" height="768" scale="2"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -21,6 +21,7 @@
   </window>
   
   <scene>
+    <level name="map3.tmx"/>
     <level name="map1.tmx"/>
     <level name="map2.tmx"/>
   </scene>
