@@ -57,7 +57,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 }
 
 // Called before quitting
-bool j1Audio::CleanUp()
+bool j1Audio::CleanUp(pugi::xml_node& config)
 {
 	if(!active)
 		return true;
@@ -78,6 +78,9 @@ bool j1Audio::CleanUp()
 	Mix_CloseAudio();
 	Mix_Quit();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+
+	config.attribute("volumeFX").set_value(GetVolumeFX());
+	config.attribute("volumeMusic").set_value(GetVolumeMusic());
 
 	return true;
 }

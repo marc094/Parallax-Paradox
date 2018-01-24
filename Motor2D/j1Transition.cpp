@@ -184,23 +184,3 @@ bool j1Transition::Update(float dt)
 
 	return ret;
 }
-
-bool j1Transition::PostUpdate()
-{
-	return true;
-}
-
-bool j1Transition::CleanUp()
-{
-	return true;
-}
-
-bool j1Transition::Load(pugi::xml_node &)
-{
-	return true;
-}
-
-bool j1Transition::Save(pugi::xml_node &) const
-{
-	return true;
-}

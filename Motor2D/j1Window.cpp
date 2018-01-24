@@ -90,9 +90,25 @@ bool j1Window::Awake(pugi::xml_node& config)
 }
 
 // Called before quitting
-bool j1Window::CleanUp()
+bool j1Window::CleanUp(pugi::xml_node& config)
 {
 	LOG("Destroying SDL window and quitting all SDL systems");
+
+	/*<resolution width = "1920" height = "1080" scale = "1.5f" / >
+		<fullscreen value = "false" / >
+		<borderless value = "true" / >
+		<resizable value = "false" / >
+		<fullscreen_window value = "false" / >*/
+	config.child("resolution").attribute("width").set_value(width);
+	config.child("resolution").attribute("height").set_value(height);
+	config.child("resolution").attribute("scale").set_value(scale);
+
+	int flags = SDL_GetWindowFlags(window);
+
+	config.child("fullscreen").attribute("value").set_value(flags & SDL_WINDOW_FULLSCREEN);
+	config.child("borderless").attribute("value").set_value(flags & SDL_WINDOW_BORDERLESS);
+	config.child("resizable").attribute("value").set_value(flags & SDL_WINDOW_RESIZABLE);
+	config.child("fullscreen_window").attribute("value").set_value(flags & SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	//Destroy window
 	if(window != NULL)

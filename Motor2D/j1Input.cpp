@@ -136,7 +136,7 @@ bool j1Input::PreUpdate()
 }
 
 // Called before quitting
-bool j1Input::CleanUp()
+bool j1Input::CleanUp(pugi::xml_node&)
 {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);

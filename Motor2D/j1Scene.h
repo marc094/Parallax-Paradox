@@ -29,22 +29,22 @@ public:
 	virtual ~j1Scene();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node&);
+	bool Awake(pugi::xml_node&) override;
 
 	// Called before the first frame
-	bool Start();
+	bool Start() override;
 
 	// Called before all Updates
-	bool PreUpdate();
+	bool PreUpdate() override;
 
 	// Called each loop iteration
-	bool Update(float dt);
+	bool Update(float dt) override;
 
 	// Called before all Updates
-	bool PostUpdate();
+	bool PostUpdate() override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp(pugi::xml_node&) override;
 
 	void ChangeScene(uint level);
 	
@@ -52,9 +52,9 @@ public:
 
 	void CheckEnd();
 
-	bool Load(pugi::xml_node& data);
+	bool Load(pugi::xml_node& data) override;
 
-	bool Save(pugi::xml_node& data) const;
+	bool Save(pugi::xml_node& data) const override;
 
 	bool ret = true;
 

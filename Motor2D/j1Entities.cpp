@@ -101,7 +101,7 @@ bool j1Entities::PostUpdate()
 
 	return true;
 }
-bool j1Entities::CleanUp()
+bool j1Entities::CleanUp(pugi::xml_node&)
 {
 	player.CleanUp();
 	App->tex->UnLoad(texture);

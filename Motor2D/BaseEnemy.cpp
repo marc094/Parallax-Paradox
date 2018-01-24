@@ -5,6 +5,7 @@
 #include "p2Log.h"
 #include "j1Entities.h"
 #include "j1Pathfinding.h"
+#include "j1Window.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
 

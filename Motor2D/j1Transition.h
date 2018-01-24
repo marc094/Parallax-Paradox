@@ -31,16 +31,6 @@ public:
 	// Called each loop iteration
 	bool Update(float dt) override;
 
-	// Called each loop iteration
-	bool PostUpdate() override;
-
-	// Called before quitting
-	bool CleanUp() override;
-
-	bool Load(pugi::xml_node&) override;
-
-	bool Save(pugi::xml_node&) const override;
-
 	j1Transition();
 	~j1Transition();
 

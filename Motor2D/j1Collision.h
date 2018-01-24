@@ -24,28 +24,12 @@ class j1Collision :
 public:
 	j1Collision();
 	~j1Collision();
-	
-	// Called before render is available
-	bool Awake(pugi::xml_node&) override;
 
 	// Called before the first frame
 	bool Start() override;
 
 	// Called each loop iteration
-	bool PreUpdate() override;
-
-	// Called each loop iteration
-	bool Update(float dt) override;
-
-	// Called each loop iteration
 	bool PostUpdate() override;
-
-	// Called before quitting
-	bool CleanUp() override;
-
-	bool Load(pugi::xml_node&) override;
-
-	bool Save(pugi::xml_node&) const override;
 
 	bool Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint& speed_vector, float delta_time) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;

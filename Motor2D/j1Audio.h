@@ -23,7 +23,7 @@ public:
 	bool Awake(pugi::xml_node&);
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp(pugi::xml_node&) override;
 
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);

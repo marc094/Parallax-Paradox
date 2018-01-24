@@ -44,9 +44,7 @@
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </changing>
       <idle frames="3" duration="4" loop ="1">
-        <frame number="0" x="0" y ="0" w="13" h ="14"/>
-        <frame number="2" x="16" y ="0" w="13" h ="14"/>
-        <frame number="1" x="32" y ="0" w="13" h ="14"/>
+        <frame number="0" x="0" y ="0" w="18" h ="32"/>
       </idle>
     </animationInfo>
   </player>
@@ -115,5 +113,5 @@
       </animationInfo>
     </air>
   </Enemies>
-  <spritesheet path="textures/Character sprites2.png"/>
+  <spritesheet path="textures/Character sprites3.png"/>
 </animations>

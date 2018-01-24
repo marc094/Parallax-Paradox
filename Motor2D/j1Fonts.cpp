@@ -39,7 +39,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 }
 
 // Called before quitting
-bool j1Fonts::CleanUp()
+bool j1Fonts::CleanUp(pugi::xml_node&)
 {
 	LOG("Freeing True Type fonts and library");
 	p2List_item<TTF_Font*>* item;

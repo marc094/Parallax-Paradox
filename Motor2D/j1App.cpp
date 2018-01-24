@@ -311,15 +311,33 @@ bool j1App::PostUpdate()
 bool j1App::CleanUp()
 {
 	PERF_START(ptimer);
-	bool ret = true;
+
+	pugi::xml_document	config_file;
+	pugi::xml_node		config;
+	pugi::xml_node		app_config;
+
+	bool ret = false;
+
+	config = LoadConfig(config_file);
+
+	if (config.empty() == false)
+	{
+		// self-config
+		ret = true;
+		app_config = config.child("app");
+		framerate_cap = app_config.attribute("framerate_cap").as_uint();
+	}
+
 	p2List_item<j1Module*>* item;
 	item = modules.end;
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp();
+		ret = item->data->CleanUp(config.child(item->data->name.GetString()));
 		item = item->prev;
 	}
+
+	config_file.save_file("config.xml");
 
 	PERF_PEEK(ptimer);
 	return ret;
@@ -467,14 +485,14 @@ bool j1App::ReloadNow() {
 	}
 
 	if (ret)
-		ret = tex->CleanUp() &
-		//pathfinding->CleanUp() &
-		map->CleanUp() &
-		scene->CleanUp() &
-		entities->CleanUp() &
-		//audio->CleanUp() &
-		font->CleanUp() &
-		gui->CleanUp();
+		ret = tex->CleanUp(config.child(tex->name.GetString())) &
+		//pathfinding->CleanUp(config.child(pathfinding->name.GetString())) &
+		map->CleanUp(config.child(map->name.GetString())) &
+		scene->CleanUp(config.child(scene->name.GetString())) &
+		entities->CleanUp(config.child(entities->name.GetString())) &
+		//audio->CleanUp(config.child(audio->name.GetString())) &
+		font->CleanUp(config.child(font->name.GetString())) &
+		gui->CleanUp(config.child(gui->name.GetString()));
 
 	if (ret)
 		ret = tex->Awake(config.child(tex->name.GetString())) &
