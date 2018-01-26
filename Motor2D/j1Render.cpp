@@ -141,16 +141,11 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	float scale = App->win->GetScale();
 	SDL_Rect rect;
-	if (scaling)
-	{
-		rect.x = (int)(x * scale);
-		rect.y = (int)(y * scale);
-	}
-	else
-	{
-		rect.x = x;
-		rect.y = y;
-	}
+
+	rect.x = (int)(x * scale);
+	rect.y = (int)(y * scale);
+
+
 
 	if (use_camera)
 	{
@@ -178,6 +173,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		rect.w = (int)(rect.w * scale);
 		rect.h = (int)(rect.h * scale);
 	}
+
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
