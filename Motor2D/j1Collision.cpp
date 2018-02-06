@@ -38,12 +38,12 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 			break;
 	}
 
-	iRect player_rect = rect_frame;
-	player_rect.x = (int)(position.x) - (int)(App->render->camera.x);
-	player_rect.y = (int)(position.y) - (int)(App->render->camera.y);
-	//player_rect = player_rect * scale;
+	iRect object_rect = rect_frame;
+	object_rect.x = (int)(position.x) - (int)(App->render->camera.x);
+	object_rect.y = (int)(position.y) - (int)(App->render->camera.y);
+	//object_rect = object_rect * scale;
 
-	iPoint p1(player_rect.x + player_rect.w / 2, player_rect.y + player_rect.h / 2);
+	iPoint p1(object_rect.x + object_rect.w / 2, object_rect.y + object_rect.h / 2);
 
 	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 	{
@@ -56,7 +56,7 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 		if (p1.DistanceNoSqrt(p2) > MAX_DISTANCE_COLLIDER_CULLING * scale)
 			continue;
 
-		SetSpVecToCollisions(aux, player_rect, speed_vector, grounded, delta_time);
+		SetSpVecToCollisions(aux, object_rect, speed_vector, grounded, delta_time);
 	}
 
 	return grounded;
