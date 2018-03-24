@@ -2,6 +2,7 @@
 #define __P2DEFS_H__
 
 #include <stdio.h>
+#include <list>
 #include <functional>
 
 //  NULL just in case ----------------------
@@ -94,4 +95,8 @@ TYPE Interpolate(TYPE val, TYPE target, TYPE step)
 
 	return val;
 }
+
+#define LIST(type) std::list<type>
+#define LIST_ITERATOR(type) LIST(type)::iterator
+
 #endif

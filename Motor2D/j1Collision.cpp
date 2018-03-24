@@ -28,22 +28,17 @@ bool j1Collision::PostUpdate() {
 	return true;
 }
 
-bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_frame, const fPoint position, fPoint& speed_vector, float delta_time) const
+iPoint j1Collision::Checkcollisions(Collider c1, float delta_time) const
 {
-	bool grounded = false;
+	iPoint side_collided;
 	p2List_item<MapLayer*>* map_layer = nullptr;
 	for (map_layer = App->map->data.layers.start; map_layer != NULL; map_layer = map_layer->next)
 	{
-		if (map_layer->data->layer == collidertype)
+		if (map_layer->data->layer == c1.layer)
 			break;
 	}
 
-	iRect object_rect = rect_frame;
-	object_rect.x = (int)(position.x) - (int)(App->render->camera.x);
-	object_rect.y = (int)(position.y) - (int)(App->render->camera.y);
-	//object_rect = object_rect * scale;
-
-	iPoint p1(object_rect.x + object_rect.w / 2, object_rect.y + object_rect.h / 2);
+	iPoint p1(c1.rect.x + c1.rect.w / 2, c1.rect.y + c1.rect.h / 2);
 
 	for (p2List_item<Collider*>* collider = map_layer->data->layer_colliders.start; collider != NULL; collider = collider->next)
 	{
@@ -56,10 +51,13 @@ bool j1Collision::Checkcollisions(const LayerID collidertype, const iRect rect_f
 		if (p1.DistanceNoSqrt(p2) > MAX_DISTANCE_COLLIDER_CULLING * scale)
 			continue;
 
-		SetSpVecToCollisions(aux, object_rect, speed_vector, grounded, delta_time);
+		if (!DoCollide(c1.rect, aux))
+			continue;
+
+		side_collided = GetCollisionSide(c1.rect, aux, c1.entity->speed_vect, delta_time);
 	}
 
-	return grounded;
+	return side_collided;
 }
 
 void j1Collision::BlitDebugColliders() const
@@ -83,7 +81,7 @@ void j1Collision::BlitDebugColliders() const
 
 		if (enemy->data->type == BaseEnemy::Type::LARVA)
 		{
-			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
+			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.rect.w, enemy->data->collider.rect.h);
 			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, 128, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed);
 
 			iRect aux_cube = App->entities->larva_cube.frames[App->entities->larva_cube.getFrameIndex()].rect;
@@ -91,46 +89,46 @@ void j1Collision::BlitDebugColliders() const
 			App->render->DrawQuad(aux_cube.toSDL_Rect(), 0, 255, 0, 128, App->map->data.layers[enemy->data->current_layer + 1]->parallax_speed);
 		}
 		else {
-			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.w, enemy->data->collider.h);
+			iRect aux((int)enemy->data->position.x, (int)enemy->data->position.y, enemy->data->collider.rect.w, enemy->data->collider.rect.h);
 			App->render->DrawQuad(aux.toSDL_Rect(), 255, 0, 0, 128, 1/*App->map->data.layers[enemy->data->current_layer]->parallax_speed*/);
 		}
 	}
 
-	iRect aux((int)App->entities->player.position.x, (int)App->entities->player.position.y, App->entities->player.collider.w, App->entities->player.collider.h);
+	iRect aux((int)App->entities->player.position.x, (int)App->entities->player.position.y, App->entities->player.collider.rect.w, App->entities->player.collider.rect.h);
 	App->render->DrawQuad(aux.toSDL_Rect(), 0, 0, 255, 128, 1.0f);
 
 }
 
-void j1Collision::SetSpVecToCollisions(const iRect collider1, const iRect collider2, fPoint &speed_vector, bool& grounded, float delta_time) const
+iPoint j1Collision::GetCollisionSide(const iRect entity, const iRect collider, fPoint speed_vector, float delta_time) const
 {
+	iPoint collision_side = iPoint(0,0);
 	fPoint delta_applied_spd_vec = speed_vector * delta_time;
-	if (collider2.x + collider2.w + delta_applied_spd_vec.x > collider1.x && collider2.x + delta_applied_spd_vec.x < collider1.x + collider1.w
-		&& collider2.y + collider2.h + delta_applied_spd_vec.y > collider1.y && collider2.y + delta_applied_spd_vec.y < collider1.y + collider1.h) //there's contact
+	if (DoCollide(entity + delta_applied_spd_vec.to_iPoint(), collider)) //there's contact
 	{
-		if (collider2.x < collider1.x + collider1.w && collider2.x + collider2.w > collider1.x) //collider2 is in x-axis collision with collider1
+		if (entity.x < collider.x + collider.w && entity.x + entity.w > collider.x) //entity is in x-axis collision with collider
 		{
-			if (collider2.y + delta_applied_spd_vec.y < collider1.y + collider1.h && collider2.y + delta_applied_spd_vec.y > collider1.y && delta_applied_spd_vec.y < 0)
+			if (entity.y + delta_applied_spd_vec.y < collider.y + collider.h && entity.y + delta_applied_spd_vec.y > collider.y && delta_applied_spd_vec.y < 0)
 			{
-				speed_vector.y = 0;
+				collision_side.y = -1;
 			}
-			else if (collider2.y + collider2.h + delta_applied_spd_vec.y > collider1.y && delta_applied_spd_vec.y >= 0)
+			else if (entity.y + entity.h + delta_applied_spd_vec.y > collider.y && delta_applied_spd_vec.y >= 0)
 			{
-				speed_vector.y = 0;
-				grounded = true;
+				collision_side.y = +1;
 			}
 		}
-		if (collider2.y < collider1.y + collider1.h && collider2.y + collider2.h > collider1.y) //collider2 is in x-axis collision with collider1
+		if (entity.y < collider.y + collider.h && entity.y + entity.h > collider.y) //entity is in x-axis collision with collider
 		{
-			if (collider2.x + delta_applied_spd_vec.x < collider1.x + collider1.w && collider2.x + delta_applied_spd_vec.x > collider1.x && delta_applied_spd_vec.x < 0)
+			if (entity.x + delta_applied_spd_vec.x < collider.x + collider.w && entity.x + delta_applied_spd_vec.x > collider.x && delta_applied_spd_vec.x < 0)
 			{
-				speed_vector.x = 0;
+				collision_side.x = -1;
 			}
-			else if (collider2.x + collider2.w + delta_applied_spd_vec.x > collider1.x && delta_applied_spd_vec.x >= 0)
+			else if (entity.x + entity.w + delta_applied_spd_vec.x > collider.x && delta_applied_spd_vec.x >= 0)
 			{
-				speed_vector.x = 0;
+				collision_side.x = +1;
 			}
 		}
 	}
+	return collision_side;
 }
 
 bool j1Collision::DoCollide(iRect collider1, iRect collider2) const

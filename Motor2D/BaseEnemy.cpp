@@ -20,7 +20,8 @@ BaseEnemy::~BaseEnemy()
 }
 bool BaseEnemy::Start()
 {
-	collider = current_animation->GetCurrentFrame(0.0f).rect;
+	collider.entity = this;
+	collider.rect = current_animation->GetCurrentFrame(0.0f).rect;
 	return true;
 }
 bool BaseEnemy::Update(float dt)
@@ -29,8 +30,8 @@ bool BaseEnemy::Update(float dt)
 	collider_rect.x = (int)position.x;
 	collider_rect.y = (int)position.y;
 
-	collider.x = (int)position.x;
-	collider.y = (int)position.y;
+	collider.rect.x = (int)position.x;
+	collider.rect.y = (int)position.y;
 
 	bool flipped = false;
 	Uint8 alpha = 255;
@@ -39,7 +40,7 @@ bool BaseEnemy::Update(float dt)
 	{
 		//Check Collisions
 
-		iRect player_rect = App->entities->player.collider;
+		iRect player_rect = App->entities->player.collider.rect;
 		player_rect.x = (int)App->entities->player.GetPosition().x;
 		player_rect.y = (int)App->entities->player.GetPosition().y;
 
@@ -58,24 +59,24 @@ bool BaseEnemy::Update(float dt)
 		iRect alert_rect;
 		if (type == LARVA)
 		{
-			alert_rect.x = collider.x - 200;
-			alert_rect.y = collider.y - 100;
-			alert_rect.w = collider.w + 400;
-			alert_rect.h = collider.h + 200;
+			alert_rect.x = collider.rect.x - 200;
+			alert_rect.y = collider.rect.y - 100;
+			alert_rect.w = collider.rect.w + 400;
+			alert_rect.h = collider.rect.h + 200;
 		}
 		else if (type == AIR)
 		{
-			alert_rect.x = collider.x - 350;
-			alert_rect.y = collider.y - 200;
-			alert_rect.w = collider.w + 650;
-			alert_rect.h = collider.h + 300;
+			alert_rect.x = collider.rect.x - 350;
+			alert_rect.y = collider.rect.y - 200;
+			alert_rect.w = collider.rect.w + 650;
+			alert_rect.h = collider.rect.h + 300;
 		}
 		else
 		{
-			alert_rect.x = collider.x - 100;
-			alert_rect.y = collider.y - 50;
-			alert_rect.w = collider.w + 200;
-			alert_rect.h = collider.h + 100;
+			alert_rect.x = collider.rect.x - 100;
+			alert_rect.y = collider.rect.y - 50;
+			alert_rect.w = collider.rect.w + 200;
+			alert_rect.h = collider.rect.h + 100;
 		}
 
 
@@ -197,7 +198,7 @@ void BaseEnemy::LarvaBlockUpdate(float dt)
 	{
 		alpha = 255;
 		bool p_grounded = false;
-		App->collision->SetSpVecToCollisions(cube, player_rect, App->entities->player.speed_vect, p_grounded, dt);
+		App->collision->GetCollisionSide(cube, player_rect, App->entities->player.speed_vect, p_grounded, dt);
 
 		App->entities->player.grounded = p_grounded | App->entities->player.grounded;
 	}
