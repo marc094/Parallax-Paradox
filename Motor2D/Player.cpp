@@ -94,6 +94,7 @@ bool Player::Update(float dt)
 	{
 		is_jumping = false;
 		landing_anim.Reset();
+		jumping_anim.Reset();
 		current_animation = &landing_anim;
 	}
 
@@ -253,7 +254,7 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 
 void Player::BlitPlayer() 
 {
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->CurrentFrame().rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, flipped, true, color);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->CurrentFrame().rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, flipped, true, color,0);
 	
 	if (god_mode)
 	{
