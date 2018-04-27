@@ -155,8 +155,8 @@ bool j1Scene::Start()
 	{
 		App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
 		App->entities->active = false;
-		menu_background = App->tex->Load("textures/menu background2.png");
-		title = App->tex->Load("textures/title2.png");
+		menu_background = App->tex->Load("textures/menu background.png");
+		title = App->tex->Load("textures/title.png");
 
 		App->gui->AddSprite( w/2, h/2, menu_background);
 		Sprite* title_spr = App->gui->AddSprite(w / 2, (h / 2 - 100), title);
