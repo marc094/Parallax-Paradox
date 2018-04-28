@@ -1,8 +1,13 @@
+
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
+#include "j1Module.h"
+#include "SDL/include/SDL.h"
 #include "Animation.h"
+#include "j1Map.h"
 #include "Rect.h"
+#include "j1Timer.h"
 
 #define ACCELERATION 7.5f * 60
 #define DECELERATION 15.0f * 60
@@ -31,24 +36,33 @@ public:
 		ALERT = 0x00100000,
 	};
 
-	State state = IDLE;
-	fPoint position;
-	fPoint speed_vect;
-	fPoint max_speed;
-	float camera_speed = 1.0f;
 	Animation* current_animation = nullptr;
 	Animation idle_anim;
+	fPoint position;
 	Animation moving_anim;
-	Collider collider;
+	iRect collider;
+	State state;
+	fPoint speed_vect;
+	fPoint max_speed;
 	LayerID current_layer;
-	bool gravity = true;
-	bool grounded = true;
+	bool gravity, grounded = true;
 
-	bool to_delete = false;
 
+	virtual bool Awake(pugi::xml_node&)
+	{
+		return true;
+	}
+
+	virtual bool Update(float dt)
+	{
+		return true;
+	}
 
 	virtual void Move(float delta_time);
 	virtual void Break(float delta_time);
-	virtual void Accelerate(float x, float y, float delta_time);
+	void Accelerate(float x,float y, float delta_time);
+	bool to_delete = false;
 };
+
+
 #endif // !

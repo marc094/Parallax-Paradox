@@ -6,8 +6,6 @@
 #include "p2Point.h"
 #include "Rect.h"
 
-class Entity;
-
 enum LayerID {
 	BACK_LAYER,
 	FRONT_LAYER,
@@ -18,10 +16,6 @@ enum LayerID {
 struct Collider
 {
 	iRect rect;
-	bool dynamic = false;
-	bool sensor = false;
-	Entity* entity = nullptr;
-	LayerID layer;
 };
 
 class j1Collision :
@@ -37,11 +31,9 @@ public:
 	// Called each loop iteration
 	bool PostUpdate() override;
 
-	iPoint Checkcollisions(Collider c1, float delta_time) const;
-
-private:
+	bool Checkcollisions(LayerID collidertype, iRect rect_frame, fPoint position , fPoint& speed_vector, float delta_time) const;
 	bool DoCollide(const iRect collider1, const iRect collider2) const;
-	iPoint GetCollisionSide(const iRect entity, const iRect collider, fPoint speed_vector, float delta_time) const;
+	void SetSpVecToCollisions(const iRect collider, const iRect entity, fPoint &speed_vector, bool& grounded, float delta_time) const;
 	void BlitDebugColliders() const;
 
 private:

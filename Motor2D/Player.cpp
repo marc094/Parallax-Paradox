@@ -62,8 +62,7 @@ bool Player::Start()
 	position = App->map->GetInitialPlayerPos();
 	current_layer = FRONT_LAYER;
 	current_animation = &idle_anim;
-	collider.entity = this;
-	collider.rect = current_animation->GetCurrentFrame(0.0f).rect;
+	collider = current_animation->GetCurrentFrame(0.0f).rect;
 	max_speed = fPoint(MAX_SPEED_X, MAX_SPEED_Y);
 	god_mode = false;
 	is_jumping = false;
@@ -80,14 +79,7 @@ bool Player::Update(float dt)
 
 	current_animation->GetCurrentFrame(dt);
 	god_mode_aura.GetCurrentFrame(dt);
-	collider.rect.x = (int)(position.x) - (int)(App->render->camera.x * camera_speed);
-	collider.rect.y = (int)(position.y) - (int)(App->render->camera.y * camera_speed);
-	iPoint collision_side = App->collision->Checkcollisions(collider, dt);
-	grounded = grounded | (collision_side.y == 1);
-
-	if (abs(collision_side.x != 0)) speed_vect.x = 0;
-	if (abs(collision_side.y != 0)) speed_vect.y = 0;
-
+	grounded = grounded | App->collision->Checkcollisions(current_layer, collider, position, speed_vect, dt);
 
 	if (onhit_timer.Count(0.2f))
 	{
@@ -252,7 +244,7 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 	player.y = (int)position.y;
 	max_speed.x = 500;
 	max_speed.y = 500;
-	App->collision->GetCollisionSide(collider, player, speed_vect, dt);
+	App->collision->SetSpVecToCollisions(collider, player, speed_vect, grounded, dt);
 	Accelerate((-10 * sp.x), (-10 * sp.y), dt);
 	
 	SDL_SetTextureColorMod(App->entities->texture, 255, 0, 0);
@@ -266,7 +258,7 @@ void Player::BlitPlayer()
 	if (god_mode)
 	{
 		iRect frame_rect = god_mode_aura.CurrentFrame().rect;
-		App->render->Blit(App->entities->texture, (int)position.x + (collider.rect.w / 2) - (frame_rect.w / 2), (int)position.y + (collider.rect.h / 2) - (frame_rect.h / 2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
+		App->render->Blit(App->entities->texture, (int)position.x + (collider.w / 2) - (frame_rect.w / 2), (int)position.y + (collider.h / 2) - (frame_rect.h / 2), &frame_rect.toSDL_Rect(), 1.0f, aura_angle);
 	}
 
 }
