@@ -9,15 +9,17 @@
 	</renderer>
 	<audio volumeFX="0.120253168" volumeMusic="0.110759497" />
 	<window>
-		<resolution width="1600" height="900" scale="2" />
+		<resolution width="1024" height="768" scale="1" />
 		<fullscreen value="0" />
 		<borderless value="16" />
 		<resizable value="0" />
 		<fullscreen_window value="0" />
 	</window>
 	<scene>
+    <level name="map3.tmx" />
 		<level name="map1.tmx" />
 		<level name="map2.tmx" />
+		<level name="map4.tmx" />
 	</scene>
 	<file_system>
 		<path>data.zip</path>

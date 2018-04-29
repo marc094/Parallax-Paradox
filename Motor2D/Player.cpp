@@ -63,6 +63,8 @@ bool Player::Start()
 	current_layer = FRONT_LAYER;
 	current_animation = &idle_anim;
 	collider = current_animation->GetCurrentFrame(0.0f).rect;
+	collider.w *= 1.5f;
+	collider.h *= 1.5f;
 	max_speed = fPoint(MAX_SPEED_X, MAX_SPEED_Y);
 	god_mode = false;
 	is_jumping = false;
@@ -254,7 +256,7 @@ void Player::OnHit(iRect collider,fPoint collider_spv, float dt)
 
 void Player::BlitPlayer() 
 {
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->CurrentFrame().rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, flipped, true, color,0);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &current_animation->CurrentFrame().rect.toSDL_Rect(), 1.0f, 0, current_animation->CurrentFrame().pivot.x, current_animation->CurrentFrame().pivot.y, flipped, true, color,1.5f);
 	
 	if (god_mode)
 	{
