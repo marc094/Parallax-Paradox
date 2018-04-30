@@ -148,7 +148,7 @@ bool j1Scene::Start()
 			App->entities->Add_Coin({ 815, 561 });
 			App->entities->Add_Coin({ 481, 47 });
 			firstlevel_lab = App->gui->AddLabel(w /2, h /3, 35, "gui/Earth 2073.ttf", { 255,255,255,255 }, Label::BLENDED);
-			firstlevel_lab->setString("Press SHIFT to switch layer");
+			firstlevel_lab->setString("Press X to switch layer");
 			firstlevel_lab->Enable(false);
 			break;
 		}
@@ -407,7 +407,7 @@ void j1Scene::ChangeScene(uint _level) {
 
 void j1Scene::CheckInput(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		App->entities->player.SwapLayer();
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
