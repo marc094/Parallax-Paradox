@@ -139,7 +139,20 @@ bool j1Scene::Start()
 
 		App->entities->active = true;
 
-		if (level == 1)
+		switch (level)
+		{
+		case 1:
+		{
+			App->entities->Add_Coin({ 476, 678 });
+			App->entities->Add_Coin({ 416, 894 });
+			App->entities->Add_Coin({ 815, 561 });
+			App->entities->Add_Coin({ 481, 47 });
+			firstlevel_lab = App->gui->AddLabel(w /2, h /3, 35, "gui/Earth 2073.ttf", { 255,255,255,255 }, Label::BLENDED);
+			firstlevel_lab->setString("Press SHIFT to switch layer");
+			firstlevel_lab->Enable(false);
+			break;
+		}
+		case 2:
 		{
 			App->entities->Add_Coin({ 1474, 856 });
 			App->entities->Add_Coin({ 900, 840 });
@@ -147,9 +160,25 @@ bool j1Scene::Start()
 			App->entities->Add_Coin({ 1000, 600 });
 			App->entities->Add_Coin({ 1480, 585 });
 			App->entities->Add_Coin({ 1185, 216 });
-
+			break;
 		}
-	
+		case 3:
+		{
+			App->entities->Add_Coin({ 891, 973 });
+			App->entities->Add_Coin({ 1296, 854 });
+			App->entities->Add_Coin({ 762,600 });
+			App->entities->Add_Coin({ 730,730 });
+			break;
+		}
+		case 4:
+		{
+			App->entities->Add_Coin({ 998,706 });
+			App->entities->Add_Coin({ 621, 548 });
+			App->entities->Add_Coin({ 1332,421 });
+			App->entities->Add_Coin({ 171,134 });
+			break;
+		}
+		}
 	}
 	else if (current_state == IN_MENU)
 	{
@@ -305,9 +334,24 @@ bool j1Scene::Update(float dt)
 		App->transition->MakeTransition(&DoLoadInGame, j1Transition::FADE_TO_BLACK, 2.5f);
 	}
 
-	if (current_state == IN_GAME && !App->entities->player.hit)
+	if (current_state == IN_GAME)
 	{
-		CheckInput(dt);
+		if (!App->entities->player.hit)
+		{
+			CheckInput(dt);
+		}
+		
+		if (level == 1 )
+		{
+			iRect player_rect = App->entities->player.collider;
+			player_rect.x = (int)App->entities->player.GetPosition().x;
+			player_rect.y = (int)App->entities->player.GetPosition().y;
+
+			if (App->entities->player.current_layer == FRONT_LAYER && App->collision->DoCollide(player_rect.toSDL_Rect(), { 1143,612,123,27 }))
+				firstlevel_lab->Enable(true);
+			else
+				firstlevel_lab->Enable(false);
+		}
 		App->map->Draw();
 		time_lab->setString("%.2f", time.ReadSec());
 	}
@@ -363,7 +407,7 @@ void j1Scene::ChangeScene(uint _level) {
 
 void j1Scene::CheckInput(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
 		App->entities->player.SwapLayer();
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -375,7 +419,7 @@ void j1Scene::CheckInput(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->entities->player.Accelerate(ACCELERATION, 0, dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !App->entities->player.isJumping() && !App->entities->player.god_mode)
+	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN )&& !App->entities->player.isJumping() && !App->entities->player.god_mode)
 	{
 		App->entities->player.setJumping(true);
 		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);

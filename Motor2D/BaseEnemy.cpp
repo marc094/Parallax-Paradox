@@ -146,7 +146,7 @@ bool BaseEnemy::Update(float dt)
 
 	iRect frame = current_animation->GetCurrentFrame(dt).result_rect;
 
-	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &frame.toSDL_Rect(), 1.0f, 0, 0, 0, true, flipped);
+	App->render->Blit(App->entities->texture, (int)position.x, (int)position.y, &frame.toSDL_Rect(), 1.0f, 0, 0, 0, flipped);
 	SDL_SetTextureAlphaMod(App->entities->texture, 255);
 
 	if (type == LARVA || type == AIR)
