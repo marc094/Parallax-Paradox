@@ -7,7 +7,7 @@
 	<renderer>
 		<vsync value="false" />
 	</renderer>
-	<audio volumeFX="0.120253168" volumeMusic="0.110759497" />
+	<audio volumeFX="0.120253168" volumeMusic="0" />
 	<window>
 		<resolution width="1024" height="768" scale="1" />
 		<fullscreen value="0" />
@@ -18,7 +18,7 @@
 	<scene>
 		<level name="map1.tmx" />
 		<level name="map2.tmx" />
-    <level name="map3.tmx" />
+		<level name="map3.tmx" />
 		<level name="map4.tmx" />
 	</scene>
 	<file_system>

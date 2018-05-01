@@ -124,14 +124,7 @@ bool j1Scene::Start()
 
 		if (!playing)
 		{
-			if (level == 1)
-				App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-			else if (level == 2)
-				App->audio->PlayMusic("audio/music/Onett_Theme_Remastered_EarthBound.ogg", -1);
-			else {
-				App->audio->PlayMusic("audio/music/MotherEarthBound_Zero_Remix_8_Melodies.ogg", -1);
-			}
-
+			App->audio->PlayMusic("audio/music/InGame.ogg", -1);
 			playing = true;
 		}
 
@@ -400,7 +393,6 @@ void DoLoadMenu(int, ...) {
 
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
-	playing = false;
 	App->transition->MakeTransition(&DoReload, j1Transition::FADE_TO_BLACK);
 	//App->Reload();
 }

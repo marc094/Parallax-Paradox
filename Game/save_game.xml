@@ -7,10 +7,10 @@
 	<map />
 	<scene>
 		<level current_level="1" />
-		<time sec="10046" />
+		<time sec="25610" />
 	</scene>
 	<entities>
-		<position x="1488.3988" y="962.457214" />
+		<position x="69" y="779.022949" />
 		<coins amount="0" />
 	</entities>
 	<collision />
@@ -19,6 +19,6 @@
 	<gui />
 	<transition />
 	<renderer>
-		<camera x="976.398804" y="578.457214" />
+		<camera x="-64.2047424" y="523.902405" />
 	</renderer>
 </game_state>

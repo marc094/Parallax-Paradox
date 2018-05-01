@@ -46,7 +46,7 @@ void j1Map::Draw()
 	bool player_blit = false;
 	if(map_loaded == false)
 		return;
-	App->render->Blit(background, 0, 0, 0, 0.7f);
+	App->render->Blit(background, -200, -200, 0, 0.7f);
 	p2List_item<MapLayer*>* item_layer = data.layers.start;
 	LayerID layer = BACK_LAYER;
 	Uint8 alpha = 255;
