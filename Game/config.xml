@@ -7,7 +7,7 @@
 	<renderer>
 		<vsync value="false" />
 	</renderer>
-	<audio volumeFX="0.120253168" volumeMusic="0" />
+	<audio volumeFX="0.120253168" volumeMusic="0.224683538" />
 	<window>
 		<resolution width="1024" height="768" scale="1" />
 		<fullscreen value="0" />

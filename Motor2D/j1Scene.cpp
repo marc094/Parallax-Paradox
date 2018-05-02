@@ -175,7 +175,7 @@ bool j1Scene::Start()
 	}
 	else if (current_state == IN_MENU)
 	{
-		App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
+		App->audio->PlayMusic("audio/music/Intro.ogg", -1);
 		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background.png");
 		title = App->tex->Load("textures/title.png");
@@ -371,6 +371,8 @@ bool j1Scene::CleanUp(pugi::xml_node& config)
 {
 	LOG("Freeing scene");
 
+
+
 	xml_file_name.Clear();
 
 	return true;
@@ -393,6 +395,8 @@ void DoLoadMenu(int, ...) {
 
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
+
+
 	App->transition->MakeTransition(&DoReload, j1Transition::FADE_TO_BLACK);
 	//App->Reload();
 }
