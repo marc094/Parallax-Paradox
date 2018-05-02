@@ -257,7 +257,7 @@ bool j1Map::Load(const char* file_name)
 		}
 	}
 
-	background = App->tex->Load("textures/grid.png");
+	background = App->tex->Load("textures/background.png");
 
 	if(ret == true)
 	{

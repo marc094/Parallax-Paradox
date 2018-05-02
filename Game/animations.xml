@@ -25,14 +25,14 @@
         <frame number="4" x="112" y ="0" w="13" h ="14"/>
       </landing>
       <walking frames="3" duration="11.0f" loop ="1">
-        <frame number="0" x="0" y ="42" w="22" h ="41" pivot_x="0" pivot_y="-5"/>
-        <frame number="1" x="37" y ="40" w="25" h ="38" pivot_x="0" pivot_y="-7"/>
-        <frame number="2" x="78" y ="45" w="25" h ="43" pivot_x="0" pivot_y="-2"/>
-        <frame number="3" x="118" y ="47" w="22" h ="43" pivot_x="0" pivot_y="0"/>
-        <frame number="4" x="160" y ="42" w="23" h ="43" pivot_x="0" pivot_y="-5"/>
-        <frame number="5" x="198" y ="40" w="27" h ="40" pivot_x="0" pivot_y="-7"/>
-        <frame number="6" x="238" y ="45" w="27" h ="40" pivot_x="0" pivot_y="-2"/>
-        <frame number="7" x="280" y ="47" w="23" h ="43" pivot_x="0" pivot_y="0"/>
+        <frame number="0" x="0" y ="17" w="13" h ="17" pivot_x="0" pivot_y="-2"/>
+        <frame number="1" x="16" y ="16" w="13" h ="17" pivot_x="0" pivot_y="-3"/>
+        <frame number="2" x="32" y ="18" w="13" h ="17" pivot_x="0" pivot_y="-1"/>
+        <frame number="3" x="48" y ="19" w="12" h ="17" pivot_x="0" pivot_y="0"/>
+        <frame number="4" x="64" y ="17" w="11" h ="17" pivot_x="0" pivot_y="-2"/>
+        <frame number="5" x="80" y ="16" w="13" h ="17" pivot_x="0" pivot_y="-3"/>
+        <frame number="6" x="96" y ="18" w="13" h ="17" pivot_x="0" pivot_y="-1"/>
+        <frame number="7" x="112" y ="19" w="13" h ="17" pivot_x="0" pivot_y="0"/>
       </walking>
       <changing frames="0" duration="0" loop ="0">
         <frame number="0" x="0" y ="0" w="0" h ="0"/>
@@ -43,10 +43,11 @@
         <frame number="5" x="0" y ="0" w="0" h ="0"/>
         <frame number="6" x="0" y ="0" w="0" h ="0"/>
       </changing>
-      <idle frames="1" duration="4" loop ="1">
-        <frame number="0" x="0" y ="0" w="22" h ="40"/>
-        <frame number="0" x="40" y ="0" w="22" h ="40"/>
-        <frame number="0" x="80" y ="0" w="23" h ="40"/>
+      <idle frames="1" duration="5" loop ="1">
+        <frame number="0" x="0" y ="0" w="13" h ="14"/>
+        <frame number="1" x="16" y ="0" w="13" h ="14"/>
+        <frame number="2" x="32" y ="0" w="13" h ="14"/>
+        <frame number="3" x="48" y ="0" w="13" h ="14" pivot_x ="1"/>
       </idle>
     </animationInfo>
   </player>
@@ -115,5 +116,5 @@
       </animationInfo>
     </air>
   </Enemies>
-  <spritesheet path="textures/Character sprites3.png"/>
+  <spritesheet path="textures/Character sprites.png"/>
 </animations>

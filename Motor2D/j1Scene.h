@@ -101,6 +101,7 @@ private:
 	j1Timer intro_time;
 	Label* time_lab;
 	Label* coin_lab;
+	Label* firstlevel_lab;
 };
 
 void Game_start(int, ...);
