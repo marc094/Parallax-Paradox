@@ -4,6 +4,7 @@
 #include "j1Input.h"
 #include "j1Window.h"
 #include "SDL/include/SDL.h"
+#include "SDL\include\SDL_gamecontroller.h"
 
 
 j1Input::j1Input() : j1Module()
@@ -13,6 +14,12 @@ j1Input::j1Input() : j1Module()
 	keyboard = new keyEvent[MAX_KEYS];
 	memset(keyboard, { KEY_IDLE }, sizeof(keyEvent) * MAX_KEYS);
 	memset(mouse_buttons, { KEY_IDLE }, sizeof(keyEvent) * NUM_MOUSE_BUTTONS);
+
+	//init controller variables
+	controller.buttons = new keyEvent[SDL_CONTROLLER_BUTTON_MAX];
+	controller.axis = new double[SDL_CONTROLLER_AXIS_MAX];
+	memset(controller.buttons, { KEY_IDLE }, sizeof(keyEvent) * SDL_CONTROLLER_BUTTON_MAX);
+	memset(controller.axis, 0, sizeof(double) * SDL_CONTROLLER_AXIS_MAX);
 }
 
 // Destructor
@@ -28,7 +35,7 @@ bool j1Input::Awake(pugi::xml_node& config)
 	bool ret = true;
 	SDL_Init(0);
 
-	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+	if(SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
 	{
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -82,6 +89,32 @@ bool j1Input::PreUpdate()
 		if(mouse_buttons[i].keyState == KEY_UP)
 			mouse_buttons[i].keyState = KEY_IDLE;
 	}
+
+	for (int i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
+		if (SDL_GameControllerGetButton(controller._sdl_ref, (SDL_GameControllerButton)i) == 1)
+		{
+			controller.buttons[i].blocked = false;
+			if (controller.buttons[i].keyState == KEY_IDLE)
+				controller.buttons[i].keyState = KEY_DOWN;
+			else
+				controller.buttons[i].keyState = KEY_REPEAT;
+		}
+		else
+		{
+			if (controller.buttons[i].keyState == KEY_REPEAT || controller.buttons[i].keyState == KEY_DOWN)
+				controller.buttons[i].keyState = KEY_UP;
+			else
+				controller.buttons[i].keyState = KEY_IDLE;
+		}
+	}
+
+	for (int i = 0; i < SDL_CONTROLLER_AXIS_MAX; i++) {
+		Sint16 axis = SDL_GameControllerGetAxis(controller._sdl_ref, (SDL_GameControllerAxis)i);
+		double axis_normalised = (double)axis / INT16_MAX;
+		controller.axis[i] = axis_normalised;
+	}
+
+	CheckControllers();
 
 	while(SDL_PollEvent(&event) != 0)
 	{
@@ -159,4 +192,28 @@ void j1Input::GetMouseMotion(int& x, int& y)
 {
 	x = mouse_motion_x;
 	y = mouse_motion_y;
+}
+
+bool j1Input::CheckControllers()
+{
+	bool ret = false;
+
+	if (controller.connected)
+		return true;
+
+	int numSticks = SDL_NumJoysticks();
+	if (numSticks > 0)
+	{
+		controller._sdl_ref = SDL_GameControllerOpen(0);
+		if (controller._sdl_ref == nullptr)
+		{
+			LOG("Controller couldn't be initialized SDL_Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			ret = true;
+			controller.connected = true;
+		}
+	}
+	return ret;
 }

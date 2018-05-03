@@ -85,7 +85,7 @@ private:
 	uint level;
 	uint max_level;
 	p2DynArray<p2SString> xml_file_name;
-	bool playing;
+	bool playing = false;
 	SDL_Texture* menu_background = nullptr;
 	SDL_Texture* title = nullptr;
 	SDL_Texture* buttons = nullptr;

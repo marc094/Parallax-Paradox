@@ -175,7 +175,9 @@ bool j1Scene::Start()
 	}
 	else if (current_state == IN_MENU)
 	{
-		App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
+		//Estaria guay tenir musica al menu
+		/*App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
+		playing = false;*/
 		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background.png");
 		title = App->tex->Load("textures/title.png");
@@ -278,9 +280,19 @@ bool j1Scene::Update(float dt)
 			if (!settings_bool && !settings_window->isEnabled()) {
 				ShowSettings(0);
 			}
+			else Hide_Settings(0);
 		}
 		else
 			ret = false;
+	}
+
+	if (App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_START) == KEY_DOWN) {
+		if (state == IN_GAME) {
+			if (!settings_bool && !settings_window->isEnabled()) {
+				ShowSettings(0);
+			}
+			else Hide_Settings(0);
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -399,28 +411,34 @@ void j1Scene::ChangeScene(uint _level) {
 
 void j1Scene::CheckInput(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
 		App->entities->player.SwapLayer();
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT || App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY, +1))
 		App->entities->player.Accelerate(0, ACCELERATION, dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT || App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX, -1))
 		App->entities->player.Accelerate(-ACCELERATION, 0, dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == KEY_REPEAT || App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTX, +1))
 		App->entities->player.Accelerate(ACCELERATION, 0, dt);
 
-	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN )&& !App->entities->player.isJumping() && !App->entities->player.god_mode)
+	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_DOWN
+		|| App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_A) == KEY_DOWN) && !App->entities->player.isJumping() && !App->entities->player.god_mode)
 	{
 		App->entities->player.setJumping(true);
 		App->entities->player.Accelerate(0, -JUMP_FORCE, dt);
 		App->audio->PlayFx(jump_sound);
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->entities->player.god_mode)
+	else if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_UP) == KEY_REPEAT
+		|| App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY, -1)) && App->entities->player.god_mode)
 	{
 		App->entities->player.Accelerate(0, -ACCELERATION, dt);
+	}
+
+	if (!App->scene->settings_bool) {
+		float timescale = 1.0f - CLAMP(App->input->GetControllerAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT), .0f, .5f);
+		App->SetTimeScale(timescale);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -604,6 +622,7 @@ void Hide_Credits(int, ...)
 	App->scene->credits_window->Enable(false);
 	App->scene->credits_bool = false;
 }
+
 void Hide_Settings(int, ...)
 {
 	App->scene->settings_window->Enable(false);

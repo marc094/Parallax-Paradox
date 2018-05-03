@@ -2,6 +2,7 @@
 #define __j1INPUT_H__
 
 #include "j1Module.h"
+#include "SDL\include\SDL_gamecontroller.h"
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
@@ -30,6 +31,14 @@ typedef struct {
 	j1KeyState keyState = KEY_IDLE;
 	bool blocked = false;
 } keyEvent;
+
+typedef struct {
+	bool connected = false;
+	keyEvent*	buttons = nullptr;
+	double*		axis = nullptr;
+	double		deadzone = 0.5;
+	SDL_GameController* _sdl_ref = nullptr;
+} Controller;
 
 class j1Input : public j1Module
 {
@@ -71,6 +80,25 @@ public:
 		return mouse_buttons[id - 1].keyState;
 	}
 
+	j1KeyState GetControllerButton(int id) const
+	{
+		if (controller.buttons[id].blocked)
+			return KEY_IDLE;
+		return controller.buttons[id].keyState;
+	}
+
+	double GetControllerAxisValue(int id) const
+	{
+		return controller.axis[id];
+	}
+
+	bool GetControllerAxis(int id, int sign) const
+	{
+		if (controller.axis[id] * sign >= controller.deadzone)
+			return true;
+		return false;
+	}
+
 	// Check if a certain window event happened
 	bool GetWindowEvent(int code);
 
@@ -102,10 +130,13 @@ public:
 		}
 	}
 
+	bool CheckControllers();
+
 private:
 	bool		windowEvents[WE_COUNT];
-	keyEvent*	keyboard;
+	keyEvent*	keyboard = nullptr;
 	keyEvent	mouse_buttons[NUM_MOUSE_BUTTONS];
+	Controller	controller;
 	int			mouse_motion_x;
 	int			mouse_motion_y;
 	int			mouse_x, mouse_x_prev;
