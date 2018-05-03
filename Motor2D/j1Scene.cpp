@@ -178,6 +178,7 @@ bool j1Scene::Start()
 		//Estaria guay tenir musica al menu
 		/*App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
 		playing = false;*/
+		App->audio->PlayMusic("audio/music/Intro.ogg", -1);
 		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background.png");
 		title = App->tex->Load("textures/title.png");
