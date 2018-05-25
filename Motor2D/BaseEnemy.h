@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include <vector>
 
 class BaseEnemy :
 	public Entity
@@ -32,6 +33,6 @@ private:
 	void GetPath();
 	void FollowPath(float delta_time);
 
-	p2DynArray<iPoint> path;
+	std::vector<iPoint> path;
 };
 

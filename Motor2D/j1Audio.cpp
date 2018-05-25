@@ -139,6 +139,24 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 	return ret;
 }
 
+void j1Audio::StopMusic(float fade_out)
+{
+	if (music != NULL)
+	{
+		if (fade_out > 0.0f)
+		{
+			Mix_FadeOutMusic(int(fade_out * 1000.0f));
+		}
+		else
+		{
+			Mix_HaltMusic();
+		}
+
+		// this call blocks until fade out is done
+		Mix_FreeMusic(music);
+	}
+}
+
 // Load WAV
 unsigned int j1Audio::LoadFx(const char* path)
 {

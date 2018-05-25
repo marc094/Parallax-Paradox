@@ -47,6 +47,7 @@ bool j1Scene::Awake(pugi::xml_node& data)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->SetTimeScale(1.f);
 	if (level > max_level)
 		level = 1;
 
@@ -69,7 +70,9 @@ bool j1Scene::Start()
 
 	uint w;
 	uint h;
-	App->win->GetWindowSize(w, h);
+	uiPoint dims = App->gui->GetGuiSize();
+	w = dims.x;
+	h = dims.y;
 
 	SDL_Rect button_idle = { 1000,1000,250,58 };
 	SDL_Rect button_hover = { 0,0,250,58 };
@@ -141,7 +144,7 @@ bool j1Scene::Start()
 			App->entities->Add_Coin({ 815, 561 });
 			App->entities->Add_Coin({ 481, 47 });
 			firstlevel_lab = App->gui->AddLabel(w /2, h /3, 35, "gui/Earth 2073.ttf", { 255,255,255,255 }, Label::BLENDED);
-			firstlevel_lab->setString("Press X to switch layer");
+			firstlevel_lab->setString("Press LB to switch layer");
 			firstlevel_lab->Enable(false);
 			break;
 		}
@@ -176,8 +179,6 @@ bool j1Scene::Start()
 	else if (current_state == IN_MENU)
 	{
 		//Estaria guay tenir musica al menu
-		/*App->audio->PlayMusic("audio/music/Cant_Help_Falling_In_Love_on_a_Kalimba.ogg", -1);
-		playing = false;*/
 		App->audio->PlayMusic("audio/music/Intro.ogg", -1);
 		App->entities->active = false;
 		menu_background = App->tex->Load("textures/menu background.png");
@@ -397,22 +398,34 @@ void DoReload(int, ...) {
 void DoLoadInGame(int, ...) {
 	App->Reload();
 	App->scene->state = j1Scene::IN_GAME;
+	App->scene->transitioninig = false;
 }
 
 void DoLoadMenu(int, ...) {
 	App->Reload();
 	App->scene->state = j1Scene::IN_MENU;
+	App->scene->transitioninig = false;
 }
 
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
-	App->transition->MakeTransition(&DoReload, j1Transition::FADE_TO_BLACK);
-	//App->Reload();
+	float trans_time = 3.f;
+	if (level > max_level) {
+		level = 1;
+		uiPoint dims = App->gui->GetGuiSize();
+		Label* win_label = App->gui->AddLabel(dims.x / 2, dims.y / 2 - dims.y / 8, 100, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
+		win_label->setString("CONGRATULATIONS!");
+		trans_time = 10.f;
+		playing = false;
+		App->transition->MakeTransition(&DoLoadMenu, j1Transition::FADE_TO_BLACK, trans_time);
+	}
+	else App->transition->MakeTransition(&DoReload, j1Transition::FADE_TO_BLACK, trans_time);
+	App->SetTimeScaleTo(0.1f, 2.f);
 }
 
 void j1Scene::CheckInput(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_X) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == KEY_DOWN)
 		App->entities->player.SwapLayer();
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->GetControllerButton(SDL_CONTROLLER_BUTTON_DPAD_DOWN) == KEY_REPEAT || App->input->GetControllerAxis(SDL_CONTROLLER_AXIS_LEFTY, +1))
@@ -437,17 +450,18 @@ void j1Scene::CheckInput(float dt)
 		App->entities->player.Accelerate(0, -ACCELERATION, dt);
 	}
 
-	if (!App->scene->settings_bool) {
+	/*if (!App->scene->settings_bool) {
 		float timescale = 1.0f - CLAMP(App->input->GetControllerAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT), .0f, .5f);
 		App->SetTimeScale(timescale);
-	}
+	}*/
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		App->entities->player.god_mode = !App->entities->player.god_mode;
 }
 
 void j1Scene::CheckEnd() {
-	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos()) < 25 && !transitioninig) {
+	//App->render->DrawCircle(App->map->GetFinalPlayerPos().x, App->map->GetFinalPlayerPos().y, 50, 255, 255, 255, 255, true, false);
+	if (App->entities->player.GetPosition().DistanceTo(App->map->GetFinalPlayerPos() + fPoint(15.f, 0.f)) < 50.f && !transitioninig) {
 		transitioninig = true;
 		App->scene->ChangeScene(level + 1);
 	}

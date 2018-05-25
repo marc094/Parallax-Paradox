@@ -5,6 +5,7 @@
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Map.h"
+#include <vector>
 
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
@@ -33,10 +34,10 @@ public:
 	void SetGroundMap(const MapLayer* layer_data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path, bool ground = false);
+	int CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, std::vector<iPoint>* path, bool ground = false);
 
 	// To request all tiles involved in the last generated path
-	const p2DynArray<iPoint>* GetLastPath() const;
+	const std::vector<iPoint>* GetLastPath() const;
 
 	// Utility: return true if pos is inside the map boundaries
 	bool CheckBoundaries(const iPoint& pos) const;
@@ -60,10 +61,10 @@ private:
 	uint width;
 	uint height;
 	// all map walkability values [0..255]
-	p2List<p2DynArray<uint>> maps;
-	p2List<p2DynArray<uint>> maps_ground;
+	std::vector<std::vector<uint>> maps;
+	std::vector<std::vector<uint>> maps_ground;
 	// we store the created path here
-	p2DynArray<iPoint>* last_path = nullptr;
+	std::vector<iPoint>* last_path = nullptr;
 };
 
 // forward declaration

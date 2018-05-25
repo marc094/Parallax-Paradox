@@ -31,8 +31,6 @@ bool j1Transition::MakeTransition(Callback _cb, Transition _type, float time)
 	transition_time = time;
 	transcurred_time = 0.0f;
 	type = _type;
-	uint w = 0, h = 0;
-	App->win->GetWindowSize(w, h);
 	dst_rect.x = 0;
 	dst_rect.y = 0;
 	switch (type)
@@ -43,10 +41,10 @@ bool j1Transition::MakeTransition(Callback _cb, Transition _type, float time)
 		fade_state = FADING_OUT;
 		break;
 	case j1Transition::SCROLL_RIGHT:
-		speed = (int)(w / time);
+		speed = (int)(DEFAULT_RESOLUTION_X / time);
 	case j1Transition::SCROLL_LEFT:
 		scroll_state = SNAPSHOT;
-		speed = -(int)(w / time);
+		speed = -(int)(DEFAULT_RESOLUTION_X / time);
 		break;
 	case j1Transition::LOADING_SCREEN:
 		break;
@@ -88,11 +86,9 @@ void j1Transition::Fade_To_Black()
 void j1Transition::Scrolling()
 {
 	if (scroll_transition_texture != nullptr) {
-		SDL_Rect r = dst_rect;
-		r.x = 0;
-		r.y = 0;
 		App->render->Blit(scroll_transition_texture, dst_rect.x, dst_rect.y, nullptr, 0.0f);
 	}
+
 	switch (scroll_state)
 	{
 	case j1Transition::SNAPSHOT:
@@ -104,7 +100,7 @@ void j1Transition::Scrolling()
 		scroll_state = SCROLLING;
 		break;
 	case j1Transition::SCROLLING:
-		if (dst_rect.x > App->win->screen_surface->w || dst_rect.x < -App->win->screen_surface->w) {
+		if (dst_rect.x > DEFAULT_RESOLUTION_X || dst_rect.x < -DEFAULT_RESOLUTION_X) {
 			completed = true;
 			scroll_state = NOT_SCROLLING;
 			SDL_DestroyTexture(scroll_transition_texture);
@@ -128,14 +124,12 @@ bool j1Transition::Awake(pugi::xml_node &)
 bool j1Transition::Start()
 {
 	completed = false;
-	uint w = 0, h = 0;
-	App->win->GetWindowSize(w, h);
 	//float scale = App->win->GetScale();
 	//w /= scale;
 	//h /= scale;
 	fade_alpha = 0;
 	speed = 0;
-	dst_rect = { 0, 0, (int)w, (int)h };
+	dst_rect = { 0, 0, DEFAULT_RESOLUTION_X, DEFAULT_RESOLUTION_Y };
 	int ret = SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
 	if (ret != 0)
@@ -155,7 +149,7 @@ bool j1Transition::Update(float dt)
 {
 	bool ret = true;
 
-	transcurred_time += dt;
+	transcurred_time += dt/* * App->GetTimeScale()*/;
 
 	if (!completed)
 	{

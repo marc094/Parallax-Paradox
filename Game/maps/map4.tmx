@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="80" tilewidth="16" tileheight="16" nextobjectid="11">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="100" height="80" tilewidth="16" tileheight="16" nextobjectid="11">
  <tileset firstgid="1" name="environment-tiles" tilewidth="16" tileheight="16" tilecount="672" columns="42">
   <image source="environment-tiles.png" width="672" height="256"/>
   <terraintypes>
@@ -58,11 +58,11 @@
   <tile id="424" terrain="1,,,"/>
  </tileset>
  <imagelayer name="image" visible="0">
-  <image source="../textures/background.png"/>
+  <image source="../textures/background.png" width="1920" height="1536"/>
  </imagelayer>
  <objectgroup name="   ">
   <object id="1" name="Player" x="48.5" y="928" width="14.6667" height="14.6667"/>
-  <object id="4" name="Final" x="64.591" y="305.515" width="15.7273" height="7.81818"/>
+  <object id="4" name="Final" x="55.9823" y="301.341" width="15.7273" height="7.81818"/>
   <object id="7" name="Enemy" x="410" y="900">
    <properties>
     <property name="Layer" value="0"/>

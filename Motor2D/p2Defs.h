@@ -40,6 +40,8 @@
 #define INTERPOLATE_TO( value, dest, step ) ( (value > dest) ? (value - dest < step) ? dest : value - step : (value < dest) ? (dest - value < step) ? dest : value + step : dest ) //Don't even ask about this
 #define MAX_DISTANCE_ASTAR 20*20
 #define MAX_DISTANCE_COLLIDER_CULLING 64*64
+#define DEFAULT_RESOLUTION_X 1024
+#define DEFAULT_RESOLUTION_Y 768
 
 typedef unsigned int uint;
 typedef unsigned __int32 uint32;

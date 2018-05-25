@@ -7,13 +7,13 @@
 	<renderer>
 		<vsync value="false" />
 	</renderer>
-	<audio volumeFX="0.120253168" volumeMusic="0.224683538" />
+	<audio volumeFX="0.142405063" volumeMusic="0.240506336" />
 	<window>
 		<resolution width="1024" height="768" scale="1" />
-		<fullscreen value="0" />
-		<borderless value="16" />
+		<fullscreen value="1" />
+		<borderless value="0" />
 		<resizable value="0" />
-		<fullscreen_window value="0" />
+		<fullscreen_window value="1" />
 	</window>
 	<scene>
 		<level name="map1.tmx" />

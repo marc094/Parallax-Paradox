@@ -114,8 +114,6 @@ bool j1Input::PreUpdate()
 		controller.axis[i] = axis_normalised;
 	}
 
-	CheckControllers();
-
 	while(SDL_PollEvent(&event) != 0)
 	{
 		switch(event.type)
@@ -153,6 +151,15 @@ bool j1Input::PreUpdate()
 				mouse_buttons[event.button.button - 1].keyState = KEY_UP;
 				//LOG("Mouse button %d up", event.button.button-1);
 			break;
+
+			case SDL_CONTROLLERDEVICEREMOVED:
+				if (SDL_NumJoysticks() == 0)
+					controller.connected = false;
+				break;
+
+			case SDL_CONTROLLERDEVICEADDED:
+				CheckControllers();
+				break;
 
 			case SDL_MOUSEMOTION:
 				float scale = (int)App->win->GetScale();

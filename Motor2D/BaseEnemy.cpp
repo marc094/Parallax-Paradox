@@ -23,6 +23,7 @@ bool BaseEnemy::Start()
 	collider = current_animation->GetCurrentFrame(0.0f).rect;
 	return true;
 }
+
 bool BaseEnemy::Update(float dt)
 {
 	iRect collider_rect = current_animation->GetCurrentFrame(dt).rect;
@@ -157,7 +158,7 @@ bool BaseEnemy::Update(float dt)
 	if (type != AIR && type != GROUND)
 		Move(dt);
 	if (type == GROUND) position.y += speed_vect.y * dt;
-	Break(dt);
+		Break(dt);
 
 	//Gravity
 	if (gravity)
@@ -217,7 +218,7 @@ void BaseEnemy::GetPath()
 
 void BaseEnemy::FollowPath(float delta_time)
 {
-	uint path_length = path.Count();
+	uint path_length = path.size();
 	if (path_length > 0 && current_path_index < path_length) {
 		iPoint path_point(App->map->MapToWorld(path[current_path_index]));
 

@@ -63,6 +63,7 @@ public:
 
 	float GetTimeScale()const;
 	void SetTimeScale(float ts);
+	void SetTimeScaleTo(float ts, float time);
 
 private:
 
@@ -113,7 +114,10 @@ private:
 	p2List<j1Module*>	modules;
 	uint				frames = 0;
 	float				dt = .0f;
+	float				prev_time_scale = 1.f;
 	float				time_scale = 1.0f;
+	float				target_time_scale = 1.0f;
+	float				time_to_target_ts = 0.f;
 	int					argc;
 	char**				args;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="80" tilewidth="16" tileheight="16" nextobjectid="14">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="100" height="80" tilewidth="16" tileheight="16" nextobjectid="14">
  <tileset firstgid="1" name="environment-tiles" tilewidth="16" tileheight="16" tilecount="672" columns="42">
   <image source="environment-tiles.png" width="672" height="256"/>
   <terraintypes>
@@ -62,7 +62,7 @@
  </imagelayer>
  <objectgroup name="Player Pos" offsetx="-26" offsety="-4">
   <object id="1" name="Player" x="69" y="771" width="14.6667" height="14.6667"/>
-  <object id="4" name="Final" x="1484.09" y="49.182" width="15.7273" height="7.81818"/>
+  <object id="4" name="Final" x="1489.76" y="49.182" width="15.7273" height="7.81818"/>
  </objectgroup>
  <layer name="Back Layer" width="100" height="80">
   <properties>

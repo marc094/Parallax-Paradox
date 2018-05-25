@@ -11,21 +11,19 @@ j1PathFinding::j1PathFinding() : j1Module(), last_path(nullptr), width(0), heigh
 	maps.clear();
 	maps_ground.clear();
 
-	for (uint i = 0; i < LayerID::LAYER_AMOUNT; i++) {
-		maps.add(*new p2DynArray<uint>());
-		maps_ground.add(*new p2DynArray<uint>());
-	}
+	maps.resize(LayerID::LAYER_AMOUNT);
+	maps_ground.resize(LayerID::LAYER_AMOUNT);
 }
 
 // Destructor
 j1PathFinding::~j1PathFinding()
 {
-	for (p2List_item<p2DynArray<uint>>* map = maps.start; map != nullptr; map = map->next)
-		map->data.Clear();
+	for (std::vector<std::vector<uint>>::iterator map = maps.begin(); map != maps.end(); map++)
+		map->clear();
 	maps.clear();
 
-	for (p2List_item<p2DynArray<uint>>* map = maps_ground.start; map != nullptr; map = map->next)
-		map->data.Clear();
+	for (std::vector<std::vector<uint>>::iterator map = maps_ground.begin(); map != maps_ground.end(); map++)
+		map->clear();
 	maps_ground.clear();
 }
 
@@ -34,12 +32,12 @@ bool j1PathFinding::CleanUp(pugi::xml_node&)
 {
 	LOG("Freeing pathfinding library");
 	
-	for (p2List_item<p2DynArray<uint>>* map = maps.start; map != nullptr; map = map->next)
-		map->data.Clear();
+	for (std::vector<std::vector<uint>>::iterator map = maps.begin(); map != maps.end(); map++)
+		map->clear();
 	maps.clear();
 
-	for (p2List_item<p2DynArray<uint>>* map = maps_ground.start; map != nullptr; map = map->next)
-		map->data.Clear();
+	for (std::vector<std::vector<uint>>::iterator map = maps_ground.begin(); map != maps_ground.end(); map++)
+		map->clear();
 	maps_ground.clear();
 
 	return true;
@@ -51,8 +49,9 @@ void j1PathFinding::SetMap(const MapLayer* layer_data)
 	this->width = layer_data->width;
 	this->height = layer_data->height;
 
-	maps.At(layer_data->layer)->data.Clear();
-	maps.At(layer_data->layer)->data.Insert(layer_data->tiles, (width + 1) * (height + 1), 0);
+	maps[layer_data->layer].clear();
+	for (size_t i = 0; i < width * height; i++)
+		maps[layer_data->layer].push_back(layer_data->tiles[i]);
 }
 
 
@@ -62,8 +61,8 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 	uint l_height = layer_data->height;
 	LayerID l_layer = layer_data->layer;
 
-	maps_ground.At(l_layer)->data.Clear();
-	maps_ground.At(l_layer)->data.Insert(new uint[(width + 1) * (height + 1)], (width + 1) * (height + 1), 0);
+	maps_ground[l_layer].clear();
+	maps_ground[l_layer].resize(width * height);
 
 	uint prev_id = 0, curr_id = 0;
 
@@ -75,15 +74,15 @@ void j1PathFinding::SetGroundMap(const MapLayer* layer_data)
 
 			if (prev_id == 0 && curr_id != 0 && CheckBoundaries(iPoint(x, y - 1)))
 			{
-				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 0, 1);
+				memset(&maps_ground[l_layer][((y - 1) * l_width) + x], 0, 1);
 			}
 			else if (prev_id == 0 && curr_id == 0 && CheckBoundaries(iPoint(x + 1, y - 1)) && CheckBoundaries(iPoint(x - 1, y - 1))
 				&& (layer_data->tiles[((y) * l_width) + x + 1] != 0 || layer_data->tiles[((y) * l_width) + x - 1] != 0))
 			{
-				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 0, 1);
+				memset(&maps_ground[l_layer][((y - 1) * l_width) + x], 0, 1);
 			}
 			else if (CheckBoundaries(iPoint(x, y - 1)))
-				memset(&maps_ground.At(l_layer)->data[((y - 1) * l_width) + x], 1, 1);
+				memset(&maps_ground[l_layer][((y - 1) * l_width) + x], 1, 1);
 		}
 	}
 }
@@ -115,7 +114,7 @@ bool j1PathFinding::IsWalkable(const iPoint& pos, const LayerID layer, bool grou
 uchar j1PathFinding::GetTileAt(const iPoint& pos, const LayerID layer) const
 {
 	if(CheckBoundaries(pos))
-		return maps.At((const uint)layer)->data[(pos.y*width) + pos.x];
+		return maps[(const uint)layer][(pos.y*width) + pos.x];
 
 	return INVALID_WALK_CODE;
 }
@@ -124,13 +123,13 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos, const LayerID layer) const
 uchar j1PathFinding::GetTileAtGround(const iPoint& pos, const LayerID layer) const
 {
 	if (CheckBoundaries(pos))
-		return maps_ground.At(layer)->data[(pos.y*width) + pos.x];
+		return maps_ground[layer][(pos.y*width) + pos.x];
 
 	return INVALID_WALK_CODE;
 }
 
 // To request all tiles involved in the last generated path
-const p2DynArray<iPoint>* j1PathFinding::GetLastPath() const
+const std::vector<iPoint>* j1PathFinding::GetLastPath() const
 {
 	return last_path;
 }
@@ -258,7 +257,7 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, p2DynArray<iPoint>* path, bool ground)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, const LayerID layer, std::vector<iPoint>* path, bool ground)
 {
 	if (!IsWalkable(origin, layer, ground) && !IsWalkable(destination, layer, ground))
 		return -1;
@@ -279,13 +278,17 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 
 		if (curr_node->data.pos == destination)
 		{
-			last_path->Clear();
+			last_path->clear();
 			while (curr_node->data.parent != nullptr) {
-				last_path->PushBack(curr_node->data.pos);
+				last_path->push_back(curr_node->data.pos);
 				curr_node = closed.Find(curr_node->data.parent->pos);
 			}
-			last_path->Flip();
-			return last_path->Count();
+
+			size_t size = last_path->size();
+			for (size_t i = 0; i < size / 2; i++) {
+				SWAP(last_path->at(i), last_path->at(size - i));
+			}
+			return size;
 		}
 
 		PathList neighbours;
@@ -322,10 +325,10 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 
 void j1PathFinding::DebugBlitMap()
 {
-	p2List_item<p2DynArray<uint>>* ground_map = maps_ground.At(FRONT_LAYER);
+	std::vector<uint> ground_map = maps_ground[FRONT_LAYER];
 	for (uint x = 0; x < width; x++) {
 		for (uint y = 0; y < height; y++) {
-			if (ground_map->data[(y * width) + x] != 1)
+			if (ground_map[(y * width) + x] != 1)
 			{
 				iPoint pos(x, y);
 				pos = App->map->MapToWorld(pos);

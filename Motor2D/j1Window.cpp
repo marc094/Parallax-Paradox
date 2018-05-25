@@ -108,7 +108,7 @@ bool j1Window::CleanUp(pugi::xml_node& config)
 	config.child("fullscreen").attribute("value").set_value(flags & SDL_WINDOW_FULLSCREEN);
 	config.child("borderless").attribute("value").set_value(flags & SDL_WINDOW_BORDERLESS);
 	config.child("resizable").attribute("value").set_value(flags & SDL_WINDOW_RESIZABLE);
-	config.child("fullscreen_window").attribute("value").set_value(flags & SDL_WINDOW_FULLSCREEN_DESKTOP);
+	config.child("fullscreen_window").attribute("value").set_value(flags & SDL_WINDOW_FULLSCREEN_DESKTOP == SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	//Destroy window
 	if(window != NULL)

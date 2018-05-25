@@ -17,6 +17,7 @@ struct RenderPos {
 	int pivot_x = INT_MAX, pivot_y = INT_MAX;
 
 };
+
 class j1Render : public j1Module
 {
 public:

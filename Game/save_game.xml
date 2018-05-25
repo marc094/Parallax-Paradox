@@ -3,14 +3,14 @@
 	<input />
 	<window />
 	<textures />
-	<audio volumeFX="1" volumeMusic="1" />
+	<audio volumeFX="0.142405063" volumeMusic="0.240506336" />
 	<map />
 	<scene>
 		<level current_level="1" />
-		<time sec="25610" />
+		<time sec="19736" />
 	</scene>
 	<entities>
-		<position x="69" y="779.022949" />
+		<position x="1322.92603" y="27.2725849" />
 		<coins amount="0" />
 	</entities>
 	<collision />
@@ -19,6 +19,6 @@
 	<gui />
 	<transition />
 	<renderer>
-		<camera x="-64.2047424" y="523.902405" />
+		<camera x="810.926025" y="-356.727417" />
 	</renderer>
 </game_state>

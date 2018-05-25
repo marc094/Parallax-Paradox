@@ -44,10 +44,12 @@ bool j1Render::Awake(pugi::xml_node& config)
 	}
 	else
 	{
-		camera.w = (float)App->win->screen_surface->w;
-		camera.h = (float)App->win->screen_surface->h;
+		camera.w = (float)DEFAULT_RESOLUTION_X;
+		camera.h = (float)DEFAULT_RESOLUTION_Y;
 		camera.x = 0.0f;
 		camera.y = 0.0f;
+
+		SDL_RenderSetLogicalSize(renderer, DEFAULT_RESOLUTION_X, DEFAULT_RESOLUTION_Y);
 	}
 
 	return ret;
@@ -346,8 +348,8 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	for(uint i = 0; i < 360; ++i)
 	{
-		points[i].x = (int)(x + radius * cos(i * factor));
-		points[i].y = (int)(y + radius * sin(i * factor));
+		points[i].x = (int)(x - (use_camera ? camera.x * scale : 0) + radius * cos(i * factor));
+		points[i].y = (int)(y - (use_camera ? camera.y * scale : 0) + radius * sin(i * factor));
 	}
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
