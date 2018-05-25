@@ -186,7 +186,8 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	delta_time = frame_time.Read();
-	dt = delta_time / 1000.0f;
+	real_time_dt = dt = delta_time / 1000.0f;
+	dt *= time_scale;
 	if (target_time_scale != time_scale) {
 		time_scale = INTERPOLATE_TO(time_scale, target_time_scale, abs(target_time_scale - prev_time_scale) * dt / (time_to_target_ts + 0.000000000001f));
 	}

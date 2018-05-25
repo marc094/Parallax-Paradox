@@ -149,7 +149,8 @@ bool j1Transition::Update(float dt)
 {
 	bool ret = true;
 
-	transcurred_time += dt/* * App->GetTimeScale()*/;
+	dt = App->GetRealTimeDT();
+	transcurred_time += dt;
 
 	if (!completed)
 	{

@@ -22,6 +22,7 @@ public:
 		IN_GAME,
 		IN_MENU,
 		TRANSITION,
+		END,
 		INTRO
 	}state = INTRO;
 
@@ -65,9 +66,9 @@ public:
 
 	Window* credits_window = nullptr;
 	Window* settings_window = nullptr;
-	Slider* credits_slider;
-	Sprite* credits_text;
-	Slider* set_mus_slider;
+	Slider* credits_slider = nullptr;
+	Sprite* credits_text = nullptr;
+	Slider* set_mus_slider = nullptr;
 	bool credits_bool = false;
 	bool settings_bool = false;
 	uint jump_sound = 0;
@@ -77,7 +78,7 @@ public:
 	uint coin_sound = 0;
 	uint button_sound = 0;
 	State current_state = state;
-	j1Timer time;
+	float time;
 
 	bool transitioninig = false;
 
@@ -121,5 +122,6 @@ void Fps_Uncapped(int, ...);
 void DoReload(int, ...);
 void DoLoadInGame(int, ...);
 void DoLoadMenu(int, ...);
+void DoLoadEnd(int, ...);
 
 #endif // __j1SCENE_H__

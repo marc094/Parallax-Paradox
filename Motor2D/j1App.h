@@ -65,6 +65,10 @@ public:
 	void SetTimeScale(float ts);
 	void SetTimeScaleTo(float ts, float time);
 
+	float GetRealTimeDT() {
+		return real_time_dt;
+	}
+
 private:
 
 	// Load config file
@@ -114,6 +118,7 @@ private:
 	p2List<j1Module*>	modules;
 	uint				frames = 0;
 	float				dt = .0f;
+	float				real_time_dt = 0.f;
 	float				prev_time_scale = 1.f;
 	float				time_scale = 1.0f;
 	float				target_time_scale = 1.0f;

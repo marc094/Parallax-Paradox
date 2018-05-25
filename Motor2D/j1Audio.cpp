@@ -151,9 +151,6 @@ void j1Audio::StopMusic(float fade_out)
 		{
 			Mix_HaltMusic();
 		}
-
-		// this call blocks until fade out is done
-		Mix_FreeMusic(music);
 	}
 }
 

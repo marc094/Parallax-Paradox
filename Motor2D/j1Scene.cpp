@@ -77,8 +77,16 @@ bool j1Scene::Start()
 	SDL_Rect button_idle = { 1000,1000,250,58 };
 	SDL_Rect button_hover = { 0,0,250,58 };
 	SDL_Rect button_press = { 0,58,250,58 };
+	if (current_state == END) {
+		App->entities->active = false;
+		uiPoint dims = App->gui->GetGuiSize();
+		Label* win_label = App->gui->AddLabel(dims.x / 2, dims.y / 2 - dims.y / 12, 60, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
+		win_label->setString("CONGRATULATIONS");
+		win_label->ComputeRects();
 
-	if (current_state == INTRO)
+		App->transition->MakeTransition(&DoLoadMenu, j1Transition::FADE_TO_BLACK, 10.f);
+	}
+	else if (current_state == INTRO)
 	{
 		App->entities->active = false;
 		logo_back = App->tex->Load("textures/intro background.png");
@@ -360,7 +368,8 @@ bool j1Scene::Update(float dt)
 				firstlevel_lab->Enable(false);
 		}
 		App->map->Draw();
-		time_lab->setString("%.2f", time.ReadSec());
+		time += dt;
+		time_lab->setString("%.2f", time);
 	}
 
 	// "Map:%dx%d Tiles:%dx%d Tilesets:%d"
@@ -407,17 +416,21 @@ void DoLoadMenu(int, ...) {
 	App->scene->transitioninig = false;
 }
 
+void DoLoadEnd(int, ...) {
+	App->Reload();
+	App->scene->state = j1Scene::END;
+	App->scene->transitioninig = false;
+}
+
 void j1Scene::ChangeScene(uint _level) {
 	level = _level;
 	float trans_time = 3.f;
 	if (level > max_level) {
 		level = 1;
-		uiPoint dims = App->gui->GetGuiSize();
-		Label* win_label = App->gui->AddLabel(dims.x / 2, dims.y / 2 - dims.y / 8, 100, "gui/Earth 2073.ttf", { 255, 255, 255, 255 });
-		win_label->setString("CONGRATULATIONS!");
-		trans_time = 10.f;
+		trans_time = 5.f;
 		playing = false;
-		App->transition->MakeTransition(&DoLoadMenu, j1Transition::FADE_TO_BLACK, trans_time);
+		App->audio->StopMusic(trans_time);
+		App->transition->MakeTransition(&DoLoadEnd, j1Transition::FADE_TO_BLACK, trans_time);
 	}
 	else App->transition->MakeTransition(&DoReload, j1Transition::FADE_TO_BLACK, trans_time);
 	App->SetTimeScaleTo(0.1f, 2.f);
@@ -450,11 +463,6 @@ void j1Scene::CheckInput(float dt)
 		App->entities->player.Accelerate(0, -ACCELERATION, dt);
 	}
 
-	/*if (!App->scene->settings_bool) {
-		float timescale = 1.0f - CLAMP(App->input->GetControllerAxisValue(SDL_CONTROLLER_AXIS_TRIGGERLEFT), .0f, .5f);
-		App->SetTimeScale(timescale);
-	}*/
-
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		App->entities->player.god_mode = !App->entities->player.god_mode;
 }
@@ -471,7 +479,7 @@ void j1Scene::CheckEnd() {
 bool j1Scene::Load(pugi::xml_node& data) 
 {
 	level = data.child("level").attribute("current_level").as_int();
-	time.loaded_time = data.child("time").attribute("sec").as_int();
+	time = data.child("time").attribute("sec").as_float();
 	return true;
 }
 
@@ -482,7 +490,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	pos.append_attribute("current_level") = level;
 
 	pugi::xml_node time_node = data.append_child("time");
-	time_node.append_attribute("sec") = time.Read();
+	time_node.append_attribute("sec") = time;
 
 	return true;
 }
@@ -604,7 +612,7 @@ void button_callback(const char* text) {
 
 void StartAlready(int, ...) {
 	App->Reload();
-	App->scene->time.Start();
+	App->scene->time = 0.f;
 	App->scene->state = App->scene->IN_GAME;
 }
 
@@ -616,7 +624,7 @@ void Game_start(int, ...)
 void ContinueAlready(int, ...) {
 	App->LoadGame();
 	App->Reload();
-	App->scene->time.Start();
+	App->scene->time = 0.f;
 	App->scene->state = App->scene->IN_GAME;
 }
 
