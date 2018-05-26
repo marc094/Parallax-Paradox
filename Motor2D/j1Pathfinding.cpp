@@ -286,7 +286,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, c
 
 			size_t size = last_path->size();
 			for (size_t i = 0; i < size / 2; i++) {
-				SWAP(last_path->at(i), last_path->at(size - i));
+				SWAP(last_path->at(i), last_path->at(size - i - 1));
 			}
 			return size;
 		}
